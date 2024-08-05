@@ -12,7 +12,7 @@ const Logo = () => {
                 alt="himmah"
                 className="h-10 w-fit"
             />
-            <p className='hidden sm:block font-bold text-3xl  text-white max-xs:hidden'>
+            <p className='hidden sm:block font-bold text-3xl max-xs:hidden'>
                 Himmah
             </p>
         </Link>

@@ -1,3 +1,5 @@
+const { fontFamily } = require("tailwindcss/defaultTheme")
+
 import type { Config } from "tailwindcss"
 
 const config = {
@@ -18,6 +20,9 @@ const config = {
       },
     },
     extend: {
+      // fontFamily: {
+      //   sans: ["var(--font-poppins)", ...fontFamily.sans],
+      // },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
