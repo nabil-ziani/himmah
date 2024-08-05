@@ -2,10 +2,10 @@ import DeployButton from "@/components/DeployButton";
 import AuthButton from "@/components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
 import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
-import Header from "@/components/Header";
+import Hero from "@/components/hero";
 import { redirect } from "next/navigation";
 
-export default async function ProtectedPage() {
+export default async function DashboardPage() {
   const supabase = createClient();
 
   const {
@@ -32,7 +32,7 @@ export default async function ProtectedPage() {
       </div>
 
       <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
-        <Header />
+        <Hero />
         <main className="flex-1 flex flex-col gap-6">
           <h2 className="font-bold text-4xl mb-4">Next steps</h2>
           <FetchDataSteps />
