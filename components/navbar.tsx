@@ -33,7 +33,7 @@ const Navbar = () => {
                 {/* MOBILE */}
                 <div className="flex items-center gap-4">
                     <AuthButton />
-                    <ModeToggle />
+                    {/* <ModeToggle /> */}
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button variant="outline" size="icon" className="md:hidden">
