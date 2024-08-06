@@ -7,7 +7,7 @@ const Logo = () => {
         <div>
             <Link href='/' className='flex items-center gap-x-4'>
                 <Image
-                    src="/logo.svg"
+                    src="/logo.png"
                     height={1000}
                     width={1000}
                     alt="himmah"
