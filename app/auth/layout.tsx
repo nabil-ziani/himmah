@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" suppressHydrationWarning >
             <body className={`${poppins.className} antialiased`}>
-                <ThemeProvider attribute="class" forcedTheme="dark">
+                <ThemeProvider attribute="class" forcedTheme="dark" enableSystem={false}>
                     {children}
                 </ThemeProvider>
             </body>
