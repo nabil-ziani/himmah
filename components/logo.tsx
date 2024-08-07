@@ -2,7 +2,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const Logo = () => {
+interface LogoProps {
+    hideOnSmallDevice?: boolean
+}
+
+const Logo = ({ hideOnSmallDevice = true }: LogoProps) => {
     return (
         <div>
             <Link href='/' className='flex items-center gap-x-4'>
@@ -13,7 +17,7 @@ const Logo = () => {
                     alt="himmah"
                     className="h-12 w-fit"
                 />
-                <p className='hidden sm:block font-bold text-4xl max-xs:hidden'>
+                <p className={`${hideOnSmallDevice && 'hidden'} sm:block font-bold text-4xl`}>
                     Himmah
                 </p>
             </Link>

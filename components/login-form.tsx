@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useTransition } from "react";
-import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
+import { useRouter } from 'next/navigation'
 
 const LoginForm = () => {
     const [error, setError] = useState<string | undefined>('')
@@ -21,6 +21,7 @@ const LoginForm = () => {
 
     const [isPending, startTransition] = useTransition()
 
+    const router = useRouter()
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -45,10 +46,10 @@ const LoginForm = () => {
                         form.reset()
                         setSuccess(data.success)
 
-                        redirect("/dashboard");
+                        router.push('/dashboard')
                     }
                 })
-                .catch(() => setError("Something went wrong"))
+                .catch((e) => setError(e.message))
         })
     }
 

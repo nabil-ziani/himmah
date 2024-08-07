@@ -23,6 +23,12 @@ const config = {
       // fontFamily: {
       //   sans: ["var(--font-poppins)", ...fontFamily.sans],
       // },
+      colors: {
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        }
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
