@@ -14,7 +14,7 @@ export function SubmitButton({ children, pendingText, ...props }: Props) {
     const isPending = pending && action === props.formAction;
 
     return (
-        <Button type='submit' className='mt-7 w-full bg-[#FF4545]' disabled={isPending}>
+        <Button type='submit' className='mt-3 w-full bg-[#FF4545]' disabled={isPending}>
             {isPending ? pendingText : children}
         </Button>
     );

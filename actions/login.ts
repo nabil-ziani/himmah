@@ -21,7 +21,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     });
 
     if (error) {
-        return { error: 'Could not authenticate user' }
+        return { error: error.message }
     }
 
     return { success: 'You will be redirected shortly!' }

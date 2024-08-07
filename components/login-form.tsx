@@ -71,7 +71,7 @@ const LoginForm = () => {
                                 placeholder="name@example.com"
                             />
 
-                            <div className='space-y-1'>
+                            <div className='space-y-1 mb-4'>
                                 <CustomFormField
                                     fieldType={FormFieldType.INPUT}
                                     control={form.control}
