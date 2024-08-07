@@ -18,6 +18,7 @@ import Separator from "./seperator";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { SexOptions } from "@/constants";
 import { Label } from "./ui/label";
+import { SelectItem } from "./ui/select";
 
 const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>('')
@@ -98,7 +99,7 @@ const RegisterForm = () => {
                             />
 
                             {/* BirthDate & Gender */}
-                            <div className="flex flex-col w-full justify-between xl:flex-row mt-3">
+                            <div className="flex flex-col md:gap-5 xl:gap-10 w-full justify-between xl:flex-row mt-3 xl:mb-10">
                                 <CustomFormField
                                     fieldType={FormFieldType.DATE_PICKER}
                                     control={form.control}
@@ -108,31 +109,21 @@ const RegisterForm = () => {
                                 />
 
                                 <CustomFormField
-                                    fieldType={FormFieldType.SKELETON}
+                                    fieldType={FormFieldType.SELECT}
                                     control={form.control}
                                     name="sex"
                                     label="Sex"
-                                    renderSkeleton={(field) => (
-                                        <FormControl>
-                                            <RadioGroup
-                                                className="flex h-11 gap-3 xl:justify-between max-w-[100px]"
-                                                onValueChange={field.onChange}
-                                                defaultValue={field.value}
-                                            >
-                                                {SexOptions.map((option, i) => (
-                                                    <div key={option + i} className="radio-group">
-                                                        <RadioGroupItem value={option} id={option} />
-                                                        <Label htmlFor={option} className="cursor-pointer">
-                                                            {option}
-                                                        </Label>
-                                                    </div>
-                                                ))}
-                                            </RadioGroup>
-                                        </FormControl>
-                                    )}
-                                />
+                                    placeholder="Select your sex"
+                                >
+                                    {SexOptions.map((option, i) => (
+                                        <SelectItem key={option + i} value={option}>
+                                            <div className="flex cursor-pointer items-center gap-2">
+                                                <p>{option}</p>
+                                            </div>
+                                        </SelectItem>
+                                    ))}
+                                </CustomFormField>
                             </div>
-
                         </div>
 
                         <FormError message={error} />
@@ -147,17 +138,17 @@ const RegisterForm = () => {
             <div className="flex justify-between items-center">
                 <p className="mt-2 font-light text-sm">
                     Already have an account? {" "}
-                    <Link href="/auth/register" className="underline font-semibold">
+                    <Link href="/auth/login" className="underline font-semibold">
                         Login
                     </Link>
                 </p>
 
-                <p className="mt-2 font-light text-sm">
+                {/* <p className="mt-2 font-light text-sm">
                     Read and agree with {" "}
                     <Link href="/auth/register" className="underline font-semibold text-[#00A5A5]">
                         ToS
                     </Link>
-                </p>
+                </p> */}
             </div>
         </div>
     )
