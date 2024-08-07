@@ -9,7 +9,7 @@ export default function Login() {
     return (
         <div className="flex h-screen max-h-screen">
             <section className="remove-scrollbar container my-auto">
-                <div className="sub-container max-w-[496px] flex flex-row gap-20">
+                <div className="sub-container max-w-[496px] flex flex-row gap-10">
                     <Logo hideOnSmallDevice={false} />
                     <LoginForm />
                     <div>
