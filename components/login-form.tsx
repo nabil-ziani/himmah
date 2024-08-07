@@ -14,6 +14,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
 import { useRouter } from 'next/navigation'
+import { SubmitButton } from "./submit-button";
 
 const LoginForm = () => {
     const [error, setError] = useState<string | undefined>('')
@@ -92,16 +93,9 @@ const LoginForm = () => {
 
                         <FormError message={error} />
                         <FormSuccess message={success} />
-                        <Button type='submit' className='mt-5 w-full bg-[#FF4545]' disabled={isPending}>
+                        <SubmitButton pendingText="Signing In...">
                             Sign In
-                        </Button>
-                        {/* <SubmitButton
-                            formAction={login}
-                            className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
-                            pendingText="Signing In..."
-                        >
-                            Sign In
-                        </SubmitButton> */}
+                        </SubmitButton>
                     </div>
                 </form>
             </Form>
