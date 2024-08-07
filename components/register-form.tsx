@@ -19,6 +19,7 @@ import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { SexOptions } from "@/constants";
 import { Label } from "./ui/label";
 import { SelectItem } from "./ui/select";
+import { register } from "@/actions/register";
 
 const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>('')
@@ -26,24 +27,23 @@ const RegisterForm = () => {
 
     const [isPending, startTransition] = useTransition()
 
-    const router = useRouter()
     const form = useForm<z.infer<typeof RegisterSchema>>({
         resolver: zodResolver(RegisterSchema),
         defaultValues: {
             name: '',
             email: '',
             password: '',
-            sex: "Male",
+            sex: undefined,
             birthDate: new Date(Date.now())
         }
     })
 
-    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+    const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
         setError('')
         setSuccess('')
 
         startTransition(() => {
-            login(values)
+            register(values)
                 .then((data) => {
                     if (data?.error) {
                         form.reset()
@@ -53,8 +53,6 @@ const RegisterForm = () => {
                     if (data?.success) {
                         form.reset()
                         setSuccess(data.success)
-
-                        router.push('/dashboard')
                     }
                 })
                 .catch((e) => setError(e.message))

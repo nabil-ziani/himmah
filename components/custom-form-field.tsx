@@ -115,13 +115,6 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
         case FormFieldType.DATE_PICKER:
             return (
                 <div className="flex rounded-md border bg-white">
-                    {/* <Image
-                        src="/icons/calendar.svg"
-                        height={24}
-                        width={24}
-                        alt="datepicker"
-                        className="ml-2"
-                    /> */}
                     <FormControl>
                         <ReactDatePicker
                             showTimeSelect={props.showTimeSelect ?? false}
