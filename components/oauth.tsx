@@ -1,26 +1,23 @@
 import { type Provider } from '@supabase/supabase-js';
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa6";
-import { SiDiscord } from "react-icons/si";
 
 type OAuthProviders = {
     name: Provider;
-    icon: JSX.Element;
+    icon: string;
 };
 
 export default function OauthSignIn() {
     const oAuthProviders: OAuthProviders[] = [
         {
             name: 'google',
-            icon: <FcGoogle className="h-5 w-5" />
+            icon: '/icons/google.svg'
         },
         {
             name: 'facebook',
-            icon: <FaFacebook className="h-5 w-5" color='#0865fe' />
+            icon: '/icons/facebook.svg'
         },
         {
             name: 'discord',
-            icon: <SiDiscord className="h-5 w-5" color='#5d6bf2' />
+            icon: '/icons/discord.svg'
         }
     ];
 
@@ -40,9 +37,13 @@ export default function OauthSignIn() {
 
                     <button
                         type="submit"
-                        className="aspect-square w-10 h-10 rounded-full bg-white flex items-center justify-center text-zinc-700 transition-colors duration-300 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+                        className="aspect-square w-10 h-10 rounded-full bg-white flex items-center justify-center transition-colors duration-300 dark:bg-zinc-100 dark:hover:bg-zinc-600"
                     >
-                        {provider.icon}
+                        <img
+                            src={provider.icon}
+                            alt="oauth logo"
+                            className="h-6 w-6"
+                        />
                     </button>
                 </form>
             ))}

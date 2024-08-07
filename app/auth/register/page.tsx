@@ -7,7 +7,7 @@ import RegisterForm from "@/components/register-form";
 
 const RegisterPage = () => {
     return (
-        <div className="flex h-screen max-h-screen">
+        <div className="flex h-screen max-h-screen bg-[#303030]">
             <section className="remove-scrollbar container my-auto">
                 <div className="sub-container max-w-[496px] flex flex-row gap-10">
                     <Logo hideOnSmallDevice={false} />

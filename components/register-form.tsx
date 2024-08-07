@@ -157,7 +157,7 @@ const RegisterForm = () => {
                 <p className="mt-2 font-light text-sm">
                     Read and agree with {" "}
                     <Link href="/auth/register" className="underline font-semibold text-[#00A5A5]">
-                        TOS
+                        ToS
                     </Link>
                 </p>
             </div>
