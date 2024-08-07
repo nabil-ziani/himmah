@@ -97,6 +97,10 @@
         @apply bg-white text-[#303030] !important;
     }
 
+    .shad-error {
+        @apply text-red-400 !important;
+    }
+    
     /* ==== SUCCESS */
     .success-img {
         @apply m-auto flex flex-1 flex-col items-center justify-between gap-10 py-10;

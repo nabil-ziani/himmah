@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { LoginSchema } from "@/schemas";
+import { LoginSchema, RegisterSchema } from "@/schemas";
 import Link from "next/link";
 
 import { Form, FormControl } from "@/components/ui/form";
@@ -26,11 +26,14 @@ const RegisterForm = () => {
     const [isPending, startTransition] = useTransition()
 
     const router = useRouter()
-    const form = useForm<z.infer<typeof LoginSchema>>({
-        resolver: zodResolver(LoginSchema),
+    const form = useForm<z.infer<typeof RegisterSchema>>({
+        resolver: zodResolver(RegisterSchema),
         defaultValues: {
+            name: '',
             email: '',
-            password: ''
+            password: '',
+            sex: "Male",
+            birthDate: new Date(Date.now())
         }
     })
 
@@ -94,10 +97,10 @@ const RegisterForm = () => {
                                 }
                             />
 
-                            <Separator text="OPTIONAL" color="white mt-10" />
+                            {/* <Separator text="OPTIONAL" color="white mt-10" /> */}
 
                             {/* BirthDate & Gender */}
-                            <div className="flex flex-col gap-10 xl:flex-row">
+                            <div className="flex flex-col gap-10 xl:flex-row mt-3">
                                 <CustomFormField
                                     fieldType={FormFieldType.SKELETON}
                                     control={form.control}
@@ -143,12 +146,21 @@ const RegisterForm = () => {
                 </form>
             </Form>
 
-            <p className="mt-2 font-light text-sm">
-                Already have an account? {" "}
-                <Link href="/auth/register" className="underline font-semibold">
-                    Login
-                </Link>
-            </p>
+            <div className="flex justify-between items-center">
+                <p className="mt-2 font-light text-sm">
+                    Already have an account? {" "}
+                    <Link href="/auth/register" className="underline font-semibold">
+                        Login
+                    </Link>
+                </p>
+
+                <p className="mt-2 font-light text-sm">
+                    Read and agree with {" "}
+                    <Link href="/auth/register" className="underline font-semibold text-[#00A5A5]">
+                        TOS
+                    </Link>
+                </p>
+            </div>
         </div>
     )
 }
