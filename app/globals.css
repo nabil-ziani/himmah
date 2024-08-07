@@ -174,11 +174,7 @@
 
     /* ==== FORM */
     .radio-group {
-        @apply flex h-full flex-1 items-center gap-2 rounded-md text-[#303030] bg-white p-3;
-    }
-
-    .radio-group button {
-        @apply text-[#303030] border-[#303030]
+        @apply flex h-full items-center gap-2 rounded-md;
     }
 
     .checkbox-label {

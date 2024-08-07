@@ -97,19 +97,25 @@ const RegisterForm = () => {
                                 }
                             />
 
-                            {/* <Separator text="OPTIONAL" color="white mt-10" /> */}
-
                             {/* BirthDate & Gender */}
-                            <div className="flex flex-col gap-10 xl:flex-row mt-3">
+                            <div className="flex flex-col w-full justify-between xl:flex-row mt-3">
+                                <CustomFormField
+                                    fieldType={FormFieldType.DATE_PICKER}
+                                    control={form.control}
+                                    name="birthDate"
+                                    label="Date of birth"
+                                    placeholder="mm-dd-YYYY"
+                                />
+
                                 <CustomFormField
                                     fieldType={FormFieldType.SKELETON}
                                     control={form.control}
-                                    name="gender"
-                                    label="Gender"
+                                    name="sex"
+                                    label="Sex"
                                     renderSkeleton={(field) => (
                                         <FormControl>
                                             <RadioGroup
-                                                className="flex h-11 gap-6 xl:justify-between"
+                                                className="flex h-11 gap-3 xl:justify-between max-w-[100px]"
                                                 onValueChange={field.onChange}
                                                 defaultValue={field.value}
                                             >
@@ -124,14 +130,6 @@ const RegisterForm = () => {
                                             </RadioGroup>
                                         </FormControl>
                                     )}
-                                />
-
-                                <CustomFormField
-                                    fieldType={FormFieldType.DATE_PICKER}
-                                    control={form.control}
-                                    name="birthDate"
-                                    label="Date of birth"
-                                    placeholder="mm-dd-YYYY"
                                 />
                             </div>
 
