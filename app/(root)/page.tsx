@@ -14,19 +14,11 @@ export default async function Index() {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
+    <div>
       <Navbar />
 
-      <main className="flex-1 flex flex-col gap-20 max-w-4xl px-3 h-full">
+      <main className="w-full flex h-[50vh] justify-center items-center">
         <Hero />
-        <section className="flex-1 flex flex-col gap-6">
-
-        </section>
-        <img
-          alt="hero image"
-          src="/himmah-home.jpg"
-          className="absolute inset-0 h-full w-full object-cover -z-10"
-        />
       </main>
     </div>
   );
