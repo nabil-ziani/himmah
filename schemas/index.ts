@@ -15,6 +15,14 @@ export const RegisterSchema = z.object({
     birthDate: z.optional(z.date(), { message: "Invalid value" })
 })
 
-export const ResetSchema = z.object({
+export const ResetPasswordSchema = z.object({
     email: z.string().email({ message: "Email is required" }),
+})
+
+export const UpdatePasswordSchema = z.object({
+    password: z.string().min(6, { message: "Minimum 6 characters required" }),
+    passwordConfirm: z.string()
+}).refine((data) => data.password === data.passwordConfirm, {
+    message: "Passwords do not match!",
+    path: ["passwordConfirm"],
 })

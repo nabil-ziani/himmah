@@ -3,11 +3,11 @@
 import * as z from 'zod'
 
 import { headers } from "next/headers";
-import { ResetSchema } from '@/schemas';
+import { ResetPasswordSchema } from '@/schemas';
 import { createClient } from "@/utils/supabase/server";
 
-export const reset = async (values: z.infer<typeof ResetSchema>) => {
-    const validatedFields = ResetSchema.safeParse(values)
+export const reset = async (values: z.infer<typeof ResetPasswordSchema>) => {
+    const validatedFields = ResetPasswordSchema.safeParse(values)
 
     if (!validatedFields.success) {
         return { error: "Invalid email!" }

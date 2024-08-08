@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ResetSchema } from "@/schemas";
+import { ResetPasswordSchema } from "@/schemas";
 
 import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "@/components/custom-form-field";
@@ -12,7 +12,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useRouter } from 'next/navigation'
 import { SubmitButton } from "./submit-button";
-import { reset } from "@/actions/reset";
+import { reset } from "@/actions/reset-password";
 
 const ForgotPasswordForm = () => {
     const [error, setError] = useState<string | undefined>('')
@@ -21,14 +21,14 @@ const ForgotPasswordForm = () => {
     const [isPending, startTransition] = useTransition()
 
     const router = useRouter()
-    const form = useForm<z.infer<typeof ResetSchema>>({
-        resolver: zodResolver(ResetSchema),
+    const form = useForm<z.infer<typeof ResetPasswordSchema>>({
+        resolver: zodResolver(ResetPasswordSchema),
         defaultValues: {
             email: '',
         }
     })
 
-    const onSubmit = (values: z.infer<typeof ResetSchema>) => {
+    const onSubmit = (values: z.infer<typeof ResetPasswordSchema>) => {
         setError('')
         setSuccess('')
 
