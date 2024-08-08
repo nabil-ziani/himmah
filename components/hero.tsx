@@ -52,7 +52,7 @@ export default function Hero() {
           </Link>
         </Button>
         <Button variant={'gradient'} size={'lg'} className="mt-20 p-7">
-          <Link className="text-2xl font-semibold" href="/auth/login">
+          <Link className="text-2xl font-semibold" href="/auth/register">
             Get Started
           </Link>
         </Button>

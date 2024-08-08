@@ -69,7 +69,7 @@ const RegisterForm = () => {
                                 control={form.control}
                                 name="name"
                                 label="Name"
-                                placeholder="John Doe"
+                                placeholder="Your Name"
                             />
 
                             <CustomFormField

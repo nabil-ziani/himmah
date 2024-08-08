@@ -8,7 +8,7 @@ export const LoginSchema = z.object({
 const SEX = ['Male', 'Female'] as const
 
 export const RegisterSchema = z.object({
-    name: z.string().min(1, { message: 'Name is required' }),
+    name: z.string().min(1, { message: 'Name is required' }).max(30, { message: 'Maximum characters is 30' }),
     email: z.string().email({ message: "Email is required" }),
     password: z.string().min(6, { message: "Minimum 6 characters required" }),
     sex: z.optional(z.enum(SEX), { message: "Invalid value" }),
