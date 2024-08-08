@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import LoginForm from "@/components/login-form";
+import LoginForm from "@/components/forms/login-form";
 import Logo from "@/components/logo";
 import Separator from "@/components/seperator";
 import OauthSignIn from "@/components/oauth";

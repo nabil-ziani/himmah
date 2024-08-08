@@ -3,7 +3,7 @@ import Image from "next/image";
 import Logo from "@/components/logo";
 import Separator from "@/components/seperator";
 import OauthSignIn from "@/components/oauth";
-import RegisterForm from "@/components/register-form";
+import RegisterForm from "@/components/forms/register-form";
 
 const RegisterPage = () => {
     return (

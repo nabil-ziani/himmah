@@ -3,7 +3,7 @@ import Image from "next/image";
 import Logo from "@/components/logo";
 import Separator from "@/components/seperator";
 import OauthSignIn from "@/components/oauth";
-import ForgotPasswordForm from "@/components/forgot-password-form";
+import ForgotPasswordForm from "@/components/forms/forgot-password-form";
 
 const ResetPasswordPage = () => {
     return (

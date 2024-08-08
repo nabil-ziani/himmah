@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import Image from "next/image";
 import Logo from "@/components/logo";
-import UpdatePasswordForm from "@/components/update-password-form";
+import UpdatePasswordForm from "@/components/forms/update-password-form";
 
 export default async function UpdatePasswordPage() {
     const supabase = createClient();
