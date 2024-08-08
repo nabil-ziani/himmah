@@ -34,7 +34,7 @@ const RegisterForm = () => {
             email: '',
             password: '',
             sex: undefined,
-            birthDate: new Date(Date.now())
+            birthDate: undefined
         }
     })
 
@@ -103,7 +103,8 @@ const RegisterForm = () => {
                                     control={form.control}
                                     name="birthDate"
                                     label="Date of birth"
-                                    placeholder="mm-dd-YYYY"
+                                    placeholder="dd-MM-YYYY"
+                                    dateFormat="dd-MM-YYYY"
                                 />
 
                                 <CustomFormField

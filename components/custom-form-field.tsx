@@ -117,6 +117,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                 <div className="flex rounded-md border bg-white">
                     <FormControl>
                         <ReactDatePicker
+                            placeholderText={props.placeholder}
                             showTimeSelect={props.showTimeSelect ?? false}
                             selected={field.value}
                             onChange={(date: Date | null) => field.onChange(date)}
