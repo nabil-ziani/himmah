@@ -16,7 +16,6 @@ export default async function Index() {
   return (
     <div>
       <Navbar />
-
       <main className="w-full flex h-[50vh] justify-center items-center">
         <Hero />
       </main>
