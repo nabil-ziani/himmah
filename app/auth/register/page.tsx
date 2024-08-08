@@ -30,6 +30,7 @@ const RegisterPage = () => {
                 width={1000}
                 alt="flowers"
                 className="side-img w-[60%]"
+                priority={true}
             />
         </div>
     )

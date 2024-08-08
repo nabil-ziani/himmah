@@ -25,6 +25,7 @@ const ResetPasswordPage = () => {
                 width={1000}
                 alt="side image"
                 className="side-img w-[60%]"
+                priority={true}
             />
         </div>
     )
