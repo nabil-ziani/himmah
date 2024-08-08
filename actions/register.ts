@@ -18,7 +18,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     const { name, email, password, sex, birthDate } = validatedFields.data
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -35,5 +35,10 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         return { error: 'Could not authenticate user' }
     }
 
-    return { success: 'Check email to continue sign in process, you can close this tab.' }
+    // Check if email-address is already taken
+    if (data.user?.identities && data.user.identities.length > 0) {
+        return { success: 'Check email to continue sign in process, you can close this tab.' }
+    } else {
+        return { error: 'Email address is already taken' }
+    }
 };
