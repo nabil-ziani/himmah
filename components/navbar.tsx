@@ -10,9 +10,9 @@ import HamburgerIcon from '@/public/icons/hamburger'
 const Navbar = () => {
     return (
         <header className="bg-black sticky top-0 z-50 w-full shadow-sm backdrop-blur-lg backdrop-filter bg-opacity-40">
-            <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
+            <div className="mx-5 flex h-20 items-center justify-between px-4 md:px-6">
                 <Logo color='text-white' navbar={false} />
-                <nav className="w-[50%] hidden items-center justify-between md:flex text-white">
+                <nav className="hidden items-center justify-between md:flex md:gap-5 lg:gap-10 xl:gap-20 text-white">
                     <Link href="#about" className="font-light hover:underline hover:underline-offset-4" prefetch={false}>
                         About
                     </Link>
@@ -36,7 +36,7 @@ const Navbar = () => {
                     {/* <ModeToggle /> */}
                     <Sheet>
                         <SheetTrigger asChild>
-                            <Button variant="outline" size="icon" className="md:hidden">
+                            <Button variant="outline" size="icon" className="md:hidden text-white">
                                 <HamburgerIcon />
                                 <span className="sr-only">Toggle navigation menu</span>
                             </Button>
