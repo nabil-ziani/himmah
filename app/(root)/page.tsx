@@ -17,19 +17,17 @@ export default async function Index() {
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <Navbar />
 
-      <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
+      <main className="flex-1 flex flex-col gap-20 max-w-4xl px-3 h-full">
         <Hero />
-        <main className="flex-1 flex flex-col gap-6">
-          <h2 className="font-bold text-4xl mb-4">What is Himmah?</h2>
-          {/* {isSupabaseConnected ? <SignUpUserSteps /> : <ConnectSupabaseSteps />} */}
-        </main>
-      </div>
+        <section className="flex-1 flex flex-col gap-6">
 
-      <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs font-bold">
-        <p className="text-muted">
-          Ignite your <span className="text-[#FFAD94]">flame</span> and live with <span className="text-[#FFDD87]">zeal</span>
-        </p>
-      </footer>
+        </section>
+        <img
+          alt="hero image"
+          src="/himmah-home.jpg"
+          className="absolute inset-0 h-full w-full object-cover -z-10"
+        />
+      </main>
     </div>
   );
 }

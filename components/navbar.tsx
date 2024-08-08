@@ -9,10 +9,10 @@ import HamburgerIcon from '@/public/icons/hamburger'
 
 const Navbar = () => {
     return (
-        <header className="sticky top-0 z-50 w-full shadow-sm backdrop-blur-lg backdrop-filter bg-opacity-30">
+        <header className="bg-black sticky top-0 z-50 w-full shadow-sm backdrop-blur-lg backdrop-filter bg-opacity-40">
             <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-                <Logo />
-                <nav className="w-[50%] hidden items-center justify-between md:flex">
+                <Logo color='text-white' navbar={false} />
+                <nav className="w-[50%] hidden items-center justify-between md:flex text-white">
                     <Link href="#about" className="font-light hover:underline hover:underline-offset-4" prefetch={false}>
                         About
                     </Link>

@@ -4,9 +4,11 @@ import React from 'react'
 
 interface LogoProps {
     hideOnSmallDevice?: boolean
+    color?: string
+    navbar?: boolean
 }
 
-const Logo = ({ hideOnSmallDevice = true }: LogoProps) => {
+const Logo = ({ hideOnSmallDevice = true, color, navbar = false }: LogoProps) => {
     return (
         <div>
             <Link href='/' className='flex items-center gap-x-4'>
@@ -17,9 +19,17 @@ const Logo = ({ hideOnSmallDevice = true }: LogoProps) => {
                     alt="himmah"
                     className="h-12 w-fit"
                 />
-                <p className={`${hideOnSmallDevice && 'hidden'} sm:block font-bold text-4xl`}>
-                    Himmah
-                </p>
+                <div>
+                    <p className={`${hideOnSmallDevice && 'hidden'} sm:block font-bold text-4xl ${color}`}>
+                        Himmah
+                    </p>
+
+                    {navbar && (
+                        <p className="text-white text-xs">
+                            Ignite your <span className="text-[#FFAD94]">flame</span> and live with <span className="text-[#FFDD87]">zeal</span>
+                        </p>
+                    )}
+                </div>
             </Link>
         </div>
     )
