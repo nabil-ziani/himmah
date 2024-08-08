@@ -14,3 +14,7 @@ export const RegisterSchema = z.object({
     sex: z.optional(z.enum(SEX), { message: "Invalid value" }),
     birthDate: z.optional(z.date(), { message: "Invalid value" })
 })
+
+export const ResetSchema = z.object({
+    email: z.string().email({ message: "Email is required" }),
+})

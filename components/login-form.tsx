@@ -83,7 +83,7 @@ const LoginForm = () => {
                                     }
                                 />
                                 <p>
-                                    <Link href="/signin/forgot_password" className="font-light text-sm hover:underline">
+                                    <Link href="/auth/password/reset" className="font-light text-sm hover:underline">
                                         Forgot your password?
                                     </Link>
                                 </p>

@@ -1,7 +1,8 @@
 import AuthButton from "@/components/auth-button";
-import { createClient } from "@/utils/supabase/server";
 import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Hero from "@/components/hero";
+
+import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 export default async function DashboardPage() {
