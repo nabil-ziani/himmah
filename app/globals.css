@@ -99,6 +99,13 @@
 
 @layer utilities {
     /* ===== UTILITIES */
+    .bg-custom-gradient {
+        background: linear-gradient(120deg, #f86d6d, #f6ce69);
+    }
+    .hover\:bg-custom-gradient-hover:hover {
+        background: linear-gradient(120deg, #e05b5b, #d4b25a);
+    }
+
     .sidebar {
         @apply remove-scrollbar w-full max-w-72 flex-col overflow-auto bg-black-800 px-7 py-10;
     }

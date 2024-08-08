@@ -23,6 +23,13 @@ const config = {
       // fontFamily: {
       //   sans: ["var(--font-poppins)", ...fontFamily.sans],
       // },
+      backgroundSize: {
+        'size-200': '200% 200%',
+      },
+      backgroundPosition: {
+        'pos-0': '0% 0%',
+        'pos-100': '100% 100%',
+      },
       colors: {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

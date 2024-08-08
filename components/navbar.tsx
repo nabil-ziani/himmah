@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from './logo'
-import AuthButton from './AuthButton'
+import AuthButton from './auth-button'
 import { ModeToggle } from './theme-toggle'
 import { Button } from './ui/button'
 import Link from 'next/link'
