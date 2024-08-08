@@ -16,7 +16,7 @@ export default async function AuthButton() {
     </div>
   ) : (
     <Button variant={'gradient'} size={'lg'}>
-      <Link href="/auth/login">
+      <Link className="text-lg" href="/auth/login">
         Sign In
       </Link>
     </Button>
