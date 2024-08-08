@@ -10,7 +10,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     const validatedFields = RegisterSchema.safeParse(values)
 
     if (!validatedFields.success) {
-        return { error: 'Invalid fields!' }
+        return { error: validatedFields.error.message }
     }
 
     const origin = headers().get("origin");
@@ -32,7 +32,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     });
 
     if (error) {
-        return { error: 'Could not authenticate user' }
+        return { error: error.message }
     }
 
     // Check if email-address is already taken

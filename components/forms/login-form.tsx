@@ -13,7 +13,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
 import { useRouter } from 'next/navigation'
-import { SubmitButton } from "./submit-button";
+import { SubmitButton } from "../submit-button";
 
 const LoginForm = () => {
     const [error, setError] = useState<string | undefined>('')

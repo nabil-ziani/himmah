@@ -11,7 +11,7 @@ import CustomFormField, { FormFieldType } from "@/components/custom-form-field";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useRouter } from 'next/navigation'
-import { SubmitButton } from "./submit-button";
+import { SubmitButton } from "../submit-button";
 import { reset } from "@/actions/reset-password";
 
 const ForgotPasswordForm = () => {

@@ -9,7 +9,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     const validatedFields = LoginSchema.safeParse(values)
 
     if (!validatedFields.success) {
-        return { error: 'Invalid fields!' }
+        return { error: validatedFields.error.message }
     }
 
     const { email, password } = validatedFields.data
@@ -24,5 +24,5 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         return { error: error.message }
     }
 
-    return { success: 'You will be redirected shortly!' }
+    return { success: '' }
 };

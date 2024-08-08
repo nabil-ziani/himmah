@@ -10,7 +10,7 @@ import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "@/components/custom-form-field";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { SubmitButton } from "./submit-button";
+import { SubmitButton } from "../submit-button";
 import { VscEye, VscEyeClosed } from 'react-icons/vsc';
 import { updatePassword } from "@/actions/update-password";
 import { useRouter } from "next/navigation";

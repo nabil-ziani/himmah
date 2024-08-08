@@ -13,12 +13,12 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
 import { useRouter } from 'next/navigation'
-import { SubmitButton } from "./submit-button";
-import Separator from "./seperator";
-import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { SubmitButton } from "../submit-button";
+import Separator from "../seperator";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { SexOptions } from "@/constants";
-import { Label } from "./ui/label";
-import { SelectItem } from "./ui/select";
+import { Label } from "../ui/label";
+import { SelectItem } from "../ui/select";
 import { register } from "@/actions/register";
 
 const RegisterForm = () => {

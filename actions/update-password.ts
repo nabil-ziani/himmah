@@ -12,7 +12,7 @@ export const updatePassword = async (values: z.infer<typeof UpdatePasswordSchema
         return { error: validatedFields.error.message }
     }
 
-    const { password, passwordConfirm } = validatedFields.data
+    const { password } = validatedFields.data
 
     const supabase = createClient();
     const { error } = await supabase.auth.updateUser({
