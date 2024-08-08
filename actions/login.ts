@@ -24,5 +24,5 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         return { error: error.message }
     }
 
-    return { success: '' }
+    return { success: 'You will be redirected shortly!' }
 };

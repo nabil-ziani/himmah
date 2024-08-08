@@ -4,20 +4,15 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { LoginSchema, RegisterSchema } from "@/schemas";
+import { RegisterSchema } from "@/schemas";
 import Link from "next/link";
 
-import { Form, FormControl } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "@/components/custom-form-field";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { login } from "@/actions/login";
-import { useRouter } from 'next/navigation'
 import { SubmitButton } from "../submit-button";
-import Separator from "../seperator";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { SexOptions } from "@/constants";
-import { Label } from "../ui/label";
 import { SelectItem } from "../ui/select";
 import { register } from "@/actions/register";
 
@@ -127,7 +122,7 @@ const RegisterForm = () => {
 
                         <FormError message={error} />
                         <FormSuccess message={success} />
-                        <SubmitButton pendingText="Creating Account...">
+                        <SubmitButton pendingText="Creating Account..." isPending={isPending}>
                             Create Account
                         </SubmitButton>
                     </div>

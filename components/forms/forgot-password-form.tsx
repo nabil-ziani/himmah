@@ -10,7 +10,6 @@ import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "@/components/custom-form-field";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { useRouter } from 'next/navigation'
 import { SubmitButton } from "../submit-button";
 import { reset } from "@/actions/reset-password";
 
@@ -20,7 +19,6 @@ const ForgotPasswordForm = () => {
 
     const [isPending, startTransition] = useTransition()
 
-    const router = useRouter()
     const form = useForm<z.infer<typeof ResetPasswordSchema>>({
         resolver: zodResolver(ResetPasswordSchema),
         defaultValues: {
@@ -62,7 +60,7 @@ const ForgotPasswordForm = () => {
 
                         <FormError message={error} />
                         <FormSuccess message={success} />
-                        <SubmitButton pendingText="Sending email...">
+                        <SubmitButton pendingText="Sending email..." isPending={isPending}>
                             Send reset email
                         </SubmitButton>
                     </div>

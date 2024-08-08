@@ -109,7 +109,7 @@ const UpdatePasswordForm = () => {
 
                         <FormError message={error} />
                         <FormSuccess message={success} />
-                        <SubmitButton pendingText="Sending email...">
+                        <SubmitButton pendingText="Sending email..." isPending={isPending}>
                             Update Password
                         </SubmitButton>
                     </div>

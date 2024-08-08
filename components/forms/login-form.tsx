@@ -92,7 +92,7 @@ const LoginForm = () => {
 
                         <FormError message={error} />
                         <FormSuccess message={success} />
-                        <SubmitButton pendingText="Signing In...">
+                        <SubmitButton pendingText="Signing In..." isPending={isPending}>
                             Sign In
                         </SubmitButton>
                     </div>
