@@ -25,7 +25,7 @@ export default function Login() {
             </section>
 
             <Image
-                src="/himmah-login.jpg"
+                src="/himmah-forest2.jpg"
                 height={1000}
                 width={1000}
                 alt="flowers"

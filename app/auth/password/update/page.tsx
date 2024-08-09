@@ -23,7 +23,7 @@ export default async function UpdatePasswordPage() {
             </section>
 
             <Image
-                src="/himmah-banner.jpg"
+                src="/himmah-train.jpg"
                 height={1000}
                 width={1000}
                 alt="side image"

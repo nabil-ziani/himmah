@@ -1,4 +1,3 @@
-import React from 'react'
 import Logo from './logo'
 import AuthButton from './auth-button'
 import { ModeToggle } from './theme-toggle'
@@ -7,6 +6,7 @@ import Link from 'next/link'
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import HamburgerIcon from '@/public/icons/hamburger'
 
+// TODO: check if user is authenticated, if so then hide nav
 const Navbar = () => {
     return (
         <header className="bg-black sticky top-0 z-50 w-full shadow-sm backdrop-blur-lg backdrop-filter bg-opacity-40">

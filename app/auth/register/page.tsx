@@ -25,7 +25,7 @@ const RegisterPage = () => {
             </section>
 
             <Image
-                src="/himmah-register.jpg"
+                src="/himmah-login.jpg"
                 height={1000}
                 width={1000}
                 alt="flowers"
