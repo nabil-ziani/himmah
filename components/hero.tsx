@@ -6,10 +6,10 @@ import { TypeAnimation } from 'react-type-animation';
 
 export default function Hero() {
   return (
-    <div className="flex max-w-[90vw] flex-col items-center justify-center mt-[100px]">
+    <div className="flex max-w-[90vw] flex-col items-center justify-center">
       <img
         alt="hero image"
-        src="/himmah-home.jpg"
+        src="/himmah-banner.jpg"
         className="bg-blend-multiply absolute inset-0 h-full w-full object-cover -z-10"
       />
 
@@ -41,7 +41,7 @@ export default function Hero() {
             className="text-2xl font-semibold bg-clip-text text-transparent"
             href="#about"
             style={{
-              backgroundImage: "url('/himmah-home.jpg')",
+              backgroundImage: "url('/himmah-banner.jpg')",
               backgroundSize: "cover",
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
