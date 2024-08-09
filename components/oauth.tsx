@@ -33,6 +33,7 @@ export default function OauthSignIn() {
         <div className="flex flex-row justify-evenly">
             {oAuthProviders.map((provider) => (
                 <button
+                    key={provider.name}
                     onClick={() => onClick(provider.name)}
                     className="aspect-square w-10 h-10 rounded-full bg-white flex items-center justify-center transition-colors duration-300 dark:bg-zinc-100 dark:hover:bg-zinc-600"
                 >

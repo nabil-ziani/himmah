@@ -114,19 +114,41 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
             );
         case FormFieldType.DATE_PICKER:
             return (
-                <div className="flex rounded-md border bg-white">
-                    <FormControl>
-                        <ReactDatePicker
-                            placeholderText={props.placeholder}
-                            showTimeSelect={props.showTimeSelect ?? false}
-                            selected={field.value}
-                            onChange={(date: Date | null) => field.onChange(date)}
-                            timeInputLabel="Time:"
-                            dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
-                            wrapperClassName="date-picker"
-                        />
-                    </FormControl>
-                </div>
+                <>
+                    <div className="grid gap-1.5">
+                        <div className="relative">
+                            <FormControl>
+                                <Input
+                                    className="shad-input border-0"
+                                    placeholder={props.placeholder}
+                                    type="date"
+                                    onChange={(e) => {
+                                        const value = e.target.value
+                                        const formattedValue = new Date(value).toLocaleDateString("en-US", {
+                                            month: "2-digit",
+                                            day: "2-digit",
+                                            year: "numeric",
+                                        })
+                                        field.onChange(new Date(formattedValue))
+                                    }}
+                                />
+                            </FormControl>
+                        </div>
+                    </div>
+                    {/* <div className="flex rounded-md border bg-white">
+                        <FormControl>
+                            <ReactDatePicker
+                                placeholderText={props.placeholder}
+                                showTimeSelect={props.showTimeSelect ?? false}
+                                selected={field.value}
+                                onChange={(date: Date | null) => field.onChange(date)}
+                                timeInputLabel="Time:"
+                                dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
+                                wrapperClassName="date-picker"
+                            />
+                        </FormControl>
+                    </div> */}
+                </>
             );
         case FormFieldType.SELECT:
             return (
