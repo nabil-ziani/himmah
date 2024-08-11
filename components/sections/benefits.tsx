@@ -3,12 +3,12 @@ import React from 'react'
 const Benefits = () => {
     return (
         <>
-            <section id='about' className="flex max-w-[90vw] flex-col items-center justify-center">
-                <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-bold text-center bg-clip-text mt-4">
+            <section id='benefits' className="flex w-full h-[100vh] flex-col items-center justify-center">
+                <h2 className="text-6xl font-bold text-center mb-20 text-[#303030]">
                     Benefits
                 </h2>
-                <div className='mx-auto max-w-3xl border-l-4 border-primary pl-8'>
-                    <p>
+                <div className='mx-auto max-w-3xl border-l-4 border-[#303030] pl-8'>
+                    <p className='text-lg'>
                         The benefits of using our platform
                     </p>
                 </div>

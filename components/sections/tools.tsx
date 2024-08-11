@@ -3,7 +3,7 @@ import React from 'react'
 const Tools = () => {
     return (
         <>
-            <section id='tools' className="flex w-full h-[80vh] flex-col items-center justify-center">
+            <section id='tools' className="flex w-full h-[100vh] flex-col items-center justify-center">
                 <h2 className="text-6xl font-bold text-center mb-20 text-[#303030]">
                     Tools 🛠️
                 </h2>

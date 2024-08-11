@@ -10,7 +10,7 @@ export default function Hero() {
       <img
         alt="hero image"
         src="/himmah-banner.jpg"
-        className="bg-blend-multiply absolute inset-0 h-full w-full object-cover -z-10"
+        className="absolute inset-0 h-full w-full object-cover -z-10"
       />
 
       <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-bold text-center bg-clip-text text-transparent bg-white mt-4">
@@ -36,17 +36,10 @@ export default function Hero() {
       </h1>
 
       <div className="flex gap-10">
-        <Button variant={'secondary'} size={'lg'} className="mt-20 p-7 text-white/30">
+        <Button variant={'secondary'} size={'lg'} className="mt-20 p-7 text-[#303030]">
           <Link
-            className="text-2xl font-semibold bg-clip-text text-transparent"
+            className="text-2xl font-semibold"
             href="#about"
-            style={{
-              backgroundImage: "url('/himmah-banner.jpg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              backgroundAttachment: "fixed"
-            }}
           >
             Learn More
           </Link>

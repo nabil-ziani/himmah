@@ -3,7 +3,7 @@ import React from 'react'
 const About = () => {
     return (
         <>
-            <section id='about' className="flex w-full h-[80vh] flex-col items-center justify-center">
+            <section id='about' className="flex w-full h-[100vh] flex-col items-center justify-center">
                 <h2 className="text-6xl font-bold text-center mb-20 text-[#303030]">
                     Himmah ✨
                 </h2>
