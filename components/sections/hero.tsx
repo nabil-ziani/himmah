@@ -9,7 +9,7 @@ export default function Hero() {
     <section id='hero-section' className="flex w-full h-[100vh] flex-col items-center mt-20">
       <img
         alt="hero image"
-        src="/himmah-banner.jpg"
+        src="/molten-metal-drop.jpg"
         className="absolute inset-0 h-full w-full object-cover -z-10"
       />
 
