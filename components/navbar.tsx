@@ -9,7 +9,7 @@ import HamburgerIcon from '@/public/icons/hamburger'
 // TODO: check if user is authenticated, if so then hide nav
 const Navbar = () => {
     return (
-        <header className="bg-black sticky top-0 z-50 w-full shadow-sm backdrop-blur-lg backdrop-filter bg-opacity-40">
+        <header className="bg-black sticky top-0 z-50 w-full shadow-sm backdrop-blur-lg backdrop-filter bg-opacity-60">
             <div className="mx-5 flex h-20 items-center justify-between px-4 md:px-6">
                 <Logo color='text-white' navbar={false} />
                 <nav className="hidden md:flex md:gap-5 lg:gap-10 xl:gap-20 text-white">
