@@ -2,7 +2,9 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 import Navbar from "@/components/navbar";
-import Hero from "@/components/hero";
+import Hero from "@/components/sections/hero";
+import About from "@/components/sections/about";
+import Tools from "@/components/sections/tools";
 
 export default async function Index() {
   const supabase = createClient();
@@ -16,8 +18,10 @@ export default async function Index() {
   return (
     <div>
       <Navbar />
-      <main className="w-full h-[100vh] flex justify-center items-start mt-10">
+      <main>
         <Hero />
+        <About />
+        <Tools />
       </main>
     </div>
   );

@@ -1,12 +1,12 @@
 'use client'
 
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { TypeAnimation } from 'react-type-animation';
 
 export default function Hero() {
   return (
-    <div className="flex max-w-[90vw] flex-col items-center justify-center">
+    <section id='hero-section' className="flex w-full h-[100vh] flex-col items-center mt-20">
       <img
         alt="hero image"
         src="/himmah-banner.jpg"
@@ -57,6 +57,6 @@ export default function Hero() {
           </Link>
         </Button>
       </div>
-    </div>
+    </section>
   );
 }
