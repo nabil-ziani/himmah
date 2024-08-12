@@ -19,7 +19,7 @@ export const updatePassword = async (values: z.infer<typeof UpdatePasswordSchema
         password
     });
 
-    if (error) {
+    if (error && error?.code !== 'same_password') {
         return { error: error.message }
     }
 
