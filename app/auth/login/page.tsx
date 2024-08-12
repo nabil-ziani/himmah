@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import LoginForm from "@/components/forms/login-form";
 import Logo from "@/components/logo";
 import Separator from "@/components/seperator";
@@ -24,13 +22,10 @@ export default function Login() {
                 </div>
             </section>
 
-            <Image
-                src="/thick-lush-green-forest.jpg"
-                height={1000}
-                width={1000}
-                alt="flowers"
-                className="side-img w-[60%]"
-                priority={true}
+            <img
+                src='/public/thick-lush-green-forest.jpg'
+                alt="Thick lush green forest"
+                className="side-img object-cover w-[60%]"
             />
         </div>
     )

@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import Logo from "@/components/logo";
 import Separator from "@/components/seperator";
 import OauthSignIn from "@/components/oauth";
@@ -19,13 +17,10 @@ const ResetPasswordPage = () => {
                 </div>
             </section>
 
-            <Image
-                src="/empty-rail-track-surrounded-by-trees.jpg"
-                height={1000}
-                width={1000}
-                alt="side image"
-                className="side-img w-[60%]"
-                priority={true}
+            <img
+                alt="Train rail surrounded by trees"
+                src='/empty-rail-track-surrounded-by-trees.jpg'
+                className="side-img object-cover w-[60%]"
             />
         </div>
     )

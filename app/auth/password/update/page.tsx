@@ -1,7 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-import Image from "next/image";
 import Logo from "@/components/logo";
 import UpdatePasswordForm from "@/components/forms/update-password-form";
 
@@ -22,13 +21,10 @@ export default async function UpdatePasswordPage() {
                 </div>
             </section>
 
-            <Image
-                src="/empty-rail-track-surrounded-by-trees.jpg"
-                height={1000}
-                width={1000}
-                alt="side image"
-                className="side-img w-[60%]"
-                priority={true}
+            <img
+                alt="Train rail surrounded by trees"
+                src='/empty-rail-track-surrounded-by-trees.jpg'
+                className="side-img object-cover w-[60%]"
             />
         </div>
     )

@@ -8,7 +8,7 @@ export default function Hero() {
   return (
     <section id='hero-section' className="flex w-full h-[100vh] flex-col items-center mt-20">
       <img
-        alt="hero image"
+        alt="Molten metal drop"
         src="/molten-metal-drop.jpg"
         className="absolute inset-0 h-full w-full object-cover -z-10"
       />

@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import Logo from "@/components/logo";
 import Separator from "@/components/seperator";
 import OauthSignIn from "@/components/oauth";
@@ -24,13 +22,10 @@ const RegisterPage = () => {
                 </div>
             </section>
 
-            <Image
-                src="/tall-trees-taller-cliff.jpg"
-                height={1000}
-                width={1000}
-                alt="flowers"
-                className="side-img w-[60%]"
-                priority={true}
+            <img
+                src='/public/tall-trees-taller-cliff.jpg'
+                alt="Tall trees and cliff"
+                className="side-img object-cover w-[60%]"
             />
         </div>
     )
