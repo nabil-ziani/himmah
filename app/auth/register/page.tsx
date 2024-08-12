@@ -23,7 +23,7 @@ const RegisterPage = () => {
             </section>
 
             <img
-                src='/public/tall-trees-taller-cliff.jpg'
+                src='/tall-trees-taller-cliff.jpg'
                 alt="Tall trees and cliff"
                 className="side-img object-cover w-[60%]"
             />

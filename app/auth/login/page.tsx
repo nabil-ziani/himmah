@@ -23,7 +23,7 @@ export default function Login() {
             </section>
 
             <img
-                src='/public/thick-lush-green-forest.jpg'
+                src='/thick-lush-green-forest.jpg'
                 alt="Thick lush green forest"
                 className="side-img object-cover w-[60%]"
             />
