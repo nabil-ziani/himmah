@@ -26,11 +26,11 @@ export const focusFeatures = [
         description: 'Set precise focus sessions with our timers, driving your productivity and keeping you motivated every step of the way.',
         image: PlaceholderPic
     },
-    {
-        title: 'Stopwatch ⏱️',
-        description: 'Track your focus time with our stopwatch, pushing your limits and fueling your motivation as you see your progress in real-time.',
-        image: PlaceholderPic
-    },
+    // {
+    //     title: 'Stopwatch ⏱️',
+    //     description: 'Track your focus time with our stopwatch, pushing your limits and fueling your motivation as you see your progress in real-time.',
+    //     image: PlaceholderPic
+    // },
     {
         title: 'Backgrounds 🌅',
         description: 'Transform your workspace with immersive backgrounds that eliminate distractions and help you dive into the ultimate focus zone.',
@@ -46,9 +46,14 @@ export const focusFeatures = [
         description: 'Enhance your focus or relaxation with calming white noise, featuring natural sounds that create the perfect auditory backdrop.',
         image: PlaceholderPic
     },
+    // {
+    //     title: 'Analytics 📊',
+    //     description: 'Unlock deeper insights into your productivity with our analytics, empowering you to refine your focus and achieve even more.',
+    //     image: PlaceholderPic
+    // },
     {
-        title: 'Analytics 📊',
-        description: 'Unlock deeper insights into your productivity with our analytics, empowering you to refine your focus and achieve even more.',
+        title: 'Other Features',
+        description: '',
         image: PlaceholderPic
     },
 ]

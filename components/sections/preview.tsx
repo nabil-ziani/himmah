@@ -7,7 +7,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
 import { focusFeatures } from "@/constants"
 import { motion } from 'framer-motion'
-import backgroundImage from '/public/tools.jpg'
+import backgroundImage from '/public/flame.png'
 
 const Preview = () => {
     let [tabOrientation, setTabOrientation] = useState<'horizontal' | 'vertical'>(
@@ -68,7 +68,7 @@ const Preview = () => {
                         </motion.div>
                     </div>
                     <TabGroup
-                        className="mt-5 grid grid-cols-1 items-center gap-y-2 sm:gap-y-6 md:mt-10 lg:grid-cols-12 lg:pt-0"
+                        className="mt-10 grid grid-cols-1 items-center gap-y-2 sm:gap-y-6 md:mt-20 lg:grid-cols-12 lg:pt-0"
                         vertical={tabOrientation === 'vertical'}
                     >
                         {({ selectedIndex }) => (
@@ -121,13 +121,12 @@ const Preview = () => {
                                                     {feature.description}
                                                 </p>
                                             </div>
-                                            <div className="mt-10 w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
+                                            <div className="w-full mt-10 overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0">
                                                 <Image
-                                                    className="w-full"
                                                     src={feature.image}
                                                     alt=""
                                                     priority
-                                                    sizes="(min-width: 1024px) 67.8125rem, (min-width: 640px) 100vw, 45rem"
+                                                    sizes="(min-width: 1024px) 50rem, (min-width: 640px) 100vw, 45rem"
                                                 />
                                             </div>
                                         </TabPanel>
