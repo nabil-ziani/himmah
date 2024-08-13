@@ -7,7 +7,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
 import { focusFeatures } from "@/constants"
 import { motion } from 'framer-motion'
-import backgroundImage from '/public/flame.png'
+import backgroundImage from '/public/flamewave.png'
 
 const Preview = () => {
     let [tabOrientation, setTabOrientation] = useState<'horizontal' | 'vertical'>(
@@ -121,7 +121,7 @@ const Preview = () => {
                                                     {feature.description}
                                                 </p>
                                             </div>
-                                            <div className="w-full mt-10 overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0">
+                                            <div className="w-full mt-10 overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-gray-900/20 sm:w-auto lg:mt-0">
                                                 <Image
                                                     src={feature.image}
                                                     alt=""
