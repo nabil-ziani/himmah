@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning >
+    <html lang="en" suppressHydrationWarning className="!scroll-smooth">
       <body className={`${poppins.className} antialiased`}>
         <ThemeProvider attribute="class" forcedTheme="light" enableSystem={false}>
           {children}

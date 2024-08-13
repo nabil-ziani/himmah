@@ -8,6 +8,7 @@ import Tools from "@/components/sections/tools";
 import Preview from "@/components/sections/preview";
 import Benefits from "@/components/sections/benefits";
 import Goals from "@/components/sections/goals";
+import SmoothScrolling from "@/components/smooth-scroll";
 
 export default async function Index() {
   const supabase = createClient();
@@ -21,14 +22,14 @@ export default async function Index() {
   return (
     <div>
       <Navbar />
-      <main>
+      <SmoothScrolling>
         <Hero />
         <About />
         <Tools />
         <Preview />
         <Benefits />
         <Goals />
-      </main>
+      </SmoothScrolling>
     </div>
   );
 }

@@ -3,14 +3,20 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { TypeAnimation } from 'react-type-animation';
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 export default function Hero() {
+  const { scrollY, scrollYProgress } = useScroll()
+
+  const opacity = useTransform(scrollY, [500, 1000], [1, 0])
+
   return (
     <section id='hero-section' className="flex w-full h-[100vh] flex-col items-center mt-20">
-      <img
+      <motion.img
         alt="Molten metal drop"
         src="/molten-metal-drop.jpg"
         className="absolute inset-0 h-full w-full object-cover -z-10"
+        style={{ opacity }}
       />
 
       <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-bold text-center bg-clip-text text-transparent bg-white mt-4">
