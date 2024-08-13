@@ -25,7 +25,7 @@ export default async function Index() {
       <SmoothScrolling>
         <Hero />
         <About />
-        <Tools />
+        {/* <Tools /> */}
         <Preview />
         <Benefits />
         <Goals />

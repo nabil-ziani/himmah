@@ -1,197 +1,143 @@
 'use client'
 
-import { useState } from "react"
-
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel"
-import { Button } from "../ui/button"
-import { ChartNoAxesCombined, ChevronLeftIcon, ChevronRightIcon, Hourglass, MessageCircleHeart, MountainSnow, Waves } from "lucide-react"
-import { StopwatchIcon } from "@radix-ui/react-icons"
-
+import { useEffect, useState } from "react"
+import Image from "next/image"
+import { Container } from "../container"
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
+import clsx from 'clsx'
+import { focusFeatures } from "@/constants"
 import { motion } from 'framer-motion'
+import backgroundImage from '/public/tools.jpg'
 
 const Preview = () => {
-    const [activeIndex, setActiveIndex] = useState(0)
+    let [tabOrientation, setTabOrientation] = useState<'horizontal' | 'vertical'>(
+        'horizontal',
+    )
 
-    const handleButtonClick = (index: number) => {
-        setActiveIndex(index)
-    }
+    useEffect(() => {
+        let lgMediaQuery = window.matchMedia('(min-width: 1024px)')
+
+        function onMediaQueryChange({ matches }: { matches: boolean }) {
+            setTabOrientation(matches ? 'vertical' : 'horizontal')
+        }
+
+        onMediaQueryChange(lgMediaQuery)
+        lgMediaQuery.addEventListener('change', onMediaQueryChange)
+
+        return () => {
+            lgMediaQuery.removeEventListener('change', onMediaQueryChange)
+        }
+    }, [])
 
     return (
         <>
-            <section id='preview' className="flex w-full h-[100vh] flex-col items-center justify-center">
-                <motion.h2
-                    initial={{ y: 48, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ ease: 'easeInOut', duration: 0.75 }}
-                    className="text-6xl font-bold text-center mb-10 text-[#303030]">
-                    Focus 🎯
-                </motion.h2>
-                <div className="w-full max-w-6xl mx-auto py-12 md:py-16 lg:py-24">
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
-                        <div className="md:col-span-5 lg:col-span-4 flex flex-col gap-6">
-                            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Features</h2>
-                            <div className="flex flex-col gap-4">
-                                <Button variant="outline" className="justify-start gap-3" onClick={() => handleButtonClick(0)}>
-                                    <Hourglass className="w-5 h-5" />
-                                    <span>Timers</span>
-                                </Button>
-                                <Button variant="outline" className="justify-start gap-3" onClick={() => handleButtonClick(1)}>
-                                    <StopwatchIcon className="w-5 h-5" />
-                                    <span>Stopwatch</span>
-                                </Button>
-                                <Button variant="outline" className="justify-start gap-3" onClick={() => handleButtonClick(2)}>
-                                    <MountainSnow className="w-5 h-5" />
-                                    <span>Backgrounds</span>
-                                </Button>
-                                <Button variant="outline" className="justify-start gap-3" onClick={() => handleButtonClick(3)}>
-                                    <MessageCircleHeart className="w-5 h-5" />
-                                    <span>Affirmations</span>
-                                </Button>
-                                <Button variant="outline" className="justify-start gap-3" onClick={() => handleButtonClick(4)}>
-                                    <Waves className="w-5 h-5" />
-                                    <span>White Noise</span>
-                                </Button>
-                                <Button variant="outline" className="justify-start gap-3" onClick={() => handleButtonClick(5)}>
-                                    <ChartNoAxesCombined className="w-5 h-5" />
-                                    <span>Analytics</span>
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="md:col-span-7 lg:col-span-8">
-                            <Carousel className="w-full h-[400px] md:h-[500px] lg:h-[600px]">
-                                <CarouselContent>
-                                    <CarouselItem>
-                                        <div className="flex flex-col gap-4 h-full">
-                                            <img
-                                                src="/placeholder.png"
-                                                alt="Feature 1"
-                                                width={800}
-                                                height={500}
-                                                className="w-full h-full object-cover rounded-lg"
-                                                style={{ aspectRatio: "800/500", objectFit: "cover" }}
-                                            />
-                                            <div className="flex flex-col gap-2">
-                                                <h3 className="text-2xl md:text-3xl font-bold">Timers</h3>
-                                                <p className="text-muted-foreground text-lg md:text-xl">
-                                                    Set precise focus sessions with our timers, driving your productivity and keeping you motivated every step of the way.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CarouselItem>
-                                    <CarouselItem>
-                                        <div className="flex flex-col gap-4 h-full">
-                                            <img
-                                                src="/placeholder.png"
-                                                alt="Feature 2"
-                                                width={800}
-                                                height={500}
-                                                className="w-full h-full object-cover rounded-lg"
-                                                style={{ aspectRatio: "800/500", objectFit: "cover" }}
-                                            />
-                                            <div className="flex flex-col gap-2">
-                                                <h3 className="text-2xl md:text-3xl font-bold">Stopwatch</h3>
-                                                <p className="text-muted-foreground text-lg md:text-xl">
-                                                    Track your focus time with our stopwatch, pushing your limits and fueling your motivation as you see your progress in real-time.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CarouselItem>
-                                    <CarouselItem>
-                                        <div className="flex flex-col gap-4 h-full">
-                                            <img
-                                                src="/placeholder.png"
-                                                alt="Feature 3"
-                                                width={800}
-                                                height={500}
-                                                className="w-full h-full object-cover rounded-lg"
-                                                style={{ aspectRatio: "800/500", objectFit: "cover" }}
-                                            />
-                                            <div className="flex flex-col gap-2">
-                                                <h3 className="text-2xl md:text-3xl font-bold">Backgrounds</h3>
-                                                <p className="text-muted-foreground text-lg md:text-xl">
-                                                    Transform your workspace with immersive backgrounds that eliminate distractions and help you dive into the ultimate focus zone.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CarouselItem>
-                                    <CarouselItem>
-                                        <div className="flex flex-col gap-4 h-full">
-                                            <img
-                                                src="/placeholder.png"
-                                                alt="Feature 4"
-                                                width={800}
-                                                height={500}
-                                                className="w-full h-full object-cover rounded-lg"
-                                                style={{ aspectRatio: "800/500", objectFit: "cover" }}
-                                            />
-                                            <div className="flex flex-col gap-2">
-                                                <h3 className="text-2xl md:text-3xl font-bold">Affirmations</h3>
-                                                <p className="text-muted-foreground text-lg md:text-xl">
-                                                    Boost your mindset with powerful affirmations that reinforce key truths, reshape your thinking, and keep you motivated to stay on track.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CarouselItem>
-                                    <CarouselItem>
-                                        <div className="flex flex-col gap-4 h-full">
-                                            <img
-                                                src="/placeholder.png"
-                                                alt="Feature 3"
-                                                width={800}
-                                                height={500}
-                                                className="w-full h-full object-cover rounded-lg"
-                                                style={{ aspectRatio: "800/500", objectFit: "cover" }}
-                                            />
-                                            <div className="flex flex-col gap-2">
-                                                <h3 className="text-2xl md:text-3xl font-bold">White Noise</h3>
-                                                <p className="text-muted-foreground text-lg md:text-xl">
-                                                    Enhance your focus or relaxation with calming white noise, featuring natural sounds that create the perfect auditory backdrop.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CarouselItem>
-                                    <CarouselItem>
-                                        <div className="flex flex-col gap-4 h-full">
-                                            <img
-                                                src="/placeholder.png"
-                                                alt="Feature 3"
-                                                width={800}
-                                                height={500}
-                                                className="w-full h-full object-cover rounded-lg"
-                                                style={{ aspectRatio: "800/500", objectFit: "cover" }}
-                                            />
-                                            <div className="flex flex-col gap-2">
-                                                <h3 className="text-2xl md:text-3xl font-bold">Analytics</h3>
-                                                <p className="text-muted-foreground text-lg md:text-xl">
-                                                    Unlock deeper insights into your productivity with our analytics, empowering you to refine your focus and achieve even more.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </CarouselItem>
-                                </CarouselContent>
-                                <CarouselPrevious className="absolute top-1/2 left-4 -translate-y-1/2 z-10">
-                                    <Button variant="ghost" size="icon" onClick={() => handleButtonClick(activeIndex - 1)}>
-                                        <ChevronLeftIcon className="w-6 h-6" />
-                                        <span className="sr-only">Previous</span>
-                                    </Button>
-                                </CarouselPrevious>
-                                <CarouselNext className="absolute top-1/2 right-4 -translate-y-1/2 z-10">
-                                    <Button variant="ghost" size="icon" onClick={() => handleButtonClick(activeIndex + 1)}>
-                                        <ChevronRightIcon className="w-6 h-6" />
-                                        <span className="sr-only">Next</span>
-                                    </Button>
-                                </CarouselNext>
-                            </Carousel>
-                        </div>
+            <motion.section
+                id='preview'
+                initial={{ y: 48, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                transition={{ ease: 'easeInOut', duration: 0.75 }}
+                className="flex relative w-full h-[100vh] flex-col items-center justify-center" aria-label="Features for increasing your focus">
+                <Image
+                    className="absolute "
+                    src={backgroundImage}
+                    alt=""
+                    width={2245}
+                    height={1636}
+                    unoptimized
+                />
+                <Container className="relative">
+                    <div>
+                        <motion.h2
+                            initial={{ y: 48, opacity: 0 }}
+                            whileInView={{ y: 0, opacity: 1 }}
+                            transition={{ ease: 'easeInOut', duration: 0.75 }}
+                            // viewport={{ once: true }} 
+                            className="text-6xl font-bold text-center mb-10 text-white">
+                            Tools 🛠️
+                        </motion.h2>
+                        <motion.div
+                            initial={{ y: 48, opacity: 0 }}
+                            whileInView={{ y: 0, opacity: 1 }}
+                            transition={{ ease: 'easeInOut', duration: 0.75 }}
+                            // viewport={{ once: true }}
+                            className='mx-auto max-w-3xl border-l-4 border-white pl-8'>
+                            <p className='text-lg text-white'>
+                                There are many different tools that we aim to provide on our platform.
+                                For the time being however, we only provide tools to increase focus.
+                            </p>
+                        </motion.div>
                     </div>
-                </div>
-            </section>
+                    <TabGroup
+                        className="mt-5 grid grid-cols-1 items-center gap-y-2 sm:gap-y-6 md:mt-10 lg:grid-cols-12 lg:pt-0"
+                        vertical={tabOrientation === 'vertical'}
+                    >
+                        {({ selectedIndex }) => (
+                            <>
+                                <div className="flex pb-4 sm:mx-0 sm:overflow-visible sm:pb-0 lg:col-span-5">
+                                    <TabList className="relative z-10 flex gap-x-4 whitespace-nowrap px-4 sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:gap-x-0 lg:gap-y-1 lg:whitespace-normal">
+                                        {focusFeatures.map((feature, featureIndex) => (
+                                            <div
+                                                key={feature.title}
+                                                className={clsx(
+                                                    'group relative rounded-full px-4 py-1 lg:rounded-l-xl lg:rounded-r-none lg:p-6',
+                                                    selectedIndex === featureIndex
+                                                        ? 'bg-white lg:bg-white/10 lg:ring-1 lg:ring-inset lg:ring-white/10'
+                                                        : 'hover:bg-white/10 lg:hover:bg-white/5',
+                                                )}
+                                            >
+                                                <h3>
+                                                    <Tab
+                                                        className={clsx(
+                                                            'font-display text-lg ui-not-focus-visible:outline-none',
+                                                            selectedIndex === featureIndex
+                                                                ? 'text-blue-600 lg:text-white'
+                                                                : 'text-blue-100 hover:text-white lg:text-white',
+                                                        )}
+                                                    >
+                                                        <span className="absolute inset-0 rounded-full lg:rounded-l-xl lg:rounded-r-none" />
+                                                        {feature.title}
+                                                    </Tab>
+                                                </h3>
+                                                <p
+                                                    className={clsx(
+                                                        'mt-2 hidden text-sm lg:block',
+                                                        selectedIndex === featureIndex
+                                                            ? 'text-white'
+                                                            : 'text-blue-100 group-hover:text-white',
+                                                    )}
+                                                >
+                                                    {feature.description}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </TabList>
+                                </div>
+                                <TabPanels className="lg:col-span-7">
+                                    {focusFeatures.map((feature) => (
+                                        <TabPanel key={feature.title} unmount={false}>
+                                            <div className="relative sm:px-6 lg:hidden">
+                                                <div className="absolute bottom-[-4.25rem] top-[-6.5rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl" />
+                                                <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">
+                                                    {feature.description}
+                                                </p>
+                                            </div>
+                                            <div className="mt-10 w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
+                                                <Image
+                                                    className="w-full"
+                                                    src={feature.image}
+                                                    alt=""
+                                                    priority
+                                                    sizes="(min-width: 1024px) 67.8125rem, (min-width: 640px) 100vw, 45rem"
+                                                />
+                                            </div>
+                                        </TabPanel>
+                                    ))}
+                                </TabPanels>
+                            </>
+                        )}
+                    </TabGroup>
+                </Container>
+            </motion.section>
         </>
     )
 }
