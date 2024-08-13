@@ -7,7 +7,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
 import { focusFeatures } from "@/constants"
 import { motion } from 'framer-motion'
-import backgroundImage from '/public/flamewave.png'
+import backgroundImage from '/public/flame.png'
 
 const Preview = () => {
     let [tabOrientation, setTabOrientation] = useState<'horizontal' | 'vertical'>(
@@ -32,7 +32,7 @@ const Preview = () => {
     return (
         <>
             <motion.section
-                id='preview'
+                id='features'
                 initial={{ y: 48, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ ease: 'easeInOut', duration: 0.75 }}
@@ -53,7 +53,7 @@ const Preview = () => {
                             transition={{ ease: 'easeInOut', duration: 0.75 }}
                             // viewport={{ once: true }} 
                             className="text-6xl font-bold text-center mb-10 text-white">
-                            Tools 🛠️
+                            Features
                         </motion.h2>
                         <motion.div
                             initial={{ y: 48, opacity: 0 }}
