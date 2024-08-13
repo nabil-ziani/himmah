@@ -23,6 +23,7 @@ export const sidebarLinks = [
     },
 ]
 
+// --- FEATURES ---
 export const focusFeatures = [
     {
         title: 'Timers ⏳',

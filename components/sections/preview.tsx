@@ -36,9 +36,11 @@ const Preview = () => {
                 initial={{ y: 48, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ ease: 'easeInOut', duration: 0.75 }}
-                className="flex relative w-full h-[100vh] flex-col items-center justify-center" aria-label="Features for increasing your focus">
+                // bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800
+                className="flex relative w-full h-[100vh] flex-col items-center justify-center"
+                aria-label="Features for increasing your focus">
                 <Image
-                    className="absolute "
+                    className="absolute inset-0 h-full w-full object-cover -z-10"
                     src={backgroundImage}
                     alt=""
                     width={2245}

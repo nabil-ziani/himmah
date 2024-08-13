@@ -13,13 +13,13 @@ export default function Hero() {
   return (
     <section id='hero-section' className="w-full h-[100vh]">
       <motion.img
-        alt="Molten metal drop"
+        alt="volcano burst"
         src="/hero.png"
         className="absolute inset-0 h-full w-full object-cover -z-10"
         style={{ opacity }}
       />
 
-      <div className="flex flex-col items-center mt-[20vh]">
+      <div className="flex flex-col items-center pt-[20vh]">
         <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-bold text-center bg-clip-text text-transparent bg-white mt-4">
           <span className="bg-clip-text bg-gradient-to-br from-[#f86d6d] to-[#f6ce69]">
             The Platform for  <br />
