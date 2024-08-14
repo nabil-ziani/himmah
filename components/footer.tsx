@@ -81,7 +81,7 @@ const Footer = () => {
                 <nav aria-label="Footer" className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12">
                     {navigation.main.map((item) => (
                         <div key={item.name} className="pb-6">
-                            <a href={item.href} className="text-sm leading-6 text-[#b3b3b3] hover:text-white/80">
+                            <a href={item.href} className="text-md leading-6 text-[#b3b3b3] hover:text-white/80">
                                 {item.name}
                             </a>
                         </div>
@@ -95,7 +95,7 @@ const Footer = () => {
                         </a>
                     ))}
                 </div>
-                <p className="mt-10 text-center text-xs leading-5 text-[#b3b3b3]">
+                <p className="mt-10 text-center text-sm leading-5 text-[#b3b3b3]">
                     &copy; 2024 Himmah, Inc. All rights reserved.
                 </p>
             </div>
