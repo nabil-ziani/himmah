@@ -36,7 +36,7 @@ const Preview = () => {
                 initial={{ y: 48, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
                 transition={{ ease: 'easeInOut', duration: 0.75 }}
-                // bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800
+                // bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#606060] to-[#2a2829]
                 className="flex relative w-full h-[100vh] flex-col items-center justify-center"
                 aria-label="Features for increasing your focus">
                 <Image
@@ -105,7 +105,7 @@ const Preview = () => {
                                                         'mt-2 hidden text-sm lg:block',
                                                         selectedIndex === featureIndex
                                                             ? 'text-white'
-                                                            : 'text-blue-100 group-hover:text-white',
+                                                            : 'text-gray-100 group-hover:text-white',
                                                     )}
                                                 >
                                                     {feature.description}
