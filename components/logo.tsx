@@ -25,7 +25,7 @@ const Logo = ({ hideOnSmallDevice = true, color, navbar = false }: LogoProps) =>
                     </p>
 
                     {navbar && (
-                        <p className="text-white text-xs">
+                        <p className={`text-white text-xs ${hideOnSmallDevice && 'hidden'} sm:block`}>
                             Ignite your <span className="text-[#FFAD94]">flame</span> and live with <span className="text-[#FFDD87]">zeal</span>
                         </p>
                     )}

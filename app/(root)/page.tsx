@@ -9,6 +9,7 @@ import Preview from "@/components/sections/preview";
 import Benefits from "@/components/sections/benefits";
 import Goals from "@/components/sections/goals";
 import SmoothScrolling from "@/components/smooth-scroll";
+import Footer from "@/components/footer";
 
 export default async function Index() {
   const supabase = createClient();
@@ -29,6 +30,7 @@ export default async function Index() {
         <Preview />
         <Benefits />
         <Goals />
+        <Footer />
       </SmoothScrolling>
     </div>
   );
