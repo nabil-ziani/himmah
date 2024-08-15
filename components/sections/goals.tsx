@@ -1,8 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { goals } from "@/constants"
-import Image from "next/image"
 
 const Goals = () => {
     return (

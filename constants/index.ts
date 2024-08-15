@@ -27,27 +27,27 @@ export const goals = [
     {
         title: 'Education',
         description: 'We want to increase knowledge and decrease ignorance among Muslims.',
-        image: '/placeholder.png'
+        image: '/goals/education.png'
     },
     {
         title: 'Wealth',
         description: 'We want to increase wealth and decrease poverty among Muslims.',
-        image: '/placeholder.png'
+        image: '/goals/wealth.png'
     },
     {
         title: 'Islam',
         description: 'We want to teach, spread and defend the religion of Allah, the Most High.',
-        image: '/placeholder.png'
+        image: '/goals/islam.png'
     },
     {
         title: 'Zeal',
         description: 'We want a productive, strong and ambitious Muslim generation.',
-        image: '/placeholder.png'
+        image: '/goals/zeal.png'
     },
     {
         title: 'World',
         description: 'We want to create a better world for us, our beloved ones and those to come after us.',
-        image: '/placeholder.png'
+        image: '/goals/world.png'
     },
 ]
 
