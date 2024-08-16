@@ -32,10 +32,7 @@ const Features = () => {
                         className="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-x-20  sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-5"
                     >
                         {focusFeatures.map((feature) => (
-                            <li key={feature.title} onClick={() => {
-                                // setContent({ title: goal.title, description: goal.description, image: goal.image })
-                                // setIsOpen(true)
-                            }}>
+                            <li key={feature.title}>
                                 <motion.img
                                     alt=""
                                     src={feature.image}
