@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import Navbar from "@/components/navbar";
 import Hero from "@/components/sections/hero";
 import About from "@/components/sections/about";
-import Preview from "@/components/sections/preview";
+import Features from "@/components/sections/features";
 import Benefits from "@/components/sections/benefits";
 import Goals from "@/components/sections/goals";
 import SmoothScrolling from "@/components/smooth-scroll";
@@ -25,7 +25,7 @@ export default async function Index() {
       <SmoothScrolling>
         <Hero />
         <About />
-        <Preview />
+        <Features />
         <Benefits />
         <Goals />
         <Footer />

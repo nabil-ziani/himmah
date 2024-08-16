@@ -14,7 +14,7 @@ export default function Hero() {
     <section id='hero-section' className="w-full h-[100vh]">
       <motion.img
         alt="volcano burst"
-        src="/hero.png"
+        src="/hero.jpg"
         className="absolute inset-0 h-full w-full object-cover -z-10"
         style={{ opacity }}
       />
