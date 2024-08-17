@@ -1,16 +1,11 @@
 'use client'
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from 'framer-motion'
-import Benefit from '../benefit'
+import React, { useRef, useEffect, useState } from "react";
+import { motion, useTransform, useSpring } from 'framer-motion';
+import Benefit from '../benefit';
 
 const Benefits = () => {
     const targetRef = useRef(null);
-
-    const { scrollYProgress } = useScroll({
-        target: targetRef,
-        offset: ["start start", "end end"]
-    });
 
     const benefits = [
         {
@@ -57,42 +52,68 @@ const Benefits = () => {
         },
     ];
 
+    const totalSteps = benefits.length;
+    const scrollYProgress = useSpring(0, { stiffness: 50, damping: 20 });
+
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const handleScroll = (event: { deltaY: number; preventDefault: () => void; }) => {
+        const delta = event.deltaY;
+        const step = delta > 0 ? 1 : -1;
+        let nextIndex = currentIndex + step;
+
+        // Clamp the index between 0 and totalSteps - 1
+        nextIndex = Math.max(0, Math.min(nextIndex, totalSteps - 1));
+
+        setCurrentIndex(nextIndex);
+
+        // Update the scroll progress
+        scrollYProgress.set(nextIndex / totalSteps);
+
+        // Prevent default scroll behavior
+        event.preventDefault();
+    };
+
+    useEffect(() => {
+        // Add scroll listener
+        window.addEventListener('wheel', handleScroll, { passive: false });
+
+        return () => {
+            // Remove scroll listener on cleanup
+            window.removeEventListener('wheel', handleScroll);
+        };
+    }, [currentIndex]);
+
     return (
-        <>
-            <section id='benefits' className="flex w-full h-[500vh] flex-col items-center justify-center relative" ref={targetRef}>
-                <motion.h2
-                    initial={{ y: 48, opacity: 0 }}
-                    whileInView={{ y: 0, opacity: 1 }}
-                    transition={{ ease: 'easeInOut', duration: 0.75 }}
-                    className="text-6xl font-bold text-center mb-20 text-[#303030] sticky top-60"
-                >
-                    Why Choose Us
-                </motion.h2>
+        <section id='benefits' ref={targetRef} className="w-full h-screen flex flex-col items-center pt-[20vh] overflow-hidden sticky bg-slate-200">
+            <motion.h2
+                initial={{ y: 48, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ ease: 'easeInOut', duration: 0.75 }}
+                className="text-6xl font-bold text-center mb-20 text-[#303030]"
+            >
+                Why Choose Us
+            </motion.h2>
 
-                <div className="mt-64 w-full">
-                    {benefits.map((benefit, index) => {
-                        // Bereken de start- en eindpunten voor elke benefit
-                        const start = index / benefits.length;
-                        const end = (index + 1) / benefits.length;
+            <div className="w-full relative">
+                {benefits.map((benefit, index) => {
+                    const isActive = index === currentIndex;
+                    const opacity = useTransform(scrollYProgress, value => (isActive ? 1 : 0));
+                    const y = useTransform(scrollYProgress, value => (isActive ? 0 : 100));
 
-                        // Animeren van de zichtbaarheid en positie
-                        const x = useTransform(scrollYProgress, [start, end], benefit.alignment === 'left' ? [-100, 0] : [100, 0]);
-                        const opacity = useTransform(scrollYProgress, [start, end], [0, 1]);
+                    return (
+                        <motion.div
+                            key={index}
+                            style={{ opacity, y }}
+                            className={`flex w-full justify-center absolute ${isActive ? 'top-32' : 'top-52'}`}
+                        >
+                            <Benefit {...benefit} />
+                        </motion.div>
+                    );
+                })}
+            </div>
+        </section>
+    );
+};
 
-                        return (
-                            <motion.div
-                                key={index}
-                                style={{ x, opacity }}
-                                className="w-full flex justify-center my-10"
-                            >
-                                <Benefit {...benefit} />
-                            </motion.div>
-                        );
-                    })}
-                </div>
-            </section>
-        </>
-    )
-}
-
-export default Benefits
+export default Benefits;
