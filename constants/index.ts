@@ -1,7 +1,3 @@
-import PlaceholderPic from '@/public/placeholder.png'
-import TimersPic from '@/public/stopwatch.jpg'
-import PortalPic from '@/public/portal.jpg'
-
 export const SexOptions = ["Male", "Female"];
 
 export const sidebarLinks = [
