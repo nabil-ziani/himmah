@@ -1,19 +1,17 @@
-'use client'
-
 import { goals } from "@/constants"
-import { motion } from "framer-motion"
-import SpringModal from "../spring-modal"
-import { useState } from "react"
+// import { motion } from "framer-motion"
+// import SpringModal from "../spring-modal"
+// import { useState } from "react"
 
-type ModalContent = {
-    title: string,
-    description: string,
-    image: string
-}
+// type ModalContent = {
+//     title: string,
+//     description: string,
+//     image: string
+// }
 
 const Goals = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [content, setContent] = useState<ModalContent>({ title: '', description: '', image: '' })
+    // const [isOpen, setIsOpen] = useState(false);
+    // const [content, setContent] = useState<ModalContent>({ title: '', description: '', image: '' })
 
     return (
         <>
@@ -27,17 +25,17 @@ const Goals = () => {
                 >
                     {goals.map((goal) => (
                         <li key={goal.title}>
-                            <motion.img alt="" src={goal.image} className="mx-auto h-40 w-40 rounded-full" />
-                            <h3 className="mt-6 text-2xl text-center font-semibold leading-7 tracking-tight text-gray-900">
+                            <img alt="" src={goal.image} className="mx-auto h-40 w-40 rounded-full" />
+                            <h3 className="mt-6 text-3xl text-center font-semibold leading-7 tracking-tight text-gray-900">
                                 {goal.title}
                             </h3>
-                            <motion.p className="text-sm max-w-56 text-center text-slate-500 mt-2" >
+                            <p className="text-md max-w-64 text-center text-slate-500 mt-2" >
                                 {goal.description}
-                            </motion.p>
+                            </p>
                         </li>
                     ))}
                 </ul>
-                <SpringModal isOpen={isOpen} setIsOpen={setIsOpen} title={content.title} description={content.description} image={content.image} />
+                {/* <SpringModal isOpen={isOpen} setIsOpen={setIsOpen} title={content.title} description={content.description} image={content.image} /> */}
             </section>
         </>
     )
