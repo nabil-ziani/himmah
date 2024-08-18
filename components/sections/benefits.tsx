@@ -36,7 +36,7 @@ const Benefits = () => {
                         Himmah is not only useful, but also <span className='font-bold'>attractive</span> and <span className='font-bold'>easy-to-use!</span>
                     </p>
                 </Benefit>
-                <Benefit color={'bg-gray-50'} alignment='left' icon='/benefits/watering_plant.png'>
+                <Benefit color={'bg-gray-100'} alignment='left' icon='/benefits/watering_plant.png'>
                     <p className='text-2xl text-center leading-relaxed w-[600px]'>
                         Himmah is a very young platform, allowing you to decide its future via <span className='font-bold'>feedback!</span>
                     </p>
@@ -46,7 +46,7 @@ const Benefits = () => {
                         Himmah has owners with <span className='font-bold'>high aspirations.</span> Lend us your support and we will amaze you! <span className='text-gray-600'>(in shaa Allah)</span>
                     </p>
                 </Benefit>
-                <Benefit color={'gray'} alignment='left' icon='/benefits/privacy.png'>
+                <Benefit color={'bg-blue-100'} alignment='left' icon='/benefits/privacy.png'>
                     <p className='text-2xl text-center leading-relaxed w-[600px]'>
                         Lastly, we do NOT share any information with third parties as we <span className='font-bold'>value your privacy!</span>
                     </p>
