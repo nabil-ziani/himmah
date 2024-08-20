@@ -1,5 +1,7 @@
 export const SexOptions = ["Male", "Female"];
 
+export const LanguageOptions = ["English"]
+
 export const sidebarLinks = [
     {
         label: 'Home',

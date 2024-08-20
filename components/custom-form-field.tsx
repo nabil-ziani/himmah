@@ -42,6 +42,7 @@ interface CustomProps {
     children?: React.ReactNode
     renderSkeleton?: (field: any) => React.ReactNode
     fieldType: FormFieldType
+    defaultValue?: string
     [key: string]: any; // Allow additional props
 }
 
@@ -140,7 +141,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
         case FormFieldType.SELECT:
             return (
                 <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} defaultValue={props.defaultValue} disabled={props.disabled}>
                         <FormControl>
                             <SelectTrigger className="shad-select-trigger">
                                 <SelectValue placeholder={props.placeholder} />

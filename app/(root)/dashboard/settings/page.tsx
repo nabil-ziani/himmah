@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { VscSettingsGear } from "react-icons/vsc";
 import { Separator } from "@/components/ui/separator"
 import UpdateProfileForm from "@/components/forms/update-profile-form";
+import ConfigurationForm from "@/components/forms/configuration-form";
 
 export default async function SettingsPage() {
     const supabase = createClient();
@@ -53,10 +54,11 @@ export default async function SettingsPage() {
                                 </Link> */}
                             </div>
                         </section>
-                        {/* FORM */}
+                        {/* FORMS */}
                         <section className="flex relative h-full flex-1 flex-col p-12 max-md:pb-14 sm:px-14 overflow-hidden w-[50vw]">
-                            <VscSettingsGear className="text-gray-500/10 rotate-12 text-[500px] absolute z-0 -top-24 -right-24" />
+                            {/* <VscSettingsGear className="text-gray-500/10 rotate-12 text-[500px] absolute z-0 -top-24 -right-24" /> */}
                             <UpdateProfileForm />
+                            <ConfigurationForm />
                         </section>
                     </div>
                 </Card>
