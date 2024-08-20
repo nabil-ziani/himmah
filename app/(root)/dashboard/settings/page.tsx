@@ -1,23 +1,20 @@
-import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/server";
-import { Settings, UserRoundPen } from "lucide-react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { VscSettingsGear } from "react-icons/vsc";
-import { Separator } from "@/components/ui/separator"
+
+import { Card } from "@/components/ui/card";
 import UpdateProfileForm from "@/components/forms/update-profile-form";
 import ConfigurationForm from "@/components/forms/configuration-form";
 
 export default async function SettingsPage() {
     const supabase = createClient();
 
-    // const pathname = usePathname();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
         return redirect("/auth/login");
     }
+
+    console.log(user)
 
     return (
         <>
@@ -26,7 +23,7 @@ export default async function SettingsPage() {
                 <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
                     <div className="flex h-[calc(100vh-250px)]">
                         {/* SIDEBAR */}
-                        <section className="sticky left-0 top-0 flex h-full w-fit flex-col justify-between bg-[#303030] p-6 text-white lg:w-[264px] rounded-l-2xl">
+                        {/* <section className="sticky left-0 top-0 flex h-full w-fit flex-col justify-between bg-[#303030] p-6 text-white lg:w-[264px] rounded-l-2xl">
                             <div className="flex flex-1 flex-col gap-6">
                                 <Link href='/dashboard/settings' className={cn('flex gap-4 items-center p-4 rounded-lg justify-start text-[#303030]')}>
                                     <UserRoundPen color='white' />
@@ -40,20 +37,8 @@ export default async function SettingsPage() {
                                         Configuration
                                     </p>
                                 </Link>
-                                {/* <Link href='/dashboard/settings' className={cn('flex gap-4 items-center p-4 rounded-lg justify-start text-[#303030]', { 'bg-white': pathname === 'dashboard/settings' })}>
-                                    <UserRoundPen color={pathname === 'dashboard/settings' ? '#303030' : 'white'} />
-                                    <p className={`text-md font-semibold max-lg:hidden ${pathname === 'dashboard/settings' ? 'text-[#303030]' : 'text-white'}`}>
-                                        Profile
-                                    </p>
-                                </Link>
-                                <Link href='/dashboard/settings/config' className={cn('flex gap-4 items-center p-4 rounded-lg justify-start text-[#303030]', { 'bg-white': pathname === 'dashboard/settings/config' })}>
-                                    <Cog color={pathname === 'dashboard/settings/config' ? '#303030' : 'white'} />
-                                    <p className={`text-md font-semibold max-lg:hidden ${pathname === 'dashboard/settings/config' ? 'text-[#303030]' : 'text-white'}`}>
-                                        Configuration
-                                    </p>
-                                </Link> */}
                             </div>
-                        </section>
+                        </section> */}
                         {/* FORMS */}
                         <section className="flex relative h-full flex-1 flex-col p-12 max-md:pb-14 sm:px-14 overflow-hidden w-[50vw]">
                             {/* <VscSettingsGear className="text-gray-500/10 rotate-12 text-[500px] absolute z-0 -top-24 -right-24" /> */}

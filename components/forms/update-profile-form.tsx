@@ -4,14 +4,13 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { UpdatePasswordSchema } from "@/schemas";
+import { UpdateProfileSchema } from "@/schemas";
 
 import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "@/components/custom-form-field";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { SubmitButton } from "../submit-button";
-import { updatePassword } from "@/actions/update-password";
+import { updateProfile } from "@/actions/update-profile";
 import { useRouter } from "next/navigation";
 import { SexOptions } from "@/constants";
 import { SelectItem } from "../ui/select";
@@ -24,20 +23,19 @@ const UpdateProfileForm = () => {
     const [isPending, startTransition] = useTransition()
 
     const router = useRouter()
-    const form = useForm<z.infer<typeof UpdatePasswordSchema>>({
-        resolver: zodResolver(UpdatePasswordSchema),
+    const form = useForm<z.infer<typeof UpdateProfileSchema>>({
+        resolver: zodResolver(UpdateProfileSchema),
         defaultValues: {
             password: "",
-            passwordConfirm: "",
         }
     })
 
-    const onSubmit = (values: z.infer<typeof UpdatePasswordSchema>) => {
+    const onSubmit = (values: z.infer<typeof UpdateProfileSchema>) => {
         setError('')
         setSuccess('')
 
         startTransition(() => {
-            updatePassword(values).then((data) => {
+            updateProfile(values).then((data) => {
                 setError(data?.error)
                 setSuccess(data?.success)
 
@@ -47,7 +45,6 @@ const UpdateProfileForm = () => {
     }
 
     return (
-
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <section className="mb-12 space-y-4">

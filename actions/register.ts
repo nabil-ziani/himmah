@@ -24,7 +24,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         options: {
             data: {
                 name: name,
-                birthDate: birthDate,
+                birthdate: birthDate,
                 sex: sex
             },
             emailRedirectTo: `${origin}/auth/callback`,
