@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-// import { E164Number } from "libphonenumber-js/core";
+import { E164Number } from "libphonenumber-js/core";
 import Image from "next/image";
-import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Control } from "react-hook-form";
-// import PhoneInput from "react-phone-number-input";
+import 'react-phone-number-input/style.css'
+import PhoneInput from "react-phone-number-input";
 
 // import { Checkbox } from "../ui/checkbox";
 import {
@@ -83,20 +83,20 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
         //             />
         //         </FormControl>
         //     );
-        // case FormFieldType.PHONE_INPUT:
-        //     return (
-        //         <FormControl>
-        //             <PhoneInput
-        //                 defaultCountry="US"
-        //                 placeholder={props.placeholder}
-        //                 international
-        //                 withCountryCallingCode
-        //                 value={field.value as E164Number | undefined}
-        //                 onChange={field.onChange}
-        //                 className="input-phone"
-        //             />
-        //         </FormControl>
-        //     );
+        case FormFieldType.PHONE_INPUT:
+            return (
+                <FormControl>
+                    <PhoneInput
+                        defaultCountry="BE"
+                        countries={['BE', 'NL']}
+                        placeholder={props.placeholder}
+                        international
+                        value={field.value as E164Number | undefined}
+                        onChange={field.onChange}
+                        className="input-phone"
+                    />
+                </FormControl>
+            );
         case FormFieldType.CHECKBOX:
             return (
                 <FormControl>
@@ -119,7 +119,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                         <div className="relative">
                             <FormControl>
                                 <Input
-                                    className="shad-input border-0"
+                                    className="shad-input"
                                     placeholder={props.placeholder}
                                     type="date"
                                     onChange={(e) => {
@@ -135,19 +135,6 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                             </FormControl>
                         </div>
                     </div>
-                    {/* <div className="flex rounded-md border bg-white">
-                        <FormControl>
-                            <ReactDatePicker
-                                placeholderText={props.placeholder}
-                                showTimeSelect={props.showTimeSelect ?? false}
-                                selected={field.value}
-                                onChange={(date: Date | null) => field.onChange(date)}
-                                timeInputLabel="Time:"
-                                dateFormat={props.dateFormat ?? "MM/dd/yyyy"}
-                                wrapperClassName="date-picker"
-                            />
-                        </FormControl>
-                    </div> */}
                 </>
             );
         case FormFieldType.SELECT:

@@ -19,9 +19,7 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         gradient: "text-destructive-foreground transition-all duration-100 bg-gradient-to-br to-[#f6ce69] from-[#f86d6d] hover:drop-shadow-md"
-        // hover:to-[#f6ce69]/90 hover:from-[#f86d6d]/90
       },
-      // hover:drop-shadow-xl
       size: {
         default: "h-10 px-6 py-2 rounded-lg",
         sm: "h-9 rounded-md px-3",

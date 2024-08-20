@@ -32,7 +32,7 @@ const Sidebar = ({ }) => {
                 {sidebarLinks.map((link) => {
                     const isActive = pathname === link.route;
                     return (
-                        <Link href={`${link.route}`} key={link.label} className={cn('flex gap-4 items-center p-4 rounded-lg justify-start text-[#303030]', { 'bg-white': isActive })}>
+                        <Link href={`${link.route}`} key={link.label} className={cn('flex gap-4 items-center p-4 rounded-lg justify-start text-[#303030] hover:bg-white/15', { 'bg-white hover:bg-white': isActive })}>
                             {renderIcon(link.route, isActive ? '#303030' : 'white')}
                             <p className={`text-md font-semibold max-lg:hidden ${isActive ? 'text-[#303030]' : 'text-white'}`}>
                                 {link.label}

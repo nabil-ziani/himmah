@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 const Features = () => {
     return (
         <>
-            <section id='features' className="flex w-full h-[100vh] flex-col items-center justify-center">
+            <section id='tools' className="flex w-full h-[100vh] flex-col items-center justify-center">
                 <motion.h2
                     initial={{ y: 48, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}

@@ -2,8 +2,18 @@ import LoginForm from "@/components/forms/login-form";
 import Logo from "@/components/logo";
 import Separator from "@/components/seperator";
 import OauthSignIn from "@/components/oauth";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
-export default function Login() {
+export default async function Login() {
+    const supabase = createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+        return redirect("/dashboard/settings");
+    }
+
     return (
         <div className="flex h-screen max-h-screen bg-[#303030]">
             <section className="remove-scrollbar container my-auto">

@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 @layer base {
     :root {
         --background: 0 0% 100%;    
@@ -294,7 +296,7 @@
 
     /* =====  REACT DATE PICKER OVERRIDES */
     .date-picker {
-        @apply overflow-hidden bg-white text-[#303030] w-full  h-11 text-14-medium rounded-md px-3 outline-none !important;
+        @apply overflow-hidden bg-white text-[#303030] w-full  h-11 text-14-medium rounded-md px-3 !important;
     }
 }
 
@@ -358,17 +360,34 @@
     }
 
     /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+    .input-phone {
+        @apply mt-2 h-11 rounded-md px-3 text-sm border !important;
+    }
+    
     .PhoneInputInput {
     outline: none;
     margin-left: 4px;
-    background: #1a1d21;
+    background: #ffffff !important;
     font-size: 14px;
     font-weight: 500;
+    z-index: 10;
+    height: 100%;
     }
 
     .PhoneInputInput::placeholder {
-    color: #1a1d21;
+        color: black;
     }
+
+    .PhoneInputCountry {
+        font-family: 'Poppins', sans-serif !important;
+    }
+
+    .PhoneInputCountrySelect {
+        max-height: 100px !important;
+        overflow-y: auto; /* Zorgt voor een scrollbar als de content te groot is */
+        display: block;   /* Dit kan helpen in sommige browsers */
+    }
+    
 /* 
     input:-webkit-autofill,
     input:-webkit-autofill:hover,

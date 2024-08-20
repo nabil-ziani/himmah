@@ -16,8 +16,8 @@ const Navbar = () => {
                     <Link href="#about" className="font-light hover:underline hover:underline-offset-4" prefetch={false}>
                         About
                     </Link>
-                    <Link href="#features" className="font-light hover:underline hover:underline-offset-4" prefetch={false}>
-                        Features
+                    <Link href="#tools" className="font-light hover:underline hover:underline-offset-4" prefetch={false}>
+                        Tools
                     </Link>
                     <Link href="#benefits" className="font-light hover:underline hover:underline-offset-4" prefetch={false}>
                         Benefits
@@ -46,8 +46,8 @@ const Navbar = () => {
                                 <Link href="#about" className="font-medium hover:underline hover:underline-offset-4" prefetch={false}>
                                     About
                                 </Link>
-                                <Link href="#features" className="font-medium hover:underline hover:underline-offset-4" prefetch={false}>
-                                    Features
+                                <Link href="#tools" className="font-medium hover:underline hover:underline-offset-4" prefetch={false}>
+                                    Tools
                                 </Link>
                                 <Link href="#benefits" className="font-medium hover:underline hover:underline-offset-4" prefetch={false}>
                                     Benefits
