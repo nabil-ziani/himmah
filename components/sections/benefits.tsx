@@ -6,7 +6,7 @@ import Benefit from '../benefit'
 const Benefits = () => {
     return (
         <>
-            <section id='benefits' className="flex w-full h-fit flex-col items-center justify-center">
+            <section id='benefits' className="flex w-full h-[250vh] my-20 flex-col items-center justify-center">
                 <motion.h2
                     initial={{ y: 48, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}

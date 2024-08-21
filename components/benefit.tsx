@@ -21,7 +21,7 @@ const Benefit = ({ alignment, icon, color, children }: BenefitProps) => {
             <div className='flex flex-col justify-center items-center'>
                 {children}
                 <div className={`rounded-full w-52 h-52 flex justify-center mt-10 items-center ${color}`}>
-                    <img alt="" src={icon} className="mx-auto h-20 w-20 rounded-full hover:cursor-pointer" />
+                    <img alt="" src={icon} className="mx-auto h-24 w-24 object-contain hover:cursor-pointer" />
                 </div>
             </div >
         </motion.div >
