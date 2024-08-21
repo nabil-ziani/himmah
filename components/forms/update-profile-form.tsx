@@ -17,6 +17,7 @@ import { SelectItem } from "../ui/select";
 import { Button } from "../ui/button";
 import { User } from "@supabase/supabase-js";
 import { adjustForTimezone } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 interface UpdateProfileFormProps {
     user: User
@@ -45,8 +46,11 @@ const UpdateProfileForm = ({ user }: UpdateProfileFormProps) => {
 
         startTransition(() => {
             updateProfile(values).then((data) => {
-                setError(data?.error)
-                setSuccess(data?.success)
+                if (data.error) {
+                    toast.error(data.error)
+                }
+
+                toast.success('Profile updated!')
 
                 router.push('/dashboard')
             })

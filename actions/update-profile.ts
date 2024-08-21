@@ -28,5 +28,5 @@ export const updateProfile = async (values: z.infer<typeof UpdateProfileSchema>)
         return { error: error.message }
     }
 
-    return { success: '' }
+    return { success: 'Profile updated!' }
 }

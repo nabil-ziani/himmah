@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { UpdatePasswordSchema } from "@/schemas";
 
-import { Form, FormControl, FormDescription } from "@/components/ui/form";
+import { Form, FormDescription } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "@/components/custom-form-field";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
@@ -74,7 +74,7 @@ const ConfigurationForm = () => {
                                 </SelectItem>
                             ))}
                         </CustomFormField>
-                        <FormDescription className="text-slate-500 mt-2">
+                        <FormDescription className="text-gray-400 mt-2">
                             We only support English for the moment.
                         </FormDescription>
                     </div>
@@ -83,7 +83,7 @@ const ConfigurationForm = () => {
                 <FormError message={error} />
                 <FormSuccess message={success} />
                 <div className="sm:col-span-2">
-                    <Button variant="gradient" className="mt-6">
+                    <Button variant="gradient" className="mt-6" disabled>
                         Save Settings
                     </Button>
                 </div>
