@@ -67,6 +67,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                                 {...field}
                                 className="shad-input border-0"
                                 {...props.restProps} // Pass additional props
+                                defaultValue={props.defaultValue}
                             />
                             {props.children}
                         </>
@@ -119,20 +120,17 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                     <div className="grid gap-1.5">
                         <div className="relative">
                             <FormControl>
-                                <Input
-                                    className="shad-input"
-                                    placeholder={props.placeholder}
-                                    type="date"
-                                    onChange={(e) => {
-                                        const value = e.target.value
-                                        const formattedValue = new Date(value).toLocaleDateString("en-US", {
-                                            month: "2-digit",
-                                            day: "2-digit",
-                                            year: "numeric",
-                                        })
-                                        field.onChange(new Date(formattedValue))
-                                    }}
-                                />
+                                <>
+                                    <Input
+                                        className="shad-input"
+                                        placeholder={props.placeholder}
+                                        // {...field}
+                                        defaultValue={props.defaultValue}
+                                        type="date"
+                                        value={field.value ? field.value.toISOString().split('T')[0] : ''}
+                                        onChange={(e) => field.onChange(new Date(e.target.value))}
+                                    />
+                                </>
                             </FormControl>
                         </div>
                     </div>
@@ -141,7 +139,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
         case FormFieldType.SELECT:
             return (
                 <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={props.defaultValue} disabled={props.disabled}>
+                    <Select onValueChange={field.onChange} defaultValue={props.defaultValue} {...field} disabled={props.disabled}>
                         <FormControl>
                             <SelectTrigger className="shad-select-trigger">
                                 <SelectValue placeholder={props.placeholder} />

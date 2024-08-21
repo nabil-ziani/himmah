@@ -12,16 +12,14 @@ export const updateProfile = async (values: z.infer<typeof UpdateProfileSchema>)
         return { error: validatedFields.error.message }
     }
 
-    const { name, email, phone, password, birthDate, sex } = validatedFields.data
+    const { name, email, birthdate, sex } = validatedFields.data
 
     const supabase = createClient();
     const { error } = await supabase.auth.updateUser({
         email,
-        phone,
-        password,
         data: {
             name,
-            birthdate: birthDate,
+            birthdate: birthdate,
             sex
         }
     });

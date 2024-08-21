@@ -28,11 +28,10 @@ export const UpdatePasswordSchema = z.object({
 })
 
 export const UpdateProfileSchema = z.object({
-    name: z.string().min(1, { message: 'Name is required' }).max(30, { message: 'Maximum characters is 30' }),
-    phone: z.string().refine((phone) => /^\+\d{10,15}$/.test(phone), "Invalid phone number"),
-    email: z.string().email({ message: "Email is required" }),
-    password: z.string().min(6, { message: "Minimum 6 characters required" }),
-    sex: z.enum(SEX, { message: "Enter a valid option" }),
-    birthDate: z.date({ message: 'Enter a valid date' }).refine((d) => d >= new Date("01-01-1900") && d <= new Date(Date.now()), { message: 'Enter a valid birthdate' })
-
+    name: z.optional(z.string().min(1, { message: 'Name is required' }).max(30, { message: 'Maximum characters is 30' })),
+    // phone: z.optional(z.string().refine((phone) => /^\+\d{10,15}$/.test(phone), "Invalid phone number")),
+    email: z.optional(z.string().email({ message: "Email is required" })),
+    // password: z.optional(z.string().min(6, { message: "Minimum 6 characters required" })),
+    sex: z.optional(z.enum(SEX, { message: "Enter a valid option" })),
+    birthdate: z.optional(z.date({ message: 'Enter a valid date' }).refine((d) => d >= new Date("01-01-1900") && d <= new Date(Date.now()), { message: 'Enter a valid birthdate' }))
 })

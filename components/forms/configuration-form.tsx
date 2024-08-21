@@ -12,10 +12,9 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { updatePassword } from "@/actions/update-password";
 import { useRouter } from "next/navigation";
-import { LanguageOptions, SexOptions } from "@/constants";
+import { LanguageOptions } from "@/constants";
 import { SelectItem } from "../ui/select";
 import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
 
 const ConfigurationForm = () => {
     const [error, setError] = useState<string | undefined>('')

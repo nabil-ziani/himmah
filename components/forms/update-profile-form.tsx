@@ -15,8 +15,14 @@ import { useRouter } from "next/navigation";
 import { SexOptions } from "@/constants";
 import { SelectItem } from "../ui/select";
 import { Button } from "../ui/button";
+import { User } from "@supabase/supabase-js";
+import { adjustForTimezone } from "@/lib/utils";
 
-const UpdateProfileForm = () => {
+interface UpdateProfileFormProps {
+    user: User
+}
+
+const UpdateProfileForm = ({ user }: UpdateProfileFormProps) => {
     const [error, setError] = useState<string | undefined>('')
     const [success, setSuccess] = useState<string | undefined>('')
 
@@ -26,7 +32,10 @@ const UpdateProfileForm = () => {
     const form = useForm<z.infer<typeof UpdateProfileSchema>>({
         resolver: zodResolver(UpdateProfileSchema),
         defaultValues: {
-            password: "",
+            name: user.user_metadata.name,
+            email: user.email,
+            birthdate: adjustForTimezone(new Date(user.user_metadata.birthdate)),
+            sex: user.user_metadata.sex
         }
     })
 
@@ -54,17 +63,17 @@ const UpdateProfileForm = () => {
 
                 <div className="grid gap-x-10 gap-y-4 grid-cols-1 sm:grid-cols-6">
                     {/* --- NAME & PHONE ---*/}
-                    <div className="sm:col-span-3">
+                    <div className="sm:col-span-6">
                         <CustomFormField
                             fieldType={FormFieldType.INPUT}
                             control={form.control}
                             name="name"
                             label="Name"
-                            placeholder="Adnane Ibn Muhammad"
+                            placeholder="Your Name"
                         />
                     </div>
 
-                    <div className="sm:col-span-3">
+                    {/* <div className="sm:col-span-3">
                         <CustomFormField
                             fieldType={FormFieldType.PHONE_INPUT}
                             control={form.control}
@@ -72,7 +81,7 @@ const UpdateProfileForm = () => {
                             label="Phone number"
                             placeholder="(+32) 000 00 00 00"
                         />
-                    </div>
+                    </div> */}
 
                     {/* --- BIO ---*/}
                     {/* <div className="sm:col-span-6">
@@ -86,7 +95,7 @@ const UpdateProfileForm = () => {
                     </div> */}
 
                     {/* --- EMAIL & PASSWORD ---*/}
-                    <div className="sm:col-span-3">
+                    {/* <div className="sm:col-span-6">
                         <CustomFormField
                             fieldType={FormFieldType.INPUT}
                             control={form.control}
@@ -94,9 +103,9 @@ const UpdateProfileForm = () => {
                             label="Email"
                             placeholder="name@example.com"
                         />
-                    </div>
+                    </div> */}
 
-                    <div className="sm:col-span-3">
+                    {/* <div className="sm:col-span-3">
                         <CustomFormField
                             fieldType={FormFieldType.INPUT}
                             control={form.control}
@@ -107,7 +116,7 @@ const UpdateProfileForm = () => {
                                 { type: "password" }
                             }
                         />
-                    </div>
+                    </div> */}
 
                     {/* --- SEX & BIRTHDATE ---*/}
                     <div className="sm:col-span-3">
@@ -132,13 +141,12 @@ const UpdateProfileForm = () => {
                         <CustomFormField
                             fieldType={FormFieldType.DATE_PICKER}
                             control={form.control}
-                            name="birthDate"
+                            name="birthdate"
                             label="Date of birth"
                             placeholder="dd-MM-YYYY"
                             dateFormat="dd-MM-YYYY"
                         />
                     </div>
-
                 </div>
 
                 <FormError message={error} />
