@@ -25,27 +25,27 @@ export const goals = [
     {
         title: 'Education',
         description: 'We want to increase knowledge and decrease ignorance among Muslims.',
-        image: '/goals/education.png'
+        image: '/images/goals/education.png'
     },
     {
         title: 'Wealth',
         description: 'We want to increase wealth and decrease poverty among Muslims.',
-        image: '/goals/wealth.png'
+        image: '/images/goals/wealth.png'
     },
     {
         title: 'Islam',
         description: 'We want to teach, spread and defend the religion of Allah, the Most High.',
-        image: '/goals/islam.png'
+        image: '/images/goals/islam.png'
     },
     {
         title: 'Zeal',
         description: 'We want a productive, strong and ambitious Muslim generation.',
-        image: '/goals/zeal.png'
+        image: '/images/goals/zeal.png'
     },
     {
         title: 'World',
         description: 'We want to create a better world for us, our beloved ones and those to come after us.',
-        image: '/goals/world.png'
+        image: '/images/goals/world.png'
     },
 ]
 
@@ -54,7 +54,7 @@ export const focusFeatures = [
     {
         title: 'Timer & Stopwatch',
         description: 'Set precise focus sessions with our timers, driving your productivity and keeping you motivated every step of the way.',
-        image: '/tools/time.jpg'
+        image: '/images/tools/time.jpg'
     },
     // {
     //     title: 'Stopwatch ⏱️',
@@ -64,17 +64,17 @@ export const focusFeatures = [
     {
         title: 'White Noise',
         description: 'Enhance your focus or relaxation with calming white noise, featuring natural sounds that create the perfect auditory backdrop.',
-        image: '/tools/white-noise.jpg'
+        image: '/images/tools/white-noise.jpg'
     },
     {
         title: 'Backgrounds',
         description: 'Transform your workspace with immersive backgrounds that eliminate distractions and help you dive into the ultimate focus zone.',
-        image: '/tools/backgrounds.jpg'
+        image: '/images/tools/backgrounds.jpg'
     },
     {
         title: 'Affirmations',
         description: 'Boost your mindset with powerful affirmations that reinforce key truths, reshape your thinking, and keep you motivated to stay on track.',
-        image: '/tools/affirmations.jpg'
+        image: '/images/tools/affirmations.jpg'
     },
     // {
     //     title: 'Analytics 📊',
@@ -84,6 +84,6 @@ export const focusFeatures = [
     {
         title: 'Tasks',
         description: '...',
-        image: '/tools/tasks.jpg'
+        image: '/images/tools/tasks.jpg'
     },
 ]
