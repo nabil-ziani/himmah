@@ -4,8 +4,12 @@ import { useInterval } from "@mantine/hooks";
 import { useState, useEffect } from "react";
 
 import Image from "next/image";
+import FocusDialog from "./focus-dialog";
+import { Maximize2 } from "lucide-react";
 
 const Timer = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
     // const [volume, setVolume] = useState(0.5);
     // const cards = ["forest", "rain", "coffee", "fireplace"];
 
@@ -62,6 +66,8 @@ const Timer = () => {
 
     return (
         <>
+            <Maximize2 className="absolute top-5 right-5 cursor-pointer" color="#303030" onClick={() => setIsOpen(true)} />
+
             <div className="h-full justify-center flex flex-col items-center">
                 <div className="font-roboto flex items-center justify-center text-[126px] text-[#323238] font-[500] max-w-[321px] dark:text-white">
                     <div>{minutes}</div>
@@ -120,6 +126,8 @@ const Timer = () => {
                     />
                 ))}
             </div> */}
+
+            <FocusDialog isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
     )
 }
