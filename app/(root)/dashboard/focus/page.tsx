@@ -1,7 +1,7 @@
-import Timer from "@/components/timer";
-import { Card } from "@/components/ui/card";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+
+import FocusCard from "@/components/focus-card";
 
 export default async function FocusPage() {
     const supabase = createClient();
@@ -15,13 +15,7 @@ export default async function FocusPage() {
     return (
         <div className="flex flex-col max-h-[calc(100vh-80px)] gap-10 justify-center items-center">
             <h1 className='font-bold leading-none text-[#303030] text-4xl'>Focus</h1>
-            <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
-                <div className="flex h-[calc(100vh-250px)]">
-                    <section className="flex relative h-full flex-1 flex-col p-12 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[50vw]">
-                        <Timer />
-                    </section>
-                </div>
-            </Card>
+            <FocusCard />
         </div>
     );
 }

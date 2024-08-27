@@ -1,5 +1,6 @@
 import DashboardNavbar from '@/components/dashboard-nav';
 import Sidebar from '@/components/sidebar';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { Metadata } from 'next';
 import { ReactNode } from 'react'
 import { Toaster } from "react-hot-toast";
@@ -23,7 +24,9 @@ const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
                 <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-28 max-md:pb-14 sm:px-14">
                     <div className="w-full relative">
                         <Toaster position='top-right' containerStyle={{ top: 100, right: 20 }} />
-                        {children}
+                        <TooltipProvider delayDuration={100}>
+                            {children}
+                        </TooltipProvider>
                     </div>
                 </section>
             </div>

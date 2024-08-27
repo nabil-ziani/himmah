@@ -1,15 +1,17 @@
 'use client'
 
 import { useInterval } from "@mantine/hooks";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 
-import Image from "next/image";
-import FocusDialog from "./focus-dialog";
-import { Maximize2 } from "lucide-react";
+import { Clock } from "lucide-react";
+import { Button } from "./ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
-const Timer = () => {
-    const [isOpen, setIsOpen] = useState(false);
+interface TimerProps {
+    changeMode: Dispatch<SetStateAction<"timer" | "stopwatch">>
+}
 
+const Timer = ({ changeMode }: TimerProps) => {
     // const [volume, setVolume] = useState(0.5);
     // const cards = ["forest", "rain", "coffee", "fireplace"];
 
@@ -18,7 +20,6 @@ const Timer = () => {
     const [defaultSeconds, setDefaultSeconds] = useState(1500);
     const [seconds, setSeconds] = useState(defaultSeconds);
 
-    //manipulação dos segundos
     let extraSeconds: string | number = seconds % 60;
     let minutes: string | number = Math.floor(seconds / 60);
     minutes = minutes < 10 ? "0" + minutes : minutes;
@@ -66,37 +67,39 @@ const Timer = () => {
 
     return (
         <>
-            <Maximize2 className="absolute top-5 right-5 cursor-pointer" color="#303030" onClick={() => setIsOpen(true)} />
-
             <div className="h-full justify-center flex flex-col items-center">
-                <div className="font-roboto flex items-center justify-center text-[126px] text-[#323238] font-[500] max-w-[321px] dark:text-white">
+                <div className="font-mono flex items-center justify-center text-[126px] text-[#323238] font-[500] max-w-[321px] dark:text-white">
                     <div>{minutes}</div>
                     <div>:</div>
                     <div>{extraSeconds}</div>
                 </div>
                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
-                    <button onClick={() => interval.toggle()}>
-                        <Image
-                            src={interval.active ? `/images/control-icons/pause.svg` : `/images/control-icons/play.svg`}
-                            width={48}
-                            height={48}
-                            alt="Start the timer"
-                        />
-                    </button>
-                    <button
-                        onClick={() => {
-                            interval.stop();
-                            setSeconds(defaultSeconds);
-                        }}
-                    >
-                        <Image
-                            src={`/images/control-icons/stop.svg`}
-                            width={48}
-                            height={48}
-                            alt="Stop the timer"
-                        />
-                    </button>
-                    <button onClick={() => handlePlusClick()}>
+                    <Button className="bg-[#2ecc71] hover:bg-[#2ecc71]/80 hover:shadow-2xl font-semibold text-lg text-white" onClick={() => interval.start()}>
+                        Start
+                    </Button>
+                    <Button className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-lg text-white" onClick={() => {
+                        interval.stop();
+                        setSeconds(defaultSeconds);
+                    }}>
+                        Give up
+                    </Button>
+
+                    <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                            <TooltipTrigger>
+                                <Button className="bg-gray-600  hover:shadow-2xl font-semibold text-lg text-white hover:cursor-default" onClick={() => { changeMode('stopwatch') }}>
+                                    <Clock className="mr-2" /> Timer
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent side='bottom'>
+                                <div className='bg-white'>
+                                    <p className='font-medium'>Focus Mode: Timer</p>
+                                </div>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+
+                    {/* <button onClick={() => handlePlusClick()}>
                         <Image
                             src={`/images/control-icons/+.svg`}
                             width={48}
@@ -111,7 +114,7 @@ const Timer = () => {
                             height={48}
                             alt="Decrease 5 minutes from the timer"
                         />
-                    </button>
+                    </button> */}
                 </div>
             </div>
 
@@ -126,8 +129,6 @@ const Timer = () => {
                     />
                 ))}
             </div> */}
-
-            <FocusDialog isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
     )
 }

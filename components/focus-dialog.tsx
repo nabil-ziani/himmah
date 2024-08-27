@@ -9,7 +9,6 @@ interface FocusDialogProps {
     setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
-
 const FocusDialog = ({ isOpen, setIsOpen }: FocusDialogProps) => {
     return (
         <AnimatePresence>
