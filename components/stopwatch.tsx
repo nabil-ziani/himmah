@@ -50,16 +50,16 @@ const Stopwatch = ({ changeMode }: StopwatchProps) => {
             </div>
 
             <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
-                <Button className={`${isRunning ? 'bg-yellow-500 hover:bg-yellow-500/80' : 'bg-green-500 hover:bg-green-500/80'} hover:shadow-2xl font-semibold text-lg text-white`} onClick={() => startStop()}>
+                <Button size={"lg"} className={`${isRunning ? 'bg-yellow-500 hover:bg-yellow-500/80' : 'bg-green-500 hover:bg-green-500/80'} hover:shadow-2xl font-semibold text-xl text-white`} onClick={() => startStop()}>
                     {isRunning ? 'Pause' : 'Start'}
                 </Button>
-                <Button className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-lg text-white" onClick={() => reset()}>
+                <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => reset()}>
                     Reset
                 </Button>
 
                 <Tooltip>
                     <TooltipTrigger>
-                        <Button className="bg-gray-600  hover:shadow-2xl font-semibold text-lg text-white hover:cursor-pointer" onClick={() => changeMode("timer")}>
+                        <Button size={"lg"} className="bg-gray-600  hover:shadow-2xl text-white hover:cursor-pointer" onClick={() => changeMode("timer")}>
                             <Timer />
                         </Button>
                     </TooltipTrigger>

@@ -74,10 +74,10 @@ const Timer = ({ changeMode }: TimerProps) => {
                     <div>{extraSeconds}</div>
                 </div>
                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
-                    <Button className="bg-[#2ecc71] hover:bg-[#2ecc71]/80 hover:shadow-2xl font-semibold text-lg text-white" onClick={() => interval.start()}>
+                    <Button size={"lg"} className="bg-[#2ecc71] hover:bg-[#2ecc71]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => interval.start()}>
                         Start
                     </Button>
-                    <Button className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-lg text-white" onClick={() => {
+                    <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => {
                         interval.stop();
                         setSeconds(defaultSeconds);
                     }}>
@@ -86,7 +86,7 @@ const Timer = ({ changeMode }: TimerProps) => {
 
                     <Tooltip>
                         <TooltipTrigger>
-                            <Button className="bg-gray-600  hover:shadow-2xl font-semibold text-lg text-white hover:cursor-pointer" onClick={() => { changeMode('stopwatch') }}>
+                            <Button size={"lg"} className="bg-gray-600  hover:shadow-2xl text-white hover:cursor-pointer" onClick={() => { changeMode('stopwatch') }}>
                                 <Clock />
                             </Button>
                         </TooltipTrigger>
