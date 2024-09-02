@@ -2,12 +2,7 @@
 
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { Button } from "./ui/button";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Timer } from 'lucide-react';
 
 interface StopwatchProps {
@@ -51,7 +46,7 @@ const Stopwatch = ({ changeMode }: StopwatchProps) => {
 
     return (
         <div className="h-full justify-center flex flex-col items-center">
-            <div className="flex items-center justify-center text-[126px] text-[#323238] font-[500] dark:text-white font-mono">
+            <div className="flex items-center justify-center text-[126px] text-[#323238] font-[500] dark:text-white font-poppins">
                 <div>
                     {hours}:
                 </div>
@@ -74,20 +69,18 @@ const Stopwatch = ({ changeMode }: StopwatchProps) => {
                     Reset
                 </Button>
 
-                <TooltipProvider delayDuration={100}>
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <Button className="bg-gray-600  hover:shadow-2xl font-semibold text-lg text-white hover:cursor-default" onClick={() => changeMode("timer")}>
-                                <Timer className="mr-2" /> Stopwatch
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent side='bottom'>
-                            <div className='bg-white'>
-                                <p className='font-medium'>Focus Mode: Stopwatch</p>
-                            </div>
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Button className="bg-gray-600  hover:shadow-2xl font-semibold text-lg text-white hover:cursor-pointer" onClick={() => changeMode("timer")}>
+                            <Timer />
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side='bottom'>
+                        <div className='bg-white'>
+                            <p className='font-medium'>Focus Mode: Stopwatch</p>
+                        </div>
+                    </TooltipContent>
+                </Tooltip>
             </div>
         </div>
     )

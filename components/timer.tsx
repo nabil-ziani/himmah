@@ -68,7 +68,7 @@ const Timer = ({ changeMode }: TimerProps) => {
     return (
         <>
             <div className="h-full justify-center flex flex-col items-center">
-                <div className="font-mono flex items-center justify-center text-[126px] text-[#323238] font-[500] max-w-[321px] dark:text-white">
+                <div className=" flex items-center justify-center text-[126px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
                     <div>{minutes}</div>
                     <div>:</div>
                     <div>{extraSeconds}</div>
@@ -84,20 +84,18 @@ const Timer = ({ changeMode }: TimerProps) => {
                         Give up
                     </Button>
 
-                    <TooltipProvider delayDuration={100}>
-                        <Tooltip>
-                            <TooltipTrigger>
-                                <Button className="bg-gray-600  hover:shadow-2xl font-semibold text-lg text-white hover:cursor-default" onClick={() => { changeMode('stopwatch') }}>
-                                    <Clock className="mr-2" /> Timer
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent side='bottom'>
-                                <div className='bg-white'>
-                                    <p className='font-medium'>Focus Mode: Timer</p>
-                                </div>
-                            </TooltipContent>
-                        </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button className="bg-gray-600  hover:shadow-2xl font-semibold text-lg text-white hover:cursor-pointer" onClick={() => { changeMode('stopwatch') }}>
+                                <Clock />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent side='bottom'>
+                            <div className='bg-white'>
+                                <p className='font-medium'>Focus Mode: Timer</p>
+                            </div>
+                        </TooltipContent>
+                    </Tooltip>
 
                     {/* <button onClick={() => handlePlusClick()}>
                         <Image

@@ -20,9 +20,10 @@ const config = {
       },
     },
     extend: {
-      // fontFamily: {
-      //   sans: ["var(--font-poppins)", ...fontFamily.sans],
-      // },
+      fontFamily: {
+        sans: ["var(--font-poppins)", ...fontFamily.sans], // Default font
+        nunito: ["var(--font-nunito)", ...fontFamily.sans], // Nunito for specific elements
+      },
       backgroundSize: {
         'size-200': '200% 200%',
       },
