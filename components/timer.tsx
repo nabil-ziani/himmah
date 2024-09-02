@@ -5,7 +5,7 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react";
 
 import { Clock } from "lucide-react";
 import { Button } from "./ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface TimerProps {
     changeMode: Dispatch<SetStateAction<"timer" | "stopwatch">>

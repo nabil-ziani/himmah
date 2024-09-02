@@ -22,17 +22,11 @@ const Stopwatch = ({ changeMode }: StopwatchProps) => {
         return () => clearInterval(intervalId);
     }, [isRunning, time]);
 
-    // Hours calculation
-    const hours = Math.floor(time / 360000);
-
     // Minutes calculation
     const minutes = Math.floor((time % 360000) / 6000);
 
     // Seconds calculation
     const seconds = Math.floor((time % 6000) / 100);
-
-    // Milliseconds calculation
-    const milliseconds = time % 100;
 
     // Method to start and stop timer
     const startStop = () => {
@@ -46,18 +40,12 @@ const Stopwatch = ({ changeMode }: StopwatchProps) => {
 
     return (
         <div className="h-full justify-center flex flex-col items-center">
-            <div className="flex items-center justify-center text-[126px] text-[#323238] font-[500] dark:text-white font-poppins">
-                <div>
-                    {hours}:
-                </div>
+            <div className="flex items-center justify-center text-[126px] text-[#323238] font-semibold dark:text-white font-nunito">
                 <div>
                     {minutes.toString().padStart(2, "0")}:
                 </div>
                 <div>
-                    {seconds.toString().padStart(2, "0")}:
-                </div>
-                <div>
-                    {milliseconds.toString().padStart(2, "0")}
+                    {seconds.toString().padStart(2, "0")}
                 </div>
             </div>
 
