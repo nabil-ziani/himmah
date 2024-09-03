@@ -1,10 +1,10 @@
 'use client'
 
+import { useState } from "react"
 import { Card } from "./ui/card"
+import { Maximize2, SlidersHorizontal } from "lucide-react"
 import Stopwatch from "./stopwatch"
 import Timer from "./timer"
-import { useState } from "react"
-import { Maximize2, SlidersHorizontal } from "lucide-react"
 import FocusDialog from "./focus-dialog"
 import FocusSettingsDialog from "./focus-settings-dialog"
 
