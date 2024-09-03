@@ -40,6 +40,9 @@ const Stopwatch = ({ changeMode }: StopwatchProps) => {
 
     return (
         <div className="h-full justify-center flex flex-col items-center">
+            <div className="p-5">
+                <h2 className="text-5xl">Stopwatch</h2>
+            </div>
             <div className="flex items-center justify-center text-[126px] text-[#323238] font-semibold dark:text-white font-nunito">
                 <div>
                     {minutes.toString().padStart(2, "0")}:

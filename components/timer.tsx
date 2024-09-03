@@ -12,11 +12,6 @@ interface TimerProps {
 }
 
 const Timer = ({ changeMode }: TimerProps) => {
-    // const [volume, setVolume] = useState(0.5);
-    // const cards = ["forest", "rain", "coffee", "fireplace"];
-
-    // const [cardActive, setCardActive] = useState();
-
     const [defaultSeconds, setDefaultSeconds] = useState(1500);
     const [seconds, setSeconds] = useState(defaultSeconds);
 
@@ -24,16 +19,6 @@ const Timer = ({ changeMode }: TimerProps) => {
     let minutes: string | number = Math.floor(seconds / 60);
     minutes = minutes < 10 ? "0" + minutes : minutes;
     extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
-
-    // function handleCardClick(card) {
-    //     setCardActive(cardActive === card ? "" : card);
-    // }
-
-    // const handleVolumeChange = (e) => {
-    //     const audio = document.querySelector("audio");
-    //     setVolume(e.target.value);
-    //     audio.volume = volume;
-    // };
 
     const interval = useInterval(() => {
         setSeconds((s) => s - 1);
@@ -51,23 +36,12 @@ const Timer = ({ changeMode }: TimerProps) => {
         return interval.stop;
     }, []);
 
-    const handlePlusClick = () => {
-        setSeconds((s) => s + 300);
-        setDefaultSeconds((s) => s + 300);
-    };
-
-    const handleMinusClick = () => {
-        if (seconds <= 300) {
-            setSeconds(0);
-            return;
-        }
-        setSeconds((s) => s - 300);
-        setDefaultSeconds((s) => s - 300);
-    };
-
     return (
         <>
             <div className="h-full justify-center flex flex-col items-center">
+                <div className="p-5">
+                    <h2 className="text-5xl">Timer</h2>
+                </div>
                 <div className=" flex items-center justify-center text-[126px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
                     <div>{minutes}</div>
                     <div>:</div>
@@ -96,37 +70,8 @@ const Timer = ({ changeMode }: TimerProps) => {
                             </div>
                         </TooltipContent>
                     </Tooltip>
-
-                    {/* <button onClick={() => handlePlusClick()}>
-                        <Image
-                            src={`/images/control-icons/+.svg`}
-                            width={48}
-                            height={48}
-                            alt="Increase 5 minutes from the timer"
-                        />
-                    </button>
-                    <button onClick={() => handleMinusClick()}>
-                        <Image
-                            src={`/images/control-icons/-.svg`}
-                            width={48}
-                            height={48}
-                            alt="Decrease 5 minutes from the timer"
-                        />
-                    </button> */}
                 </div>
             </div>
-
-            {/* <div className="grid grid-cols-2 gap-[32px]">
-                {cards.map((card) => (
-                    <Card
-                        key={card}
-                        card={card}
-                        cardActive={cardActive}
-                        activeCard={(v) => handleCardClick(v)}
-                        changeCurrentVolume={(e) => handleVolumeChange(e)}
-                    />
-                ))}
-            </div> */}
         </>
     )
 }
