@@ -7,22 +7,38 @@ import Stopwatch from "./stopwatch"
 import Timer from "./timer"
 import FocusDialog from "./focus-dialog"
 import FocusSettingsDialog from "./focus-settings-dialog"
+import { Button } from "./ui/button"
 
 const FocusCard = () => {
     const [mode, setMode] = useState<'timer' | 'stopwatch'>('timer')
     const [fullScreen, setFullScreen] = useState(false)
     const [settings, setSettings] = useState(false)
 
+    const toggleMode = () => {
+        setMode((prevMode) => (prevMode === 'timer' ? 'stopwatch' : 'timer'))
+    }
+
     return (
         <>
             <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
                 <div className="flex h-[calc(100vh-250px)]">
-                    <section className="flex relative h-full flex-1 flex-col p-12 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[100vw]">
-                        <Maximize2 className="absolute top-5 right-5 cursor-pointer" color="#303030" onClick={() => setFullScreen(true)} />
-                        <SlidersHorizontal className="absolute top-5 left-5 cursor-pointer" color="#303030" onClick={() => setSettings(true)} />
+                    <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[100vw]">
+                        <div className="flex justify-between items-center cursor-pointer">
+                            <div>
+                                <SlidersHorizontal color="#303030" onClick={() => setSettings(true)} />
+                            </div>
+                            <div>
+                                <Button size={"lg"} className="bg-[#303030]/50  hover:bg-[#303030]/60 text-white text-xl hover:cursor-pointer" onClick={toggleMode}>
+                                    Change Mode
+                                </Button>
+                            </div>
+                            <div>
+                                <Maximize2 className="cursor-pointer" color="#303030" onClick={() => setFullScreen(true)} />
+                            </div>
+                        </div>
 
-                        {mode == 'timer' && <Timer changeMode={setMode} />}
-                        {mode == 'stopwatch' && <Stopwatch changeMode={setMode} />}
+                        {mode == 'timer' && <Timer />}
+                        {mode == 'stopwatch' && <Stopwatch />}
                     </section>
                 </div>
             </Card>

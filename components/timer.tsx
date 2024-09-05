@@ -1,17 +1,13 @@
 'use client'
 
 import { useInterval } from "@mantine/hooks";
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useState, useEffect } from "react";
 
-import { Clock } from "lucide-react";
+import { CircleMinus, PlusCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
-interface TimerProps {
-    changeMode: Dispatch<SetStateAction<"timer" | "stopwatch">>
-}
-
-const Timer = ({ changeMode }: TimerProps) => {
+const Timer = () => {
     const [defaultSeconds, setDefaultSeconds] = useState(1500);
     const [seconds, setSeconds] = useState(defaultSeconds);
 
@@ -36,6 +32,20 @@ const Timer = ({ changeMode }: TimerProps) => {
         return interval.stop;
     }, []);
 
+    const handlePlusClick = () => {
+        setSeconds((s) => s + 300);
+        setDefaultSeconds((s) => s + 300);
+    };
+
+    const handleMinusClick = () => {
+        if (seconds <= 300) {
+            setSeconds(0);
+            return;
+        }
+        setSeconds((s) => s - 300);
+        setDefaultSeconds((s) => s - 300);
+    };
+
     return (
         <>
             <div className="h-full justify-center flex flex-col items-center">
@@ -59,14 +69,23 @@ const Timer = ({ changeMode }: TimerProps) => {
                     </Button>
 
                     <Tooltip>
-                        <TooltipTrigger>
-                            <Button size={"lg"} className="bg-gray-600  hover:shadow-2xl text-white hover:cursor-pointer" onClick={() => { changeMode('stopwatch') }}>
-                                <Clock />
-                            </Button>
+                        <TooltipTrigger className="h-12 rounded-lg px-8 bg-slate-600  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handlePlusClick}>
+                            <PlusCircle />
                         </TooltipTrigger>
                         <TooltipContent side='bottom'>
                             <div className='bg-white'>
-                                <p className='font-medium'>Focus Mode: Timer</p>
+                                <p className='font-medium'>Increase 5 minutes</p>
+                            </div>
+                        </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger className="h-12 rounded-lg px-8 bg-slate-600  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handleMinusClick}>
+                            <CircleMinus />
+                        </TooltipTrigger>
+                        <TooltipContent side='bottom'>
+                            <div className='bg-white'>
+                                <p className='font-medium'>Decrease 5 minutes</p>
                             </div>
                         </TooltipContent>
                     </Tooltip>

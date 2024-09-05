@@ -5,11 +5,7 @@ import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { Timer } from 'lucide-react';
 
-interface StopwatchProps {
-    changeMode: Dispatch<SetStateAction<"timer" | "stopwatch">>
-}
-
-const Stopwatch = ({ changeMode }: StopwatchProps) => {
+const Stopwatch = () => {
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
 
@@ -59,19 +55,6 @@ const Stopwatch = ({ changeMode }: StopwatchProps) => {
                 <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => reset()}>
                     Reset
                 </Button>
-
-                <Tooltip>
-                    <TooltipTrigger>
-                        <Button size={"lg"} className="bg-gray-600  hover:shadow-2xl text-white hover:cursor-pointer" onClick={() => changeMode("timer")}>
-                            <Timer />
-                        </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side='bottom'>
-                        <div className='bg-white'>
-                            <p className='font-medium'>Focus Mode: Stopwatch</p>
-                        </div>
-                    </TooltipContent>
-                </Tooltip>
             </div>
         </div>
     )
