@@ -69,7 +69,7 @@ const Timer = () => {
                     </Button>
 
                     <Tooltip>
-                        <TooltipTrigger className="h-12 rounded-lg px-8 bg-slate-600  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handlePlusClick}>
+                        <TooltipTrigger className="h-12 rounded-lg px-8 bg-gray-600/80  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handlePlusClick}>
                             <PlusCircle />
                         </TooltipTrigger>
                         <TooltipContent side='bottom'>
@@ -80,7 +80,7 @@ const Timer = () => {
                     </Tooltip>
 
                     <Tooltip>
-                        <TooltipTrigger className="h-12 rounded-lg px-8 bg-slate-600  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handleMinusClick}>
+                        <TooltipTrigger className="h-12 rounded-lg px-8 bg-gray-600/80  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handleMinusClick}>
                             <CircleMinus />
                         </TooltipTrigger>
                         <TooltipContent side='bottom'>

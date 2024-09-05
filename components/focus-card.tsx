@@ -28,7 +28,7 @@ const FocusCard = () => {
                                 <SlidersHorizontal color="#303030" onClick={() => setSettings(true)} />
                             </div>
                             <div>
-                                <Button size={"lg"} className="bg-[#303030]/50  hover:bg-[#303030]/60 text-white text-xl hover:cursor-pointer" onClick={toggleMode}>
+                                <Button size={"lg"} className="bg-gray-600/60  hover:bg-gray-600/70 text-white text-xl hover:cursor-pointer" onClick={toggleMode}>
                                     Change Mode
                                 </Button>
                             </div>
