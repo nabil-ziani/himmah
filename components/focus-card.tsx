@@ -2,16 +2,14 @@
 
 import { useState } from "react"
 import { Card } from "./ui/card"
-import { Maximize2, SlidersHorizontal } from "lucide-react"
+import { SlidersHorizontal } from "lucide-react"
 import Stopwatch from "./stopwatch"
 import Timer from "./timer"
-import FocusDialog from "./focus-dialog"
 import FocusSettingsDialog from "./focus-settings-dialog"
 import { Button } from "./ui/button"
 
 const FocusCard = () => {
     const [mode, setMode] = useState<'timer' | 'stopwatch'>('timer')
-    const [fullScreen, setFullScreen] = useState(false)
     const [settings, setSettings] = useState(false)
 
     const toggleMode = () => {
@@ -32,19 +30,15 @@ const FocusCard = () => {
                                     Change Mode
                                 </Button>
                             </div>
-                            <div>
-                                <Maximize2 className="cursor-pointer" color="#303030" onClick={() => setFullScreen(true)} />
-                            </div>
                         </div>
 
                         {mode == 'timer' && <Timer />}
-                        {mode == 'stopwatch' && <Stopwatch />}
+                        {/* {mode == 'stopwatch' && <Stopwatch setScreen={setFullScreen} />} */}
                     </section>
                 </div>
             </Card>
 
             <FocusSettingsDialog isOpen={settings} setIsOpen={setSettings} />
-            <FocusDialog isOpen={fullScreen} setIsOpen={setFullScreen} />
         </>
     )
 }

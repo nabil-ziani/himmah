@@ -1,40 +1,27 @@
 'use client'
 
-import { useInterval } from "@mantine/hooks";
-import { useState, useEffect } from "react";
-
+import { useState } from "react";
 import { CircleMinus, PlusCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import FocusDialog from "./focus-dialog";
 
 const Timer = () => {
-    const [defaultSeconds, setDefaultSeconds] = useState(1500);
-    const [seconds, setSeconds] = useState(defaultSeconds);
+    const [fullScreen, setFullScreen] = useState(false);
+    const [seconds, setSeconds] = useState(1800);
 
     let extraSeconds: string | number = seconds % 60;
     let minutes: string | number = Math.floor(seconds / 60);
+
     minutes = minutes < 10 ? "0" + minutes : minutes;
     extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
 
-    const interval = useInterval(() => {
-        setSeconds((s) => s - 1);
-    }, 1000);
-
-    useEffect(() => {
-        if (Number(minutes) <= 0 && seconds <= 0) {
-            interval.stop();
-            setSeconds(defaultSeconds);
-            return;
-        }
-    }, [interval, seconds, minutes, defaultSeconds]);
-
-    useEffect(() => {
-        return interval.stop;
-    }, []);
+    const handleStart = () => {
+        setFullScreen(true);
+    };
 
     const handlePlusClick = () => {
-        setSeconds((s) => s + 300);
-        setDefaultSeconds((s) => s + 300);
+        setSeconds((s) => s + 300); // Add 5 minutes
     };
 
     const handleMinusClick = () => {
@@ -42,8 +29,7 @@ const Timer = () => {
             setSeconds(0);
             return;
         }
-        setSeconds((s) => s - 300);
-        setDefaultSeconds((s) => s - 300);
+        setSeconds((s) => s - 300); // Subtract 5 minutes
     };
 
     return (
@@ -58,16 +44,6 @@ const Timer = () => {
                     <div>{extraSeconds}</div>
                 </div>
                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
-                    <Button size={"lg"} className="bg-[#2ecc71] hover:bg-[#2ecc71]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => interval.start()}>
-                        Start
-                    </Button>
-                    <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => {
-                        interval.stop();
-                        setSeconds(defaultSeconds);
-                    }}>
-                        Give up
-                    </Button>
-
                     <Tooltip>
                         <TooltipTrigger className="h-12 rounded-lg px-8 bg-gray-600/80  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handlePlusClick}>
                             <PlusCircle />
@@ -78,6 +54,10 @@ const Timer = () => {
                             </div>
                         </TooltipContent>
                     </Tooltip>
+
+                    <Button size={"lg"} className="bg-[#2ecc71] hover:bg-[#2ecc71]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={handleStart}>
+                        Start
+                    </Button>
 
                     <Tooltip>
                         <TooltipTrigger className="h-12 rounded-lg px-8 bg-gray-600/80  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handleMinusClick}>
@@ -91,8 +71,10 @@ const Timer = () => {
                     </Tooltip>
                 </div>
             </div>
+
+            <FocusDialog isOpen={fullScreen} setIsOpen={setFullScreen} mode='timer' totalSeconds={seconds} />
         </>
-    )
+    );
 }
 
-export default Timer
+export default Timer;

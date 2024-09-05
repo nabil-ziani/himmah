@@ -2,10 +2,12 @@
 
 import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { Button } from "./ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { Timer } from 'lucide-react';
 
-const Stopwatch = () => {
+interface StopwatchProps {
+    setScreen: Dispatch<SetStateAction<boolean>>
+}
+
+const Stopwatch = ({ setScreen }: StopwatchProps) => {
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
 
@@ -26,6 +28,7 @@ const Stopwatch = () => {
 
     // Method to start and stop timer
     const startStop = () => {
+        setScreen(true)
         setIsRunning(!isRunning);
     };
 
