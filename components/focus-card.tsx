@@ -33,7 +33,7 @@ const FocusCard = () => {
                         </div>
 
                         {mode == 'timer' && <Timer />}
-                        {/* {mode == 'stopwatch' && <Stopwatch setScreen={setFullScreen} />} */}
+                        {mode == 'stopwatch' && <Stopwatch />}
                     </section>
                 </div>
             </Card>
