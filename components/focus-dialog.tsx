@@ -111,7 +111,7 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
                                         setIsRunning?.(false);
                                         setIsOpen(false);
                                     }}>
-                                        Stop Stopwatch
+                                        Give up
                                     </Button>
                                 </div>
                             </div>
