@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card } from "./ui/card"
 import { Button } from "./ui/button"
-import { SlidersHorizontal } from "lucide-react"
+import { CirclePlay, Image, SlidersHorizontal } from "lucide-react"
 
 import Stopwatch from "./stopwatch"
 import Timer from "./timer"
@@ -36,11 +36,19 @@ const FocusCard = () => {
             <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
                 <div className="flex h-[calc(100vh-250px)]">
                     <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[100vw]">
-                        <div className="flex justify-between items-center cursor-pointer">
-                            <div>
+                        <div className="flex justify-end items-center cursor-pointer">
+                            {/* <div>
                                 <SlidersHorizontal color="#303030" onClick={() => setSettings(true)} />
-                            </div>
-                            <div>
+                            </div> */}
+                            <div className="flex gap-3">
+                                <Button size={"lg"} className="bg-[#1E90FF]/60  hover:bg-[#1E90FF]/70 text-white text-xl hover:cursor-pointer">
+                                    <CirclePlay className="mr-3" />
+                                    Audio
+                                </Button>
+                                <Button size={"lg"} className="bg-[#6A0D91]/60  hover:bg-[#6A0D91]/70 text-white text-xl hover:cursor-pointer">
+                                    <Image className="mr-3" />
+                                    Background
+                                </Button>
                                 <Button size={"lg"} className="bg-gray-600/60  hover:bg-gray-600/70 text-white text-xl hover:cursor-pointer" onClick={toggleMode}>
                                     Change Mode
                                 </Button>
