@@ -9,7 +9,7 @@ export const sidebarLinks = [
     },
     {
         label: 'Focus',
-        route: '/dashboard/focus',
+        route: '/dashboard/focus?mode=timer',
     },
     {
         label: 'Friends',

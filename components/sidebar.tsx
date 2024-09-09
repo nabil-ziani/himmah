@@ -14,7 +14,7 @@ const Sidebar = ({ }) => {
         switch (route) {
             case '/dashboard':
                 return <LayoutDashboard color={color} />;
-            case '/dashboard/focus':
+            case '/dashboard/focus?mode=timer':
                 return <LucideFocus color={color} />;
             case '/dashboard/friends':
                 return <UsersRoundIcon color={color} />;

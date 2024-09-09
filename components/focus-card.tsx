@@ -1,20 +1,35 @@
 'use client'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card } from "./ui/card"
+import { Button } from "./ui/button"
 import { SlidersHorizontal } from "lucide-react"
+
 import Stopwatch from "./stopwatch"
 import Timer from "./timer"
 import FocusSettingsDialog from "./focus-settings-dialog"
-import { Button } from "./ui/button"
 
 const FocusCard = () => {
-    const [mode, setMode] = useState<'timer' | 'stopwatch'>('timer')
     const [settings, setSettings] = useState(false)
 
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const currentMode = searchParams.get('mode') || 'timer';
+    const [mode, setMode] = useState<'timer' | 'stopwatch'>(currentMode as 'timer' | 'stopwatch');
+
     const toggleMode = () => {
-        setMode((prevMode) => (prevMode === 'timer' ? 'stopwatch' : 'timer'))
-    }
+        const newMode = mode === 'timer' ? 'stopwatch' : 'timer';
+        setMode(newMode);
+        router.push(`?mode=${newMode}`, undefined)
+    };
+
+    useEffect(() => {
+        if (currentMode !== mode) {
+            setMode(currentMode as 'timer' | 'stopwatch');
+        }
+    }, [currentMode]);
 
     return (
         <>
