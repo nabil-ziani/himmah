@@ -1,20 +1,20 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from "./ui/button";
 import FocusDialog from './focus-dialog';
 
 const Stopwatch = () => {
     const [fullScreen, setFullScreen] = useState(false);
-    const [time, setTime] = useState(0);
+    const [time, setTime] = useState(0); // Tijd in honderdsten van seconden
     const [isRunning, setIsRunning] = useState(false);
 
     const minutes = Math.floor((time % 360000) / 6000);
     const seconds = Math.floor((time % 6000) / 100);
 
     const handleStart = () => {
-        setFullScreen(true);
-        setIsRunning(true)
+        setFullScreen(true); // Open de dialog
+        setIsRunning(true);  // Start de stopwatch
     };
 
     return (
@@ -25,10 +25,12 @@ const Stopwatch = () => {
                 </div>
                 <div className="flex items-center justify-center text-[126px] text-[#323238] font-semibold dark:text-white font-nunito">
                     <div>
-                        {minutes.toString().padStart(2, "0")}:
+                        00:
+                        {/* {minutes.toString().padStart(2, "0")}: */}
                     </div>
                     <div>
-                        {seconds.toString().padStart(2, "0")}
+                        00
+                        {/* {seconds.toString().padStart(2, "0")} */}
                     </div>
                 </div>
 
@@ -53,4 +55,4 @@ const Stopwatch = () => {
     )
 }
 
-export default Stopwatch
+export default Stopwatch;

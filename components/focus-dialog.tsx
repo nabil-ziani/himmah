@@ -28,8 +28,8 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
                 setMinutes((m) => m - 1);
                 setSeconds(59);
             }
-        } else if (mode === 'stopwatch') {
-            setTime?.((prevTime) => prevTime + 1); // Bijwerken van de stopwatch tijd in honderdsten van seconden
+        } else if (mode === 'stopwatch' && isRunning) {
+            setTime?.((prevTime) => prevTime + 100); // Update in honderdsten van seconden
         }
     }, 1000); // Interval van 1000 milliseconden voor volledige seconden
 
