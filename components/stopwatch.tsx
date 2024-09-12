@@ -4,7 +4,11 @@ import { useState } from 'react';
 import { Button } from "./ui/button";
 import FocusDialog from './focus-dialog';
 
-const Stopwatch = () => {
+interface StopwatchProps {
+    audio: string
+}
+
+const Stopwatch = ({ audio }: StopwatchProps) => {
     const [fullScreen, setFullScreen] = useState(false);
     const [time, setTime] = useState(0); // Tijd in honderdsten van seconden
     const [isRunning, setIsRunning] = useState(false);
@@ -50,6 +54,7 @@ const Stopwatch = () => {
                 isRunning={isRunning}
                 setIsRunning={setIsRunning}
                 setTime={setTime} // Zorg ervoor dat de tijd in de dialog kan worden bijgewerkt
+                audio={audio}
             />
         </>
     )

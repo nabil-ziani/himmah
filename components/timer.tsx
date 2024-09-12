@@ -6,7 +6,11 @@ import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import FocusDialog from "./focus-dialog";
 
-const Timer = () => {
+interface TimerProps {
+    audio: string
+}
+
+const Timer = ({ audio }: TimerProps) => {
     const [fullScreen, setFullScreen] = useState(false);
     const [seconds, setSeconds] = useState(1800);
 
@@ -72,7 +76,7 @@ const Timer = () => {
                 </div>
             </div>
 
-            <FocusDialog isOpen={fullScreen} setIsOpen={setFullScreen} mode='timer' totalSeconds={seconds} />
+            <FocusDialog isOpen={fullScreen} setIsOpen={setFullScreen} mode='timer' totalSeconds={seconds} audio={audio} />
         </>
     );
 }

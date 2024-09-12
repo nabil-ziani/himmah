@@ -4,14 +4,35 @@ import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card } from "./ui/card"
 import { Button } from "./ui/button"
-import { CirclePlay, Image, SlidersHorizontal } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
+import { CirclePlay, Image } from "lucide-react"
 
 import Stopwatch from "./stopwatch"
 import Timer from "./timer"
-import FocusSettingsDialog from "./focus-settings-dialog"
+// import FocusSettingsDialog from "./focus-settings-dialog"
+
+const audioOptions = [
+    {
+        label: 'Forest Sound',
+        value: 'forest'
+    },
+    {
+        label: 'Rain Sound',
+        value: 'rain'
+    },
+    {
+        label: 'Coffee Sound',
+        value: 'coffee'
+    },
+    {
+        label: 'Fireplace Sound',
+        value: 'fireplace'
+    }
+]
 
 const FocusCard = () => {
-    const [settings, setSettings] = useState(false)
+    // const [settings, setSettings] = useState(false)
+    const [audio, setAudio] = useState('forest')
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -41,10 +62,22 @@ const FocusCard = () => {
                                 <SlidersHorizontal color="#303030" onClick={() => setSettings(true)} />
                             </div> */}
                             <div className="flex gap-3">
-                                <Button size={"lg"} className="bg-[#1E90FF]/60  hover:bg-[#1E90FF]/70 text-white text-xl hover:cursor-pointer">
-                                    <CirclePlay className="mr-3" />
-                                    Audio
-                                </Button>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button size={"lg"} className="bg-[#1E90FF]/60  hover:bg-[#1E90FF]/70 text-white text-xl hover:cursor-pointer">
+                                            <CirclePlay className="mr-3" />
+                                            Audio
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-56">
+                                        <DropdownMenuLabel></DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuRadioGroup value={audio} onValueChange={setAudio}>
+                                            {audioOptions.map((audio) => <DropdownMenuRadioItem value={audio.value}>{audio.label}</DropdownMenuRadioItem>)}
+                                        </DropdownMenuRadioGroup>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+
                                 <Button size={"lg"} className="bg-[#6A0D91]/60  hover:bg-[#6A0D91]/70 text-white text-xl hover:cursor-pointer">
                                     <Image className="mr-3" />
                                     Background
@@ -55,13 +88,13 @@ const FocusCard = () => {
                             </div>
                         </div>
 
-                        {mode == 'timer' && <Timer />}
-                        {mode == 'stopwatch' && <Stopwatch />}
+                        {mode == 'timer' && <Timer audio={audio} />}
+                        {mode == 'stopwatch' && <Stopwatch audio={audio} />}
                     </section>
                 </div>
             </Card>
 
-            <FocusSettingsDialog isOpen={settings} setIsOpen={setSettings} />
+            {/* <FocusSettingsDialog isOpen={settings} setIsOpen={setSettings} /> */}
         </>
     )
 }

@@ -14,9 +14,10 @@ interface FocusDialogProps {
     isRunning?: boolean, // Voor stopwatch functionaliteit
     setIsRunning?: Dispatch<SetStateAction<boolean>>,
     setTime?: Dispatch<SetStateAction<number>> // Om de tijd bij te werken
+    audio: string
 }
 
-const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, setIsRunning, setTime }: FocusDialogProps) => {
+const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, setIsRunning, setTime, audio }: FocusDialogProps) => {
     const [seconds, setSeconds] = useState<number>(mode === 'timer' ? totalSeconds! % 60 : Number(time?.seconds));
     const [minutes, setMinutes] = useState<number>(mode === 'timer' ? Math.floor(totalSeconds! / 60) : Number(time?.minutes));
 
@@ -116,6 +117,13 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
                                 </div>
                             </div>
                         )}
+
+                        <audio
+                            className="hidden"
+                            src={`/audios/${audio}.wav`}
+                            loop={true}
+                            autoPlay={true}
+                        />
                     </motion.div>
                 </div>
             )}
