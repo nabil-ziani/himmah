@@ -4,13 +4,12 @@ import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card } from "./ui/card"
 import { Button } from "./ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuPortal, DropdownMenuSubContent } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuPortal, DropdownMenuSubContent } from "@/components/ui/dropdown-menu"
 import { CirclePlay, Image } from "lucide-react"
 
 import Stopwatch from "./stopwatch"
 import Timer from "./timer"
 import { createClient } from "@/utils/supabase/client";
-import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 
 type AudioFile = {
     name: string;
@@ -118,7 +117,6 @@ const FocusCard = () => {
                                                         </DropdownMenuSubContent>
                                                     </DropdownMenuPortal>
                                                 </DropdownMenuSub>
-                                                {/* </DropdownMenuRadioItem> */}
                                             </DropdownMenuRadioGroup>
                                         ))}
                                     </DropdownMenuContent>
