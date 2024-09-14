@@ -120,7 +120,7 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
 
                         <audio
                             className="hidden"
-                            src={`/audios/${audio}.wav`}
+                            src={audio}
                             loop={true}
                             autoPlay={true}
                         />
