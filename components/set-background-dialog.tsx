@@ -124,7 +124,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                             </section>
                         )}
 
-                        <section id="image-grid" className=" flex h-full w-full flex-col items-center justify-center bg-slate-200 text-[#303030] max-sm:hidden rounded-r-2xl">
+                        <section id="image-grid" className=" flex h-full w-full flex-col text-[#303030] max-sm:hidden rounded-r-2xl">
                             <h3 className="text-3xl font-bold p-8">
                                 {activeSubcategory}
                             </h3>

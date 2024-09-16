@@ -32,7 +32,8 @@ const Sidebar = ({ }) => {
             <div className="flex flex-1 gap-6 justify-between flex-col">
                 <div className='flex flex-col gap-6'>
                     {sidebarLinks.map((link) => {
-                        const isActive = pathname === link.route;
+                        const isActive = pathname.split('?')[0] === link.route.split('?')[0];
+
                         return (
                             <Link href={`${link.route}`} key={link.label} className={cn('flex gap-4 items-center p-4 rounded-lg justify-start text-[#303030] hover:bg-white/15', { 'bg-white hover:bg-white': isActive })}>
                                 {renderIcon(link.route, isActive ? '#303030' : 'white')}
