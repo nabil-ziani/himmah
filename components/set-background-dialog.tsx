@@ -2,7 +2,8 @@
 
 import { getCategories, getBackgrounds } from "@/lib/utils"
 import { createClient } from "@/utils/supabase/client"
-import { ArrowRightCircle, CircleChevronRight, CircleX } from "lucide-react"
+import { CircleChevronRight, CircleX } from "lucide-react"
+import Image from "next/image"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
 interface SetBackgroundDialogProps {
@@ -31,10 +32,18 @@ type Option =
         images?: undefined;
     }
 
+type Subcategory = {
+    name: string;
+    images: {
+        name: string;
+        url: string;
+    }[];
+}
+
 const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) => {
     const [categories, setCategories] = useState<Option[]>([])
     const [activeCategory, setActiveCategory] = useState('')
-    const [activeSubcategory, setActiveSubcategory] = useState('')
+    const [activeSubcategory, setActiveSubcategory] = useState<Subcategory>()
 
     const supabase = createClient()
 
@@ -83,6 +92,8 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
         fetchBackgroundOptions();
     }, []);
 
+    console.log(categories)
+
     return (
         <>
             {isOpen && (
@@ -107,28 +118,41 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                             </div>
                         </section>
 
-                        {activeCategory && (
-                            <section id="subcategories" className=" flex h-full w-fit flex-col justify-around bg-[#303030]/90 text-white max-sm:hidden lg:w-[500px] relative">
-                                <CircleChevronRight className="absolute top-10 -left-2" />
-                                <div className='flex flex-col gap-4'>
-                                    {categories.find(c => c.label === activeCategory)!.subcategories.map((subcategory) => {
-                                        const isActive = subcategory.name === activeSubcategory
+                        {/* Check if subcategories is not empty (as is the case for "Objects")  */}
+                        {activeCategory && categories.find(c => c.label === activeCategory)!.subcategories.length > 0 && (
+                            <>
+                                <section id="subcategories" className=" flex h-full w-fit flex-col justify-start pt-28 bg-[#303030]/90 text-white max-sm:hidden lg:w-[350px] relative">
+                                    <CircleChevronRight className="absolute top-10 -left-2" />
+                                    <div className='flex flex-col gap-4'>
+                                        {categories.find(c => c.label === activeCategory)!.subcategories.map((subcategory) => {
+                                            const isActive = subcategory.name === activeSubcategory?.name
 
-                                        return (
-                                            <p key={subcategory.name} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => setActiveSubcategory(subcategory.name)}>
-                                                {subcategory.name}
-                                            </p>
-                                        )
-                                    })}
-                                </div>
-                            </section>
+                                            return (
+                                                <p key={subcategory.name} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => setActiveSubcategory(subcategory)}>
+                                                    {subcategory.name}
+                                                </p>
+                                            )
+                                        })}
+                                    </div>
+                                </section>
+                                <section id="image-grid" className=" flex h-full w-full flex-col text-[#303030] max-sm:hidden rounded-r-2xl">
+                                    <h3 className="text-3xl font-bold p-8 text-center">
+                                        {activeSubcategory?.name}
+                                    </h3>
+                                    <div className="grid grid-cols-3 px-5 overflow-y-scroll">
+                                        {activeSubcategory?.images.map(img => (
+                                            <Image
+                                                className="p-2"
+                                                src={img.url}
+                                                alt={img.name}
+                                                width={400}
+                                                height={200}
+                                            />
+                                        ))}
+                                    </div>
+                                </section>
+                            </>
                         )}
-
-                        <section id="image-grid" className=" flex h-full w-full flex-col text-[#303030] max-sm:hidden rounded-r-2xl">
-                            <h3 className="text-3xl font-bold p-8">
-                                {activeSubcategory}
-                            </h3>
-                        </section>
                     </div>
                 </div>
             )}
