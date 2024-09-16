@@ -10,6 +10,7 @@ import { CirclePlay, Image } from "lucide-react"
 import Stopwatch from "./stopwatch"
 import Timer from "./timer"
 import { createClient } from "@/utils/supabase/client";
+import SetBackgroundDialog from "./set-background-dialog";
 
 type AudioFile = {
     name: string;
@@ -22,8 +23,10 @@ type AudioOption = {
 };
 
 const FocusCard = () => {
+    const [background, setBackground] = useState('')
     const [audio, setAudio] = useState('Weather')
     const [audioOptions, setAudioOptions] = useState<AudioOption[]>([]);
+    const [backgroundDialog, setBackgroundDialog] = useState(false)
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -122,7 +125,7 @@ const FocusCard = () => {
                                     </DropdownMenuContent>
                                 </DropdownMenu>
 
-                                <Button size={"lg"} className="bg-[#6A0D91]/60  hover:bg-[#6A0D91]/70 text-white text-xl hover:cursor-pointer">
+                                <Button size={"lg"} className="bg-[#6A0D91]/60  hover:bg-[#6A0D91]/70 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
                                     <Image className="mr-3" />
                                     Background
                                 </Button>
@@ -134,6 +137,8 @@ const FocusCard = () => {
 
                         {mode == 'timer' && <Timer audio={audio} />}
                         {mode == 'stopwatch' && <Stopwatch audio={audio} />}
+
+                        <SetBackgroundDialog isOpen={backgroundDialog} setIsOpen={setBackgroundDialog} setBackground={setBackground} />
                     </section>
                 </div>
             </Card>
