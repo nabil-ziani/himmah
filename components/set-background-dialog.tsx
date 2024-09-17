@@ -2,7 +2,7 @@
 
 import { getCategories, getBackgrounds } from "@/lib/utils"
 import { createClient } from "@/utils/supabase/client"
-import { CircleChevronRight, CircleX } from "lucide-react"
+import { CircleChevronRight, CircleX, Loader2 } from "lucide-react"
 import Image from "next/image"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 
@@ -121,15 +121,21 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                                 <h3 className="text-3xl font-bold p-8">
                                     Backgrounds
                                 </h3>
-                                {categories.map((category) => {
-                                    const isActive = category.label === activeCategory
+                                {categories.length > 0 ?
+                                    categories.map((category) => {
+                                        const isActive = category.label === activeCategory
 
-                                    return (
-                                        <p key={category.label} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleCategoryChange(category.label)}>
-                                            {category.label}
-                                        </p>
-                                    )
-                                })}
+                                        return (
+                                            <p key={category.label} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleCategoryChange(category.label)}>
+                                                {category.label}
+                                            </p>
+                                        )
+                                    })
+                                    :
+                                    <div className="flex justify-center items-center">
+                                        <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+                                    </div>
+                                }
                             </div>
                         </section>
 
