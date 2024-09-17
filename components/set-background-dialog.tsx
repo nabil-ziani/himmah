@@ -44,6 +44,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
     const [categories, setCategories] = useState<Option[]>([])
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSubcategory, setActiveSubcategory] = useState<Subcategory>()
+    const [loading, setLoading] = useState(false)
 
     const supabase = createClient()
 
@@ -62,6 +63,8 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                 { label: 'Objects' },
                 { label: 'Structures' }
             ];
+
+            setLoading(true);
 
             const options = await Promise.all(
                 categoriesList.map(async (categoryObj) => {
@@ -87,12 +90,24 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
             );
 
             setCategories(options);
+            setLoading(false);
         };
 
         fetchBackgroundOptions();
     }, []);
 
-    console.log(categories)
+    const handleCategoryChange = (categoryLabel: string) => {
+        setLoading(true);
+        setActiveCategory(categoryLabel);
+        setActiveSubcategory(undefined); // Reset subcategory
+        setLoading(false);
+    };
+
+    const handleSubcategoryChange = (subcategory: Subcategory) => {
+        setLoading(true);
+        setActiveSubcategory(subcategory);
+        setLoading(false);
+    };
 
     return (
         <>
@@ -110,7 +125,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                                     const isActive = category.label === activeCategory
 
                                     return (
-                                        <p key={category.label} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => setActiveCategory(category.label)}>
+                                        <p key={category.label} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleCategoryChange(category.label)}>
                                             {category.label}
                                         </p>
                                     )
@@ -128,27 +143,33 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                                             const isActive = subcategory.name === activeSubcategory?.name
 
                                             return (
-                                                <p key={subcategory.name} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => setActiveSubcategory(subcategory)}>
+                                                <p key={subcategory.name} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleSubcategoryChange(subcategory)}>
                                                     {subcategory.name}
                                                 </p>
                                             )
                                         })}
                                     </div>
                                 </section>
-                                <section id="image-grid" className=" flex h-full w-full flex-col text-[#303030] max-sm:hidden rounded-r-2xl">
+                                <section id="image-grid" className=" flex h-full w-full flex-col text-[#303030] max-sm:hidden rounded-r-2xl scroll-pb-10">
                                     <h3 className="text-3xl font-bold p-8 text-center">
                                         {activeSubcategory?.name}
                                     </h3>
-                                    <div className="grid grid-cols-3 px-5 overflow-y-scroll">
-                                        {activeSubcategory?.images.map(img => (
-                                            <Image
-                                                className="p-2"
-                                                src={img.url}
-                                                alt={img.name}
-                                                width={400}
-                                                height={200}
-                                            />
-                                        ))}
+                                    <div className="grid grid-cols-3 px-5 overflow-y-auto max-h-[70vh]">
+                                        {loading ? (
+                                            <p>Loading...</p>
+                                        ) : (
+                                            activeSubcategory?.images.map(img => (
+                                                <Image
+                                                    key={img.name}
+                                                    className="p-2 object-cover h-64 w-120 rounded-2xl cursor-pointer"
+                                                    src={img.url}
+                                                    alt={img.name}
+                                                    width={400}
+                                                    height={200}
+                                                    priority
+                                                />
+                                            ))
+                                        )}
                                     </div>
                                 </section>
                             </>
