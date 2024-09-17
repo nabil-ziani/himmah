@@ -44,7 +44,8 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
     const [categories, setCategories] = useState<Option[]>([])
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSubcategory, setActiveSubcategory] = useState<Subcategory>()
-    const [loading, setLoading] = useState(false)
+    const [loadedImages, setLoadedImages] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     const supabase = createClient()
 
@@ -63,8 +64,6 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                 { label: 'Objects' },
                 { label: 'Structures' }
             ];
-
-            setLoading(true);
 
             const options = await Promise.all(
                 categoriesList.map(async (categoryObj) => {
@@ -90,23 +89,33 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
             );
 
             setCategories(options);
-            setLoading(false);
         };
 
         fetchBackgroundOptions();
     }, []);
 
     const handleCategoryChange = (categoryLabel: string) => {
-        setLoading(true);
         setActiveCategory(categoryLabel);
-        setActiveSubcategory(undefined); // Reset subcategory
-        setLoading(false);
+        setActiveSubcategory(undefined);
     };
 
     const handleSubcategoryChange = (subcategory: Subcategory) => {
-        setLoading(true);
         setActiveSubcategory(subcategory);
-        setLoading(false);
+    };
+
+    useEffect(() => {
+        // Reset loading state when subcategory changes
+        if (activeSubcategory) {
+            setLoadedImages(0);
+            setLoading(true);
+        }
+    }, [activeSubcategory]);
+
+    const handleImageLoad = () => {
+        setLoadedImages((prev) => prev + 1);
+        if (activeSubcategory && loadedImages + 1 === activeSubcategory.images.length) {
+            setLoading(false);  // All images are loaded
+        }
     };
 
     return (
@@ -156,28 +165,31 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                                         })}
                                     </div>
                                 </section>
-                                <section id="image-grid" className=" flex h-full w-full flex-col text-[#303030] max-sm:hidden rounded-r-2xl scroll-pb-10">
-                                    <h3 className="text-3xl font-bold p-8 text-center">
-                                        {activeSubcategory?.name}
-                                    </h3>
-                                    <div className="grid grid-cols-3 px-5 overflow-y-auto max-h-[70vh]">
-                                        {loading ? (
-                                            <p>Loading...</p>
-                                        ) : (
-                                            activeSubcategory?.images.map(img => (
-                                                <Image
-                                                    key={img.name}
-                                                    className="p-2 object-cover h-64 w-120 rounded-2xl cursor-pointer"
-                                                    src={img.url}
-                                                    alt={img.name}
-                                                    width={400}
-                                                    height={200}
-                                                    priority
-                                                />
-                                            ))
-                                        )}
-                                    </div>
-                                </section>
+                                {activeSubcategory && (
+                                    <section id="image-grid" className=" flex h-full w-full flex-col text-[#303030] max-sm:hidden rounded-r-2xl scroll-pb-10">
+                                        <h3 className="text-3xl font-bold p-8 text-center">
+                                            {activeSubcategory.name}
+                                        </h3>
+                                        <div className="grid grid-cols-3 px-5 overflow-y-auto max-h-[70vh]">
+                                            {activeSubcategory.images.map(img => (
+                                                <div className="relative cursor-pointer">
+                                                    <Image
+                                                        key={img.name}
+                                                        className="p-2 object-cover h-64 w-120 rounded-2xl"
+                                                        src={img.url}
+                                                        alt={img.name}
+                                                        width={400}
+                                                        height={200}
+                                                        quality={75}
+                                                        priority
+                                                        onLoadingComplete={handleImageLoad}
+                                                    />
+                                                    <div className="bg-white h-6 w-6 absolute top-5 left-5 rounded-md"></div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </section>
+                                )}
                             </>
                         )}
                     </div>
