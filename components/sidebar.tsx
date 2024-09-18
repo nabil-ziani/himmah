@@ -5,7 +5,7 @@ import { sidebarLinks } from '@/constants'
 import { usePathname } from 'next/navigation'
 
 import Link from 'next/link';
-import { LayoutDashboard, LucideFocus, Settings2Icon, UsersRoundIcon } from 'lucide-react';
+import { ClipboardList, LayoutDashboard, ListTodo, LucideFocus, Settings2Icon, UsersRoundIcon } from 'lucide-react';
 import LogoutButton from './logout-button';
 
 const Sidebar = ({ }) => {
@@ -17,6 +17,8 @@ const Sidebar = ({ }) => {
                 return <LayoutDashboard color={color} />;
             case '/dashboard/focus?mode=timer':
                 return <LucideFocus color={color} />;
+            case '/dashboard/tasks':
+                return <ClipboardList color={color} />
             case '/dashboard/friends':
                 return <UsersRoundIcon color={color} />;
             case '/dashboard/settings':

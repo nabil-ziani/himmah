@@ -1,18 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { GoGoal } from "react-icons/go";
 import { Dispatch, SetStateAction } from "react";
-// import { IoCloseCircle } from "react-icons/io5";
-import Image from "next/image";
+import CreateTaskForm from "./forms/create-task-form";
 
 interface SpringModalProps {
     isOpen: boolean,
     setIsOpen: Dispatch<SetStateAction<boolean>>
-    title: string
-    description: string
-    image: string
 }
 
-const SpringModal = ({ isOpen, setIsOpen, title, description, image }: SpringModalProps) => {
+const SpringModal = ({ isOpen, setIsOpen }: SpringModalProps) => {
     return (
         <AnimatePresence>
             {isOpen && (
@@ -28,20 +23,14 @@ const SpringModal = ({ isOpen, setIsOpen, title, description, image }: SpringMod
                         animate={{ scale: 1, rotate: "0deg" }}
                         exit={{ scale: 0, rotate: "0deg" }}
                         onClick={(e) => e.stopPropagation()}
-                        className="bg-gradient-to-br to-[#f6ce69] from-[#f86d6d] text-white p-6 rounded-lg w-full max-w-lg shadow-xl cursor-default relative overflow-hidden"
+                        className="bg-gray-900/60 text-white p-6 rounded-lg w-full max-w-lg shadow-xl cursor-default relative overflow-hidden"
                     >
-                        <GoGoal className="text-white/10 rotate-12 text-[250px] absolute z-0 -top-24 -left-24" />
-                        {/* <IoCloseCircle className="text-white/50 text-[30px] absolute top-3 right-3 hover:cursor-pointer" onClick={() => setIsOpen(false)} /> */}
+                        {/* <GrTask className="text-white/10 rotate-12 text-[250px] absolute z-0 -top-10 -left-10" /> */}
                         <div className="relative z-10">
-                            <h3 className="text-4xl font-bold text-center mb-2">
-                                {title}
+                            <h3 className="text-4xl font-bold text-center mb-4">
+                                Create Task 📋
                             </h3>
-                            <div className="mb-2 mt-4 rounded-full text-3xl grid place-items-center mx-auto">
-                                <Image src={image} alt={title} height={100} width={100} unoptimized />
-                            </div>
-                            <p className="text-center mt-4 w-[70%] mx-auto">
-                                {description}
-                            </p>
+                            <CreateTaskForm setIsOpen={setIsOpen} />
                         </div>
                     </motion.div>
                 </motion.div>

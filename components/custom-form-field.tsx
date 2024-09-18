@@ -17,7 +17,7 @@ import {
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Checkbox } from "./ui/checkbox";
-// import { Textarea } from "../ui/textarea";
+import { Textarea } from "./ui/textarea";
 
 export enum FormFieldType {
     INPUT = "input",
@@ -63,6 +63,8 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                     <FormControl>
                         <>
                             <Input
+                                type={props.type}
+                                onChange={props.onChange}
                                 placeholder={props.placeholder}
                                 {...field}
                                 className="shad-input border-0"
@@ -74,17 +76,17 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                     </FormControl>
                 </div>
             );
-        // case FormFieldType.TEXTAREA:
-        //     return (
-        //         <FormControl>
-        //             <Textarea
-        //                 placeholder={props.placeholder}
-        //                 {...field}
-        //                 className="shad-textArea"
-        //                 disabled={props.disabled}
-        //             />
-        //         </FormControl>
-        //     );
+        case FormFieldType.TEXTAREA:
+            return (
+                <FormControl>
+                    <Textarea
+                        placeholder={props.placeholder}
+                        {...field}
+                        className="shad-textArea"
+                        disabled={props.disabled}
+                    />
+                </FormControl>
+            );
         case FormFieldType.PHONE_INPUT:
             return (
                 <FormControl>

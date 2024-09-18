@@ -168,6 +168,10 @@
         @apply bg-white text-[#303030] h-11 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
     }
 
+    .shad-textArea {
+        @apply bg-white text-[#303030] focus-visible:ring-0 focus-visible:ring-offset-0 !important;
+    }
+
     .shad-combobox-item {
         @apply data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 !important;
     }

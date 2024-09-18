@@ -20,24 +20,6 @@ export default async function SettingsPage() {
                 <h1 className='font-bold leading-none text-[#303030] text-4xl'>Settings</h1>
                 <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
                     <div className="flex h-[calc(100vh-250px)]">
-                        {/* SIDEBAR */}
-                        {/* <section className="sticky left-0 top-0 flex h-full w-fit flex-col justify-between bg-[#303030] p-6 text-white lg:w-[264px] rounded-l-2xl">
-                            <div className="flex flex-1 flex-col gap-6">
-                                <Link href='/dashboard/settings' className={cn('flex gap-4 items-center p-4 rounded-lg justify-start text-[#303030]')}>
-                                    <UserRoundPen color='white' />
-                                    <p className={`text-md font-semibold max-lg:hidden text-white`}>
-                                        Profile
-                                    </p>
-                                </Link>
-                                <Link href='/dashboard/settings/config' className={cn('flex gap-4 items-center p-4 rounded-lg justify-start text-[#303030]')}>
-                                    <Settings color='white' />
-                                    <p className={`text-md font-semibold max-lg:hidden text-white`}>
-                                        Configuration
-                                    </p>
-                                </Link>
-                            </div>
-                        </section> */}
-                        {/* FORMS */}
                         <section className="flex relative h-full flex-1 flex-col p-12 max-md:pb-14 sm:px-14 overflow-hidden w-[50vw]">
                             <UpdateProfileForm user={user} />
                             <ConfigurationForm />

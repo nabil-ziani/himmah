@@ -12,6 +12,10 @@ export const sidebarLinks = [
         route: '/dashboard/focus?mode=timer',
     },
     {
+        label: 'Tasks',
+        route: '/dashboard/tasks'
+    },
+    {
         label: 'Friends',
         route: '/dashboard/friends',
     },
