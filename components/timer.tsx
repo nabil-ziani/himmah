@@ -8,9 +8,10 @@ import FocusDialog from "./focus-dialog";
 
 interface TimerProps {
     audio: string
+    backgrounds: string[]
 }
 
-const Timer = ({ audio }: TimerProps) => {
+const Timer = ({ audio, backgrounds }: TimerProps) => {
     const [fullScreen, setFullScreen] = useState(false);
     const [seconds, setSeconds] = useState(1800);
 
@@ -76,7 +77,7 @@ const Timer = ({ audio }: TimerProps) => {
                 </div>
             </div>
 
-            <FocusDialog isOpen={fullScreen} setIsOpen={setFullScreen} mode='timer' totalSeconds={seconds} audio={audio} />
+            <FocusDialog isOpen={fullScreen} setIsOpen={setFullScreen} mode='timer' totalSeconds={seconds} audio={audio} backgrounds={backgrounds} />
         </>
     );
 }

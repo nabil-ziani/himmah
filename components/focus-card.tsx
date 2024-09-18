@@ -135,10 +135,10 @@ const FocusCard = () => {
                             </div>
                         </div>
 
-                        {mode == 'timer' && <Timer audio={audio} />}
-                        {mode == 'stopwatch' && <Stopwatch audio={audio} />}
+                        {mode == 'timer' && <Timer audio={audio} backgrounds={backgrounds} />}
+                        {mode == 'stopwatch' && <Stopwatch audio={audio} backgrounds={backgrounds} />}
 
-                        <SetBackgroundDialog isOpen={backgroundDialog} setIsOpen={setBackgroundDialog} setBackgrounds={setBackgrounds} />
+                        <SetBackgroundDialog isOpen={backgroundDialog} setIsOpen={setBackgroundDialog} backgrounds={backgrounds} setBackgrounds={setBackgrounds} />
                     </section>
                 </div>
             </Card>

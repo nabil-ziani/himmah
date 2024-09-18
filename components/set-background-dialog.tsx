@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react"
 interface SetBackgroundDialogProps {
     isOpen: boolean,
     setIsOpen: Dispatch<SetStateAction<boolean>>
+    backgrounds: string[]
     setBackgrounds: Dispatch<SetStateAction<string[]>>
 }
 
@@ -40,11 +41,10 @@ type Subcategory = {
     }[];
 }
 
-const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) => {
+const SetBackgroundDialog = ({ isOpen, setIsOpen, backgrounds, setBackgrounds }: SetBackgroundDialogProps) => {
     const [categories, setCategories] = useState<Option[]>([])
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSubcategory, setActiveSubcategory] = useState<Subcategory>()
-    const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([])
 
     const supabase = createClient()
 
@@ -103,7 +103,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
     };
 
     const handleSelectBackground = (img: any) => {
-        setSelectedBackgrounds(prev =>
+        setBackgrounds(prev =>
             prev.includes(img.url)
                 ? prev.filter(url => url !== img.url) // Verwijder de URL als hij al geselecteerd is
                 : [...prev, img.url] // Voeg de URL toe als hij nog niet geselecteerd is
@@ -166,7 +166,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                                             {activeSubcategory.images.map(img => (
                                                 <div className={`relative cursor-pointer`} key={img.name} >
                                                     <Image
-                                                        className={`m-2 object-cover h-64 w-120 rounded-2xl ${selectedBackgrounds.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
+                                                        className={`m-2 object-cover h-64 w-120 rounded-2xl ${backgrounds.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
                                                         src={img.url}
                                                         alt={img.name}
                                                         width={400}
@@ -175,7 +175,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                                                         priority={true}
                                                         onClick={() => handleSelectBackground(img)}
                                                     />
-                                                    <div className={`${selectedBackgrounds.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-5 left-5 rounded-md`}></div>
+                                                    <div className={`${backgrounds.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-5 left-5 rounded-md`}></div>
                                                 </div>
                                             ))}
                                         </div>

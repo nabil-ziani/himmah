@@ -15,11 +15,14 @@ interface FocusDialogProps {
     setIsRunning?: Dispatch<SetStateAction<boolean>>,
     setTime?: Dispatch<SetStateAction<number>> // Om de tijd bij te werken
     audio: string
+    backgrounds: string[]
 }
 
-const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, setIsRunning, setTime, audio }: FocusDialogProps) => {
+const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, setIsRunning, setTime, audio, backgrounds }: FocusDialogProps) => {
     const [seconds, setSeconds] = useState<number>(mode === 'timer' ? totalSeconds! % 60 : Number(time?.seconds));
     const [minutes, setMinutes] = useState<number>(mode === 'timer' ? Math.floor(totalSeconds! / 60) : Number(time?.minutes));
+    const [backgroundIndex, setBackgroundIndex] = useState(0);
+    const [currentBackground, setCurrentBackground] = useState<string>(backgrounds[0]);
 
     const interval = useInterval(() => {
         if (mode === 'timer') {
@@ -67,6 +70,18 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
     const currentMinutes = Math.floor((Number(time?.minutes) || 0) + seconds / 60);
     const currentSeconds = seconds % 60;
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setBackgroundIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
+        }, 60000); // Verander achtergrond elke minuut
+
+        return () => clearInterval(interval); // Opruimen van interval bij unmount
+    }, [backgrounds.length]);
+
+    useEffect(() => {
+        setCurrentBackground(backgrounds[backgroundIndex]);
+    }, [backgroundIndex, backgrounds]);
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -78,6 +93,7 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
                         transition={{ duration: 1, ease: "easeInOut" }}
                         onClick={(e) => e.stopPropagation()}
                         className="w-full h-full bg-white relative grid place-items-center"
+                        style={{ backgroundImage: `url(${currentBackground})`, backgroundSize: 'cover' }} // Stel de achtergrond in
                     >
                         {/* Timer-modus */}
                         {mode === 'timer' && (

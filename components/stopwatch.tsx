@@ -6,9 +6,10 @@ import FocusDialog from './focus-dialog';
 
 interface StopwatchProps {
     audio: string
+    backgrounds: string[]
 }
 
-const Stopwatch = ({ audio }: StopwatchProps) => {
+const Stopwatch = ({ audio, backgrounds }: StopwatchProps) => {
     const [fullScreen, setFullScreen] = useState(false);
     const [time, setTime] = useState(0); // Tijd in honderdsten van seconden
     const [isRunning, setIsRunning] = useState(false);
@@ -55,6 +56,7 @@ const Stopwatch = ({ audio }: StopwatchProps) => {
                 setIsRunning={setIsRunning}
                 setTime={setTime} // Zorg ervoor dat de tijd in de dialog kan worden bijgewerkt
                 audio={audio}
+                backgrounds={backgrounds}
             />
         </>
     )
