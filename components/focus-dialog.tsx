@@ -73,7 +73,7 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
     useEffect(() => {
         const interval = setInterval(() => {
             setBackgroundIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
-        }, 60000); // Verander achtergrond elke minuut
+        }, 10000); // Verander achtergrond elke minuut
 
         return () => clearInterval(interval); // Opruimen van interval bij unmount
     }, [backgrounds.length]);
