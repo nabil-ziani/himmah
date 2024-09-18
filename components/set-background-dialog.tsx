@@ -9,7 +9,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react"
 interface SetBackgroundDialogProps {
     isOpen: boolean,
     setIsOpen: Dispatch<SetStateAction<boolean>>
-    setBackground: Dispatch<SetStateAction<string>>
+    setBackgrounds: Dispatch<SetStateAction<string[]>>
 }
 
 type Option =
@@ -44,8 +44,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
     const [categories, setCategories] = useState<Option[]>([])
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSubcategory, setActiveSubcategory] = useState<Subcategory>()
-    const [loadedImages, setLoadedImages] = useState(0);
-    const [loading, setLoading] = useState(true);
+    const [selectedBackgrounds, setSelectedBackgrounds] = useState<string[]>([])
 
     const supabase = createClient()
 
@@ -103,20 +102,13 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
         setActiveSubcategory(subcategory);
     };
 
-    useEffect(() => {
-        // Reset loading state when subcategory changes
-        if (activeSubcategory) {
-            setLoadedImages(0);
-            setLoading(true);
-        }
-    }, [activeSubcategory]);
-
-    const handleImageLoad = () => {
-        setLoadedImages((prev) => prev + 1);
-        if (activeSubcategory && loadedImages + 1 === activeSubcategory.images.length) {
-            setLoading(false);  // All images are loaded
-        }
-    };
+    const handleSelectBackground = (img: any) => {
+        setSelectedBackgrounds(prev =>
+            prev.includes(img.url)
+                ? prev.filter(url => url !== img.url) // Verwijder de URL als hij al geselecteerd is
+                : [...prev, img.url] // Voeg de URL toe als hij nog niet geselecteerd is
+        );
+    }
 
     return (
         <>
@@ -172,19 +164,18 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen }: SetBackgroundDialogProps) =>
                                         </h3>
                                         <div className="grid grid-cols-3 px-5 overflow-y-auto max-h-[70vh]">
                                             {activeSubcategory.images.map(img => (
-                                                <div className="relative cursor-pointer">
+                                                <div className={`relative cursor-pointer`} key={img.name} >
                                                     <Image
-                                                        key={img.name}
-                                                        className="p-2 object-cover h-64 w-120 rounded-2xl"
+                                                        className={`m-2 object-cover h-64 w-120 rounded-2xl ${selectedBackgrounds.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
                                                         src={img.url}
                                                         alt={img.name}
                                                         width={400}
                                                         height={200}
                                                         quality={75}
-                                                        priority
-                                                        onLoadingComplete={handleImageLoad}
+                                                        priority={true}
+                                                        onClick={() => handleSelectBackground(img)}
                                                     />
-                                                    <div className="bg-white h-6 w-6 absolute top-5 left-5 rounded-md"></div>
+                                                    <div className={`${selectedBackgrounds.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-5 left-5 rounded-md`}></div>
                                                 </div>
                                             ))}
                                         </div>

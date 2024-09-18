@@ -29,7 +29,7 @@ export async function getCategories(supabase: SupabaseClient, folder: string) {
 export async function getBackgrounds(supabase: SupabaseClient, folder: string) {
   const { data, error } = await supabase.storage
     .from('focus_backgrounds')
-    .list(folder)
+    .list(folder, { limit: 20 })
 
   if (error) {
     console.error('Error retrieving files:', error)

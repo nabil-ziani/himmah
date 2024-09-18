@@ -23,7 +23,7 @@ type AudioOption = {
 };
 
 const FocusCard = () => {
-    const [background, setBackground] = useState('')
+    const [backgrounds, setBackgrounds] = useState<string[]>([])
     const [audio, setAudio] = useState('Weather')
     const [audioOptions, setAudioOptions] = useState<AudioOption[]>([]);
     const [backgroundDialog, setBackgroundDialog] = useState(false)
@@ -138,7 +138,7 @@ const FocusCard = () => {
                         {mode == 'timer' && <Timer audio={audio} />}
                         {mode == 'stopwatch' && <Stopwatch audio={audio} />}
 
-                        <SetBackgroundDialog isOpen={backgroundDialog} setIsOpen={setBackgroundDialog} setBackground={setBackground} />
+                        <SetBackgroundDialog isOpen={backgroundDialog} setIsOpen={setBackgroundDialog} setBackgrounds={setBackgrounds} />
                     </section>
                 </div>
             </Card>
