@@ -2,16 +2,17 @@
 
 import React, { useEffect, useState } from 'react'
 import { Card } from './ui/card'
-import { Button } from './ui/button'
-import { ClipboardPlus } from 'lucide-react'
 import SpringModal from './spring-modal'
 import { KanbanBoard } from './kanban-board'
 import { createClient } from '@/utils/supabase/client'
 import { Task } from '@/lib/types'
+import { User } from '@supabase/supabase-js'
 
-interface TaskCardProps { }
+interface TaskCardProps {
+    user: User
+}
 
-const TaskCard = ({ }: TaskCardProps) => {
+const TaskCard = ({ user }: TaskCardProps) => {
     const [isOpen, setIsOpen] = useState(false)
     const [tasks, setTasks] = useState<Task[]>([])
 
@@ -19,9 +20,20 @@ const TaskCard = ({ }: TaskCardProps) => {
 
     useEffect(() => {
         const getData = async () => {
-            const { data: tasks } = await supabase.from('tasks').select()
+            const userId = user.id
 
-            setTasks(tasks || [])
+            if (userId) {
+                const { data: tasks, error } = await supabase
+                    .from('tasks')
+                    .select()
+                    .eq('user_id', userId)
+
+                if (error) {
+                    console.error("Error fetching tasks:", error);
+                } else {
+                    setTasks(tasks || []);
+                }
+            }
         }
         getData()
     }, [])
