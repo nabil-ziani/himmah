@@ -67,12 +67,9 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                                 {...field}
                                 type={props.type}
                                 placeholder={props.placeholder}
-                                // value={props.type == 'number' ? Number(field.value) : field.value}
                                 onChange={(e) => {
-                                    // Roep eerst de onChange van React Hook Form aan om de waarde bij te werken
                                     field.onChange(e);
 
-                                    // Roep daarna je eigen onChange functie aan
                                     if (props.onChange) {
                                         props.onChange(e);
                                     }

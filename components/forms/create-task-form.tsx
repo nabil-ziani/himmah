@@ -13,12 +13,14 @@ import { FormSuccess } from "@/components/form-success";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 import { createTask } from "@/actions/create-task";
+import { Task } from "@/lib/types";
 
 interface CreateTaskFormProps {
     setIsOpen: Dispatch<SetStateAction<boolean>>
+    setTasks: React.Dispatch<React.SetStateAction<Task[]>>
 }
 
-const CreateTaskForm = ({ setIsOpen }: CreateTaskFormProps) => {
+const CreateTaskForm = ({ setIsOpen, setTasks }: CreateTaskFormProps) => {
     const [error, setError] = useState<string | undefined>('')
     const [success, setSuccess] = useState<string | undefined>('')
 
@@ -36,9 +38,7 @@ const CreateTaskForm = ({ setIsOpen }: CreateTaskFormProps) => {
     const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.valueAsNumber;
 
-        console.log(value)
         if (!isNaN(value)) {
-            console.log(typeof (value))
             form.setValue('focus_time', value)
         }
     };
@@ -51,10 +51,11 @@ const CreateTaskForm = ({ setIsOpen }: CreateTaskFormProps) => {
             createTask(values).then((data) => {
                 if (data.error) {
                     toast.error(data.error)
+                } else {
+                    setTasks((prevTasks) => [...prevTasks, data.data]);
+                    toast.success('Task created!');
+                    setIsOpen(false);
                 }
-
-                toast.success('Task created!')
-                setIsOpen(false)
             })
         })
     }

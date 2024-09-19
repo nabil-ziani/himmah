@@ -14,7 +14,9 @@ interface TaskCardProps {
 
 const TaskCard = ({ user }: TaskCardProps) => {
     const [isOpen, setIsOpen] = useState(false)
+    const [mode, setMode] = useState<'create' | 'view' | 'edit'>('create')
     const [tasks, setTasks] = useState<Task[]>([])
+    const [selectedTask, setSelectedTask] = useState<Task | undefined>(undefined)
 
     const supabase = createClient()
 
@@ -42,17 +44,24 @@ const TaskCard = ({ user }: TaskCardProps) => {
         <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
             <div className="flex h-[calc(100vh-250px)]">
                 <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[100vw]">
-                    {/* <div className="flex justify-end items-center">
-                        <Button size={"lg"} className="bg-gray-900/60  hover:bg-gray-900/70 text-white text-xl hover:cursor-pointer" onClick={() => setIsOpen(true)}>
-                            <ClipboardPlus className="mr-3" />
-                            New Task
-                        </Button>
-                    </div> */}
-                    <KanbanBoard tasks={tasks} setTasks={setTasks} supabase={supabase} createTask={setIsOpen} />
+                    <KanbanBoard
+                        supabase={supabase}
+                        tasks={tasks}
+                        setTasks={setTasks}
+                        openModal={setIsOpen}
+                        setMode={setMode}
+                        setSelectedTask={setSelectedTask}
+                    />
                 </section>
             </div>
 
-            <SpringModal isOpen={isOpen} setIsOpen={setIsOpen} />
+            <SpringModal
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                setTasks={setTasks}
+                type={mode}
+                task={selectedTask}
+            />
         </Card>
     )
 }

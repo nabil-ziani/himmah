@@ -15,17 +15,19 @@ export const createTask = async (values: z.infer<typeof CreateTaskSchema>) => {
     const { title, description, focus_time } = validatedFields.data
 
     const supabase = createClient();
-    const { error } = await supabase
+    const { data, error } = await supabase
         .from('tasks')
         .insert({
             title,
             description,
             focus_time
         })
+        .select()
+        .single()
 
     if (error) {
         return { error: error.message }
     }
 
-    return { success: 'Task Created!' }
+    return { success: 'Task Created!', data }
 }

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { FiPlus, FiTrash } from "react-icons/fi";
-import { motion } from "framer-motion";
+import { FiPlus } from "react-icons/fi";
 import { FaFire } from "react-icons/fa";
+import { HiTrash } from "react-icons/hi";
+import { motion } from "framer-motion";
 import { Task, TaskStatus } from "@/lib/types";
 import { Database } from "@/database.types";
 import { Clock } from "lucide-react";
@@ -11,11 +12,12 @@ interface KanbanBoardProps {
     tasks: Task[]
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>
     supabase: SupabaseClient<Database>
-    createTask: React.Dispatch<React.SetStateAction<boolean>>
+    openModal: React.Dispatch<React.SetStateAction<boolean>>
+    setMode: React.Dispatch<React.SetStateAction<"create" | "view" | "edit">>
+    setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>
 }
 
-export const KanbanBoard = ({ tasks, setTasks, supabase, createTask }: KanbanBoardProps) => {
-
+export const KanbanBoard = ({ tasks, setTasks, supabase, openModal, setMode, setSelectedTask }: KanbanBoardProps) => {
     return (
         <div className="h-screen w-full">
             <div className="flex h-full w-full gap-10 p-12 pr-0 justify-between">
@@ -26,7 +28,9 @@ export const KanbanBoard = ({ tasks, setTasks, supabase, createTask }: KanbanBoa
                     cards={tasks}
                     setCards={setTasks}
                     supabase={supabase}
-                    createTask={createTask}
+                    openModal={openModal}
+                    setMode={setMode}
+                    setSelectedTask={setSelectedTask}
                 />
                 <Column
                     title="In progress"
@@ -35,7 +39,9 @@ export const KanbanBoard = ({ tasks, setTasks, supabase, createTask }: KanbanBoa
                     cards={tasks}
                     setCards={setTasks}
                     supabase={supabase}
-                    createTask={createTask}
+                    openModal={openModal}
+                    setMode={setMode}
+                    setSelectedTask={setSelectedTask}
 
                 />
                 <Column
@@ -45,7 +51,9 @@ export const KanbanBoard = ({ tasks, setTasks, supabase, createTask }: KanbanBoa
                     cards={tasks}
                     setCards={setTasks}
                     supabase={supabase}
-                    createTask={createTask}
+                    openModal={openModal}
+                    setMode={setMode}
+                    setSelectedTask={setSelectedTask}
 
                 />
                 <Column
@@ -55,7 +63,9 @@ export const KanbanBoard = ({ tasks, setTasks, supabase, createTask }: KanbanBoa
                     cards={tasks}
                     setCards={setTasks}
                     supabase={supabase}
-                    createTask={createTask}
+                    openModal={openModal}
+                    setMode={setMode}
+                    setSelectedTask={setSelectedTask}
 
                 />
                 <BurnBarrel setCards={setTasks} supabase={supabase} />
@@ -71,10 +81,12 @@ interface ColumnProps {
     status: Database["public"]["Enums"]["task_status"]
     setCards: React.Dispatch<React.SetStateAction<Task[]>>
     supabase: SupabaseClient<Database>
-    createTask: React.Dispatch<React.SetStateAction<boolean>>
+    openModal: React.Dispatch<React.SetStateAction<boolean>>
+    setMode: React.Dispatch<React.SetStateAction<"create" | "view" | "edit">>
+    setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>
 }
 
-const Column = ({ title, headingColor, cards, status, setCards, supabase, createTask }: ColumnProps) => {
+const Column = ({ title, headingColor, cards, status, setCards, supabase, openModal, setMode, setSelectedTask }: ColumnProps) => {
     const [active, setActive] = useState(false);
 
     const updateTaskStatus = async (taskId: number, newStatus: TaskStatus) => {
@@ -204,10 +216,19 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, create
                     }`}
             >
                 {filteredCards.map((c) => {
-                    return <Card key={c.id} task={c} handleDragStart={handleDragStart} />;
+                    return (
+                        <Card
+                            key={c.id}
+                            task={c}
+                            handleDragStart={handleDragStart}
+                            setMode={setMode}
+                            openModal={openModal}
+                            setSelectedTask={setSelectedTask}
+                        />
+                    )
                 })}
                 <DropIndicator beforeId={null} status={status} />
-                <AddCard status={status} setCards={setCards} createTask={createTask} />
+                <AddCard status={status} setCards={setCards} createTask={openModal} />
             </div>
         </div>
     );
@@ -216,19 +237,30 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, create
 interface CardProps {
     task: Task
     handleDragStart: (e: MouseEvent | TouchEvent | PointerEvent, card: Task) => void
+    setMode: React.Dispatch<React.SetStateAction<"create" | "view" | "edit">>
+    openModal: React.Dispatch<React.SetStateAction<boolean>>
+    setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>
 }
-const Card = ({ task, handleDragStart }: CardProps) => {
+const Card = ({ task, handleDragStart, setMode, openModal, setSelectedTask }: CardProps) => {
+
+    const handleClick = () => {
+        setMode('view')
+        setSelectedTask(task)
+        openModal(true)
+    }
+
     return (
         <>
-            {/* <DropIndicator beforeId={task.id} status={task.status} /> */}
+            <DropIndicator beforeId={task.id} status={task.status} />
             <motion.div
                 layout
                 layoutId={task.id.toString()}
                 draggable="true"
                 onDragStart={(e) => handleDragStart(e, task)}
                 className="cursor-grab rounded-lg bg-neutral-500 my-2 p-3 active:cursor-grabbing"
+                onClick={handleClick}
             >
-                <div className="flex justify-between text-neutral-100">
+                <div className="flex justify-between gap-2 text-neutral-100">
                     <p>{task.title}</p>
 
                     <p className="flex items-center text-sm">
@@ -306,7 +338,7 @@ const BurnBarrel = ({ setCards, supabase }: any) => {
                 : "bg-neutral-500/20 text-neutral-500"
                 }`}
         >
-            {active ? <FaFire className="animate-bounce" /> : <FiTrash />}
+            {active ? <FaFire className="animate-bounce" /> : <HiTrash />}
         </div>
     );
 }
