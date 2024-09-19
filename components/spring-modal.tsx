@@ -1,18 +1,28 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Dispatch, SetStateAction } from "react";
-import CreateTaskForm from "./forms/create-task-form";
+import TaskForm from "./forms/create-task-form";
 import { Task } from "@/lib/types";
 
 interface SpringModalProps {
     isOpen: boolean,
     setIsOpen: Dispatch<SetStateAction<boolean>>
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>
-    type: 'create' | 'view' | 'edit'
+    type: 'create' | 'edit'
     task?: Task
 }
 
-const SpringModal = ({ isOpen, setIsOpen, setTasks }: SpringModalProps) => {
+const SpringModal = ({ isOpen, setIsOpen, setTasks, type, task }: SpringModalProps) => {
 
+    const renderTitle = () => {
+        switch (type) {
+            case 'create':
+                return 'Create Task 📋'
+            case 'edit':
+                return 'Edit Task ✍️'
+            default:
+                break;
+        }
+    }
 
     return (
         <AnimatePresence>
@@ -29,14 +39,14 @@ const SpringModal = ({ isOpen, setIsOpen, setTasks }: SpringModalProps) => {
                         animate={{ scale: 1, rotate: "0deg" }}
                         exit={{ scale: 0, rotate: "0deg" }}
                         onClick={(e) => e.stopPropagation()}
-                        className="bg-gray-900/60 text-white p-6 rounded-lg w-full max-w-lg shadow-xl cursor-default relative overflow-hidden"
+                        className="bg-gray-600 text-white p-6 rounded-lg w-full max-w-lg shadow-xl cursor-default relative overflow-hidden"
                     >
                         {/* <GrTask className="text-white/10 rotate-12 text-[250px] absolute z-0 -top-10 -left-10" /> */}
                         <div className="relative z-10">
                             <h3 className="text-4xl font-bold text-center mb-4">
-                                Create Task 📋
+                                {renderTitle()}
                             </h3>
-                            <CreateTaskForm setIsOpen={setIsOpen} setTasks={setTasks} />
+                            <TaskForm setIsOpen={setIsOpen} setTasks={setTasks} type={type} task={task} />
                         </div>
                     </motion.div>
                 </motion.div>

@@ -75,7 +75,6 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                                     }
                                 }} className="shad-input border-0"
                                 {...props.restProps} // Pass additional props
-                                defaultValue={props.defaultValue}
                             />
                             {props.children}
                         </>

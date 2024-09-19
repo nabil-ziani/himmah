@@ -14,13 +14,16 @@ import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 import { createTask } from "@/actions/create-task";
 import { Task } from "@/lib/types";
+import { updateTask } from "@/actions/update-task";
 
 interface CreateTaskFormProps {
     setIsOpen: Dispatch<SetStateAction<boolean>>
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>
+    type: 'create' | 'edit'
+    task?: Task
 }
 
-const CreateTaskForm = ({ setIsOpen, setTasks }: CreateTaskFormProps) => {
+const TaskForm = ({ setIsOpen, setTasks, type, task }: CreateTaskFormProps) => {
     const [error, setError] = useState<string | undefined>('')
     const [success, setSuccess] = useState<string | undefined>('')
 
@@ -29,8 +32,8 @@ const CreateTaskForm = ({ setIsOpen, setTasks }: CreateTaskFormProps) => {
     const form = useForm<z.infer<typeof CreateTaskSchema>>({
         resolver: zodResolver(CreateTaskSchema),
         defaultValues: {
-            title: '',
-            description: '',
+            title: type === 'edit' && task?.title || '',
+            description: type === 'edit' && task?.description || '',
             focus_time: 15
         }
     })
@@ -48,12 +51,24 @@ const CreateTaskForm = ({ setIsOpen, setTasks }: CreateTaskFormProps) => {
         setSuccess('')
 
         startTransition(() => {
-            createTask(values).then((data) => {
+            const taskPromise = type === 'create'
+                ? createTask(values)
+                : updateTask(task?.id!, values);
+
+            taskPromise.then((data) => {
                 if (data.error) {
-                    toast.error(data.error)
+                    toast.error(data.error);
                 } else {
-                    setTasks((prevTasks) => [...prevTasks, data.data]);
-                    toast.success('Task created!');
+                    setTasks((prevTasks) => {
+                        if (type === 'create') {
+                            return [...prevTasks, data.data];
+                        } else {
+                            return prevTasks.map((task) =>
+                                task.id === data.data.id ? data.data : task
+                            );
+                        }
+                    });
+                    toast.success(type === 'create' ? 'Task created!' : 'Task updated!');
                     setIsOpen(false);
                 }
             })
@@ -104,7 +119,7 @@ const CreateTaskForm = ({ setIsOpen, setTasks }: CreateTaskFormProps) => {
                 <FormSuccess message={success} />
                 <div className="flex justify-center">
                     <Button size={"lg"} className="mt-8 text-md w-full">
-                        Create Task
+                        {type === 'create' ? 'Create ' : 'Update '} Task
                     </Button>
                 </div>
             </form>
@@ -112,4 +127,4 @@ const CreateTaskForm = ({ setIsOpen, setTasks }: CreateTaskFormProps) => {
     )
 }
 
-export default CreateTaskForm
+export default TaskForm

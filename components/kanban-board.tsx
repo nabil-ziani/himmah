@@ -13,7 +13,7 @@ interface KanbanBoardProps {
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>
     supabase: SupabaseClient<Database>
     openModal: React.Dispatch<React.SetStateAction<boolean>>
-    setMode: React.Dispatch<React.SetStateAction<"create" | "view" | "edit">>
+    setMode: React.Dispatch<React.SetStateAction<"create" | "edit">>
     setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>
 }
 
@@ -82,7 +82,7 @@ interface ColumnProps {
     setCards: React.Dispatch<React.SetStateAction<Task[]>>
     supabase: SupabaseClient<Database>
     openModal: React.Dispatch<React.SetStateAction<boolean>>
-    setMode: React.Dispatch<React.SetStateAction<"create" | "view" | "edit">>
+    setMode: React.Dispatch<React.SetStateAction<"create" | "edit">>
     setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>
 }
 
@@ -228,7 +228,7 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, openMo
                     )
                 })}
                 <DropIndicator beforeId={null} status={status} />
-                <AddCard status={status} setCards={setCards} createTask={openModal} />
+                <AddCard setMode={setMode} openModal={openModal} />
             </div>
         </div>
     );
@@ -237,14 +237,14 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, openMo
 interface CardProps {
     task: Task
     handleDragStart: (e: MouseEvent | TouchEvent | PointerEvent, card: Task) => void
-    setMode: React.Dispatch<React.SetStateAction<"create" | "view" | "edit">>
+    setMode: React.Dispatch<React.SetStateAction<"create" | "edit">>
     openModal: React.Dispatch<React.SetStateAction<boolean>>
     setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>
 }
 const Card = ({ task, handleDragStart, setMode, openModal, setSelectedTask }: CardProps) => {
 
     const handleClick = () => {
-        setMode('view')
+        setMode('edit')
         setSelectedTask(task)
         openModal(true)
     }
@@ -343,12 +343,21 @@ const BurnBarrel = ({ setCards, supabase }: any) => {
     );
 }
 
-const AddCard = ({ createTask }: any) => {
+interface AddCardProps {
+    openModal: React.Dispatch<React.SetStateAction<boolean>>
+    setMode: React.Dispatch<React.SetStateAction<"create" | "edit">>
+}
+const AddCard = ({ openModal, setMode }: AddCardProps) => {
+    const handleClick = () => {
+        setMode('create')
+        openModal(true)
+    }
+
     return (
         <div className="mt-1.5">
             <motion.button
                 layout
-                onClick={() => createTask(true)}
+                onClick={handleClick}
                 className="flex items-center gap-1.5 rounded bg-neutral-100 px-3 py-1.5 text-xs text-neutral-900 transition-colors hover:bg-neutral-300"
             >
                 <span>Add task</span>

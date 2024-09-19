@@ -14,7 +14,7 @@ interface TaskCardProps {
 
 const TaskCard = ({ user }: TaskCardProps) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [mode, setMode] = useState<'create' | 'view' | 'edit'>('create')
+    const [mode, setMode] = useState<'create' | 'edit'>('create')
     const [tasks, setTasks] = useState<Task[]>([])
     const [selectedTask, setSelectedTask] = useState<Task | undefined>(undefined)
 
