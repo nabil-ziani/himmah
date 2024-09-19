@@ -81,13 +81,10 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, create
         console.log(taskId)
         console.log(newStatus)
 
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from('tasks')
             .update({ status: newStatus })
             .eq('id', taskId)
-            .select()
-
-        console.log(data)
 
         if (error) {
             console.error("Error updating task status:", error.message);
