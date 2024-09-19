@@ -4,13 +4,17 @@ import { motion } from "framer-motion";
 import { FaFire } from "react-icons/fa";
 import { Task, TaskStatus } from "@/lib/types";
 import { Database } from "@/database.types";
+import { Clock } from "lucide-react";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 interface KanbanBoardProps {
     tasks: Task[]
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>
+    supabase: SupabaseClient<Database>
+    createTask: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const KanbanBoard = ({ tasks, setTasks }: KanbanBoardProps) => {
+export const KanbanBoard = ({ tasks, setTasks, supabase, createTask }: KanbanBoardProps) => {
 
     return (
         <div className="h-screen w-full">
@@ -21,6 +25,8 @@ export const KanbanBoard = ({ tasks, setTasks }: KanbanBoardProps) => {
                     headingColor="bg-gray-100"
                     cards={tasks}
                     setCards={setTasks}
+                    supabase={supabase}
+                    createTask={createTask}
                 />
                 <Column
                     title="In progress"
@@ -28,6 +34,9 @@ export const KanbanBoard = ({ tasks, setTasks }: KanbanBoardProps) => {
                     headingColor="bg-yellow-100"
                     cards={tasks}
                     setCards={setTasks}
+                    supabase={supabase}
+                    createTask={createTask}
+
                 />
                 <Column
                     title="Complete"
@@ -35,6 +44,9 @@ export const KanbanBoard = ({ tasks, setTasks }: KanbanBoardProps) => {
                     headingColor="bg-green-100"
                     cards={tasks}
                     setCards={setTasks}
+                    supabase={supabase}
+                    createTask={createTask}
+
                 />
                 <Column
                     title="Abandoned"
@@ -42,6 +54,9 @@ export const KanbanBoard = ({ tasks, setTasks }: KanbanBoardProps) => {
                     headingColor="bg-[#FF5C5C]/20"
                     cards={tasks}
                     setCards={setTasks}
+                    supabase={supabase}
+                    createTask={createTask}
+
                 />
                 <BurnBarrel setCards={setTasks} />
             </div>
@@ -55,17 +70,36 @@ interface ColumnProps {
     cards: Task[]
     status: Database["public"]["Enums"]["task_status"]
     setCards: React.Dispatch<React.SetStateAction<Task[]>>
+    supabase: SupabaseClient<Database>
+    createTask: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Column = ({ title, headingColor, cards, status, setCards }: ColumnProps) => {
+const Column = ({ title, headingColor, cards, status, setCards, supabase, createTask }: ColumnProps) => {
     const [active, setActive] = useState(false);
+
+    const updateTaskStatus = async (taskId: number, newStatus: TaskStatus) => {
+        console.log(taskId)
+        console.log(newStatus)
+
+        const { data, error } = await supabase
+            .from('tasks')
+            .update({ status: newStatus })
+            .eq('id', taskId)
+            .select()
+
+        console.log(data)
+
+        if (error) {
+            console.error("Error updating task status:", error.message);
+        }
+    };
 
     const handleDragStart = (e: any, card: Task) => {
         e.dataTransfer.setData("cardId", card.id);
     };
 
-    const handleDragEnd = (e: any) => {
-        const cardId = e.dataTransfer.getData("cardId");
+    const handleDragEnd = async (e: any) => {
+        const cardId = Number(e.dataTransfer.getData("cardId"))
 
         setActive(false);
         clearHighlights([]);
@@ -79,6 +113,7 @@ const Column = ({ title, headingColor, cards, status, setCards }: ColumnProps) =
             let copy = [...cards];
 
             let cardToTransfer = copy.find((c) => c.id === cardId);
+
             if (!cardToTransfer) return;
             cardToTransfer = { ...cardToTransfer, status };
 
@@ -96,6 +131,9 @@ const Column = ({ title, headingColor, cards, status, setCards }: ColumnProps) =
             }
 
             setCards(copy);
+
+            // Update the task status in Supabase
+            await updateTaskStatus(cardId, status);
         }
     };
 
@@ -175,7 +213,7 @@ const Column = ({ title, headingColor, cards, status, setCards }: ColumnProps) =
                     return <Card key={c.id} task={c} handleDragStart={handleDragStart} />;
                 })}
                 <DropIndicator beforeId={null} status={status} />
-                <AddCard status={status} setCards={setCards} />
+                <AddCard status={status} setCards={setCards} createTask={createTask} />
             </div>
         </div>
     );
@@ -185,19 +223,24 @@ interface CardProps {
     task: Task
     handleDragStart: (e: MouseEvent | TouchEvent | PointerEvent, card: Task) => void
 }
-
 const Card = ({ task, handleDragStart }: CardProps) => {
     return (
         <>
-            <DropIndicator beforeId={task.id} status={task.status} />
+            {/* <DropIndicator beforeId={task.id} status={task.status} /> */}
             <motion.div
                 layout
                 layoutId={task.id.toString()}
                 draggable="true"
                 onDragStart={(e) => handleDragStart(e, task)}
-                className="cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 active:cursor-grabbing"
+                className="cursor-grab rounded-lg bg-neutral-500 my-2 p-3 active:cursor-grabbing"
             >
-                <p className="text-sm text-neutral-100">{task.title}</p>
+                <div className="flex justify-between text-neutral-100">
+                    <p>{task.title}</p>
+
+                    <p className="flex items-center text-sm">
+                        <Clock height={15} color="white" /> {task.focus_time}
+                    </p>
+                </div>
             </motion.div>
         </>
     );
@@ -208,7 +251,7 @@ const DropIndicator = ({ beforeId, status }: { beforeId: number | null, status: 
         <div
             data-before={beforeId || "-1"}
             data-column={status}
-            className="my-0.5 h-0.5 w-full bg-[#FF5C5C] opacity-0"
+            className="my-0.5 h-0.5 rounded-xl w-full bg-[#FF5C5C] opacity-0"
         />
     );
 };
@@ -248,62 +291,17 @@ const BurnBarrel = ({ setCards }: any) => {
     );
 };
 
-const AddCard = ({ status, setCards }: any) => {
-    const [text, setText] = useState("");
-    const [adding, setAdding] = useState(false);
-
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-
-        if (!text.trim().length) return;
-
-        const newCard = {
-            status,
-            title: text.trim(),
-            id: Math.random().toString(),
-        };
-
-        setCards((pv: any) => [...pv, newCard]);
-
-        setAdding(false);
-    };
-
+const AddCard = ({ createTask }: any) => {
     return (
-        <>
-            {adding ? (
-                <motion.form layout onSubmit={handleSubmit}>
-                    <textarea
-                        onChange={(e) => setText(e.target.value)}
-                        autoFocus
-                        placeholder="Add new task..."
-                        className="w-full rounded border border-[#FF5C5C] bg-[#FF5C5C]/20 p-3 text-sm text-neutral-600 placeholder-[#FF5C5C]/70 focus:outline-0 focus:outline-none"
-                    />
-                    <div className="mt-1.5 flex items-center justify-end gap-1.5">
-                        <button
-                            onClick={() => setAdding(false)}
-                            className="px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-700"
-                        >
-                            Close
-                        </button>
-                        <button
-                            type="submit"
-                            className="flex items-center gap-1.5 rounded bg-neutral-100 px-3 py-1.5 text-xs text-neutral-900 transition-colors hover:bg-neutral-300"
-                        >
-                            <span>Add</span>
-                            <FiPlus />
-                        </button>
-                    </div>
-                </motion.form>
-            ) : (
-                <motion.button
-                    layout
-                    onClick={() => setAdding(true)}
-                    className="flex w-full items-center gap-1.5 px-3 py-1.5 text-xs text-neutral-400 transition-colors hover:text-neutral-700"
-                >
-                    <span>Add card</span>
-                    <FiPlus />
-                </motion.button>
-            )}
-        </>
+        <div className="mt-1.5">
+            <motion.button
+                layout
+                onClick={() => createTask(true)}
+                className="flex items-center gap-1.5 rounded bg-neutral-100 px-3 py-1.5 text-xs text-neutral-900 transition-colors hover:bg-neutral-300"
+            >
+                <span>Add task</span>
+                <FiPlus />
+            </motion.button>
+        </div>
     );
 };
