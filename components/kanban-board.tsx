@@ -286,7 +286,7 @@ const BurnBarrel = ({ setCards }: any) => {
             {active ? <FaFire className="animate-bounce" /> : <FiTrash />}
         </div>
     );
-};
+}
 
 const AddCard = ({ createTask }: any) => {
     return (
