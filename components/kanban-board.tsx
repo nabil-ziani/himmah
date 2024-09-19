@@ -58,7 +58,7 @@ export const KanbanBoard = ({ tasks, setTasks, supabase, createTask }: KanbanBoa
                     createTask={createTask}
 
                 />
-                <BurnBarrel setCards={setTasks} />
+                <BurnBarrel setCards={setTasks} supabase={supabase} />
             </div>
         </div>
     );
@@ -78,9 +78,6 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, create
     const [active, setActive] = useState(false);
 
     const updateTaskStatus = async (taskId: number, newStatus: TaskStatus) => {
-        console.log(taskId)
-        console.log(newStatus)
-
         const { error } = await supabase
             .from('tasks')
             .update({ status: newStatus })
@@ -253,8 +250,22 @@ const DropIndicator = ({ beforeId, status }: { beforeId: number | null, status: 
     );
 };
 
-const BurnBarrel = ({ setCards }: any) => {
+const BurnBarrel = ({ setCards, supabase }: any) => {
     const [active, setActive] = useState(false);
+
+    const deleteTask = async (taskId: number) => {
+        const { error } = await supabase
+            .from('tasks')
+            .delete()
+            .eq('id', taskId);
+
+        if (error) {
+            console.error("Error deleting task:", error);
+            return false;
+        }
+
+        return true;
+    };
 
     const handleDragOver = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -265,10 +276,22 @@ const BurnBarrel = ({ setCards }: any) => {
         setActive(false);
     };
 
-    const handleDragEnd = (e: { dataTransfer: { getData: (arg0: string) => any; }; }) => {
-        const cardId = e.dataTransfer.getData("cardId");
+    const handleDragEnd = async (e: { dataTransfer: { getData: (arg0: string) => any; }; }) => {
+        const cardId = Number(e.dataTransfer.getData("cardId"))
 
-        setCards((pv: any[]) => pv.filter((c: { id: any; }) => c.id !== cardId));
+        // Verwijder lokaal
+        setCards((prev: any[]) => {
+            const updatedCards = prev.filter((c: { id: number }) => c.id !== cardId);
+            console.log("Updated cards:", updatedCards); // Check of de state lokaal wordt bijgewerkt
+            return updatedCards;
+        });
+
+        // Verwijder de kaart uit Supabase
+        const success = await deleteTask(cardId);
+
+        if (!success) {
+            console.error("Failed to delete task from Supabase");
+        }
 
         setActive(false);
     };
@@ -301,4 +324,4 @@ const AddCard = ({ createTask }: any) => {
             </motion.button>
         </div>
     );
-};
+}; 

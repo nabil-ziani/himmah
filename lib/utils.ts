@@ -1,5 +1,4 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import { FileObject } from '@supabase/storage-js'
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
