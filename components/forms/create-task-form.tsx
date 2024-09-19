@@ -35,9 +35,11 @@ const CreateTaskForm = ({ setIsOpen }: CreateTaskFormProps) => {
 
     const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.valueAsNumber;
+
         console.log(value)
         if (!isNaN(value)) {
-            form.setValue('focus_time', value); // Set the form value to a number
+            console.log(typeof (value))
+            form.setValue('focus_time', value)
         }
     };
 

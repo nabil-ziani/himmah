@@ -26,7 +26,7 @@ const TaskCard = ({ user }: TaskCardProps) => {
                 const { data: tasks, error } = await supabase
                     .from('tasks')
                     .select()
-                    .eq('user_id', userId)
+                    .eq('created_by', userId)
 
                 if (error) {
                     console.error("Error fetching tasks:", error);

@@ -42,7 +42,8 @@ interface CustomProps {
     children?: React.ReactNode
     renderSkeleton?: (field: any) => React.ReactNode
     fieldType: FormFieldType
-    defaultValue?: string
+    defaultValue?: string | number
+    onChange?: any
     [key: string]: any; // Allow additional props
 }
 
@@ -63,11 +64,19 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                     <FormControl>
                         <>
                             <Input
-                                type={props.type}
-                                onChange={props.onChange}
-                                placeholder={props.placeholder}
                                 {...field}
-                                className="shad-input border-0"
+                                type={props.type}
+                                placeholder={props.placeholder}
+                                // value={props.type == 'number' ? Number(field.value) : field.value}
+                                onChange={(e) => {
+                                    // Roep eerst de onChange van React Hook Form aan om de waarde bij te werken
+                                    field.onChange(e);
+
+                                    // Roep daarna je eigen onChange functie aan
+                                    if (props.onChange) {
+                                        props.onChange(e);
+                                    }
+                                }} className="shad-input border-0"
                                 {...props.restProps} // Pass additional props
                                 defaultValue={props.defaultValue}
                             />
