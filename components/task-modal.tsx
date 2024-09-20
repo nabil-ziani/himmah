@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import TaskForm from "./forms/create-task-form";
 import { Task, TaskType } from "@/lib/types";
 
-interface SpringModalProps {
+interface TaskModalProps {
     isOpen: boolean,
     setIsOpen: Dispatch<SetStateAction<boolean>>
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>
@@ -11,8 +11,7 @@ interface SpringModalProps {
     task?: Task
 }
 
-const SpringModal = ({ isOpen, setIsOpen, setTasks, mode, task }: SpringModalProps) => {
-
+const TaskModal = ({ isOpen, setIsOpen, setTasks, mode, task }: TaskModalProps) => {
     const renderTitle = () => {
         switch (mode.type) {
             case 'create':
@@ -55,4 +54,4 @@ const SpringModal = ({ isOpen, setIsOpen, setTasks, mode, task }: SpringModalPro
     );
 };
 
-export default SpringModal;
+export default TaskModal;

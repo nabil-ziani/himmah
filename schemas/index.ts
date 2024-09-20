@@ -36,8 +36,7 @@ export const UpdateProfileSchema = z.object({
     birthdate: z.optional(z.date({ message: 'Enter a valid date' }).refine((d) => d >= new Date("01-01-1900") && d <= new Date(Date.now()), { message: 'Enter a valid birthdate' }))
 })
 
-const TaskStatus = ["new", "active", "completed", "abandoned"] as const
-
+// const TaskStatus = ["new", "active", "completed", "abandoned"] as const
 export const CreateTaskSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
     description: z.string().min(1, { message: 'Description is required' }),
@@ -50,4 +49,8 @@ export const UpdateTaskSchema = z.object({
     description: z.string().min(1, { message: 'Description is required' }),
     focus_time: z.number({ message: 'Focus time must be a number' }).positive({ message: 'Focus time must be a positive number' }),
     // status: z.optional(z.enum(TASK_STATUS, { message: "Enter a valid option" }))
+})
+
+export const AddFriendSchema = z.object({
+    email: z.string().email({ message: "Enter a valid email" })
 })

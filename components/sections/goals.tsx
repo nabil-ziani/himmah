@@ -1,18 +1,6 @@
 import { goals } from "@/constants"
-// import { motion } from "framer-motion"
-// import SpringModal from "../spring-modal"
-// import { useState } from "react"
-
-// type ModalContent = {
-//     title: string,
-//     description: string,
-//     image: string
-// }
 
 const Goals = () => {
-    // const [isOpen, setIsOpen] = useState(false);
-    // const [content, setContent] = useState<ModalContent>({ title: '', description: '', image: '' })
-
     return (
         <>
             <section id='goals' className="flex w-full h-[100vh] flex-col items-center justify-center">
@@ -35,7 +23,6 @@ const Goals = () => {
                         </li>
                     ))}
                 </ul>
-                {/* <SpringModal isOpen={isOpen} setIsOpen={setIsOpen} title={content.title} description={content.description} image={content.image} /> */}
             </section>
         </>
     )

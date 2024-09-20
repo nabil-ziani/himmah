@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { Card } from './ui/card'
-import SpringModal from './spring-modal'
+import TaskModal from './task-modal'
 import { KanbanBoard } from './kanban-board'
 import { createClient } from '@/utils/supabase/client'
 import { Task, TaskType } from '@/lib/types'
@@ -55,7 +55,7 @@ const TaskCard = ({ user }: TaskCardProps) => {
                 </section>
             </div>
 
-            <SpringModal
+            <TaskModal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 setTasks={setTasks}
