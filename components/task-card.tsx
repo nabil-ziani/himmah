@@ -5,7 +5,7 @@ import { Card } from './ui/card'
 import SpringModal from './spring-modal'
 import { KanbanBoard } from './kanban-board'
 import { createClient } from '@/utils/supabase/client'
-import { Task } from '@/lib/types'
+import { Task, TaskType } from '@/lib/types'
 import { User } from '@supabase/supabase-js'
 
 interface TaskCardProps {
@@ -14,7 +14,7 @@ interface TaskCardProps {
 
 const TaskCard = ({ user }: TaskCardProps) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [mode, setMode] = useState<'create' | 'edit'>('create')
+    const [mode, setMode] = useState<TaskType>({ type: 'create', status: 'new' })
     const [tasks, setTasks] = useState<Task[]>([])
     const [selectedTask, setSelectedTask] = useState<Task | undefined>(undefined)
 
@@ -59,7 +59,7 @@ const TaskCard = ({ user }: TaskCardProps) => {
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 setTasks={setTasks}
-                type={mode}
+                mode={mode}
                 task={selectedTask}
             />
         </Card>

@@ -13,17 +13,17 @@ import { FormSuccess } from "@/components/form-success";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 import { createTask } from "@/actions/create-task";
-import { Task } from "@/lib/types";
+import { Task, TaskType } from "@/lib/types";
 import { updateTask } from "@/actions/update-task";
 
 interface CreateTaskFormProps {
     setIsOpen: Dispatch<SetStateAction<boolean>>
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>
-    type: 'create' | 'edit'
+    mode: TaskType
     task?: Task
 }
 
-const TaskForm = ({ setIsOpen, setTasks, type, task }: CreateTaskFormProps) => {
+const TaskForm = ({ setIsOpen, setTasks, mode, task }: CreateTaskFormProps) => {
     const [error, setError] = useState<string | undefined>('')
     const [success, setSuccess] = useState<string | undefined>('')
 
@@ -32,9 +32,9 @@ const TaskForm = ({ setIsOpen, setTasks, type, task }: CreateTaskFormProps) => {
     const form = useForm<z.infer<typeof CreateTaskSchema>>({
         resolver: zodResolver(CreateTaskSchema),
         defaultValues: {
-            title: type === 'edit' && task?.title || '',
-            description: type === 'edit' && task?.description || '',
-            focus_time: 15
+            title: mode.type === 'edit' && task?.title || '',
+            description: mode.type === 'edit' && task?.description || '',
+            focus_time: 15,
         }
     })
 
@@ -51,8 +51,8 @@ const TaskForm = ({ setIsOpen, setTasks, type, task }: CreateTaskFormProps) => {
         setSuccess('')
 
         startTransition(() => {
-            const taskPromise = type === 'create'
-                ? createTask(values)
+            const taskPromise = mode.type === 'create'
+                ? createTask(mode.status, values)
                 : updateTask(task?.id!, values);
 
             taskPromise.then((data) => {
@@ -60,15 +60,15 @@ const TaskForm = ({ setIsOpen, setTasks, type, task }: CreateTaskFormProps) => {
                     toast.error(data.error);
                 } else {
                     setTasks((prevTasks) => {
-                        if (type === 'create') {
+                        if (mode.type === 'create') {
                             return [...prevTasks, data.data];
                         } else {
                             return prevTasks.map((task) =>
                                 task.id === data.data.id ? data.data : task
-                            );
+                            )
                         }
-                    });
-                    toast.success(type === 'create' ? 'Task created!' : 'Task updated!');
+                    })
+                    toast.success(mode.type === 'create' ? 'Task created!' : 'Task updated!');
                     setIsOpen(false);
                 }
             })
@@ -119,7 +119,7 @@ const TaskForm = ({ setIsOpen, setTasks, type, task }: CreateTaskFormProps) => {
                 <FormSuccess message={success} />
                 <div className="flex justify-center">
                     <Button size={"lg"} className="mt-8 text-md w-full">
-                        {type === 'create' ? 'Create ' : 'Update '} Task
+                        {mode.type === 'create' ? 'Create ' : 'Update '} Task
                     </Button>
                 </div>
             </form>

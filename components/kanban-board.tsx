@@ -3,7 +3,7 @@ import { FiPlus } from "react-icons/fi";
 import { FaFire } from "react-icons/fa";
 import { HiTrash } from "react-icons/hi";
 import { motion } from "framer-motion";
-import { Task, TaskStatus } from "@/lib/types";
+import { Task, TaskStatus, TaskType } from "@/lib/types";
 import { Database } from "@/database.types";
 import { Clock } from "lucide-react";
 import { SupabaseClient } from "@supabase/supabase-js";
@@ -13,7 +13,7 @@ interface KanbanBoardProps {
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>
     supabase: SupabaseClient<Database>
     openModal: React.Dispatch<React.SetStateAction<boolean>>
-    setMode: React.Dispatch<React.SetStateAction<"create" | "edit">>
+    setMode: React.Dispatch<React.SetStateAction<TaskType>>
     setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>
 }
 
@@ -82,7 +82,7 @@ interface ColumnProps {
     setCards: React.Dispatch<React.SetStateAction<Task[]>>
     supabase: SupabaseClient<Database>
     openModal: React.Dispatch<React.SetStateAction<boolean>>
-    setMode: React.Dispatch<React.SetStateAction<"create" | "edit">>
+    setMode: React.Dispatch<React.SetStateAction<TaskType>>
     setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>
 }
 
@@ -228,7 +228,7 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, openMo
                     )
                 })}
                 <DropIndicator beforeId={null} status={status} />
-                <AddCard setMode={setMode} openModal={openModal} />
+                <AddCard setMode={setMode} openModal={openModal} status={status} />
             </div>
         </div>
     );
@@ -237,14 +237,14 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, openMo
 interface CardProps {
     task: Task
     handleDragStart: (e: MouseEvent | TouchEvent | PointerEvent, card: Task) => void
-    setMode: React.Dispatch<React.SetStateAction<"create" | "edit">>
+    setMode: React.Dispatch<React.SetStateAction<TaskType>>
     openModal: React.Dispatch<React.SetStateAction<boolean>>
     setSelectedTask: React.Dispatch<React.SetStateAction<Task | undefined>>
 }
 const Card = ({ task, handleDragStart, setMode, openModal, setSelectedTask }: CardProps) => {
 
     const handleClick = () => {
-        setMode('edit')
+        setMode({ type: 'edit', status: task.status })
         setSelectedTask(task)
         openModal(true)
     }
@@ -345,11 +345,12 @@ const BurnBarrel = ({ setCards, supabase }: any) => {
 
 interface AddCardProps {
     openModal: React.Dispatch<React.SetStateAction<boolean>>
-    setMode: React.Dispatch<React.SetStateAction<"create" | "edit">>
+    setMode: React.Dispatch<React.SetStateAction<TaskType>>
+    status: TaskStatus
 }
-const AddCard = ({ openModal, setMode }: AddCardProps) => {
+const AddCard = ({ openModal, setMode, status }: AddCardProps) => {
     const handleClick = () => {
-        setMode('create')
+        setMode({ type: 'create', status: status })
         openModal(true)
     }
 

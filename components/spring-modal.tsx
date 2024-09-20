@@ -1,20 +1,20 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Dispatch, SetStateAction } from "react";
 import TaskForm from "./forms/create-task-form";
-import { Task } from "@/lib/types";
+import { Task, TaskType } from "@/lib/types";
 
 interface SpringModalProps {
     isOpen: boolean,
     setIsOpen: Dispatch<SetStateAction<boolean>>
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>
-    type: 'create' | 'edit'
+    mode: TaskType
     task?: Task
 }
 
-const SpringModal = ({ isOpen, setIsOpen, setTasks, type, task }: SpringModalProps) => {
+const SpringModal = ({ isOpen, setIsOpen, setTasks, mode, task }: SpringModalProps) => {
 
     const renderTitle = () => {
-        switch (type) {
+        switch (mode.type) {
             case 'create':
                 return 'Create Task 📋'
             case 'edit':
@@ -46,7 +46,7 @@ const SpringModal = ({ isOpen, setIsOpen, setTasks, type, task }: SpringModalPro
                             <h3 className="text-4xl font-bold text-center mb-4">
                                 {renderTitle()}
                             </h3>
-                            <TaskForm setIsOpen={setIsOpen} setTasks={setTasks} type={type} task={task} />
+                            <TaskForm setIsOpen={setIsOpen} setTasks={setTasks} mode={mode} task={task} />
                         </div>
                     </motion.div>
                 </motion.div>

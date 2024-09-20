@@ -5,7 +5,7 @@ import * as z from 'zod'
 import { CreateTaskSchema } from '@/schemas';
 import { createClient } from "@/utils/supabase/server";
 
-export const createTask = async (values: z.infer<typeof CreateTaskSchema>) => {
+export const createTask = async (status: string, values: z.infer<typeof CreateTaskSchema>) => {
     const validatedFields = CreateTaskSchema.safeParse(values)
 
     if (!validatedFields.success) {
@@ -20,7 +20,8 @@ export const createTask = async (values: z.infer<typeof CreateTaskSchema>) => {
         .insert({
             title,
             description,
-            focus_time
+            focus_time,
+            status
         })
         .select()
         .single()
