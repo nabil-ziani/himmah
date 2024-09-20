@@ -9,6 +9,78 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      focus_sessions: {
+        Row: {
+          completed: boolean
+          created_at: string
+          duration: unknown | null
+          end_time: string | null
+          id: number
+          start_time: string
+          type: Database["public"]["Enums"]["focus_type"]
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          duration?: unknown | null
+          end_time?: string | null
+          id?: number
+          start_time?: string
+          type?: Database["public"]["Enums"]["focus_type"]
+          user_id?: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          duration?: unknown | null
+          end_time?: string | null
+          id?: number
+          start_time?: string
+          type?: Database["public"]["Enums"]["focus_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      friends: {
+        Row: {
+          created_at: string
+          friend_id: string
+          id: number
+          status: Database["public"]["Enums"]["friendship_status"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          friend_id: string
+          id?: number
+          status?: Database["public"]["Enums"]["friendship_status"]
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          friend_id?: string
+          id?: number
+          status?: Database["public"]["Enums"]["friendship_status"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "friends_friend_id_fkey"
+            columns: ["friend_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "friends_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           birthdate: string | null
@@ -79,6 +151,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      focus_type: "stopwatch" | "timer"
+      friendship_status: "pending" | "accepted" | "rejected" | "blocked"
       Sex: "Male" | "Female"
       task_status: "new" | "active" | "completed" | "abandoned"
     }

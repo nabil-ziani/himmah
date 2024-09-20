@@ -1,7 +1,9 @@
 import DashboardNavbar from '@/components/dashboard-nav';
 import Sidebar from '@/components/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { createClient } from '@/utils/supabase/server';
 import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { ReactNode } from 'react'
 import { Toaster } from "react-hot-toast";
 
@@ -15,12 +17,20 @@ export const metadata: Metadata = {
     description: "Productivity App"
 };
 
-const RootLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
+const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
+    const supabase = createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        return redirect("/auth/login");
+    }
+
     return (
         <main className='relative text-foreground bg-slate-50 '>
             <DashboardNavbar />
             <div className='flex'>
-                <Sidebar />
+                <Sidebar user={user} />
                 <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-28 max-md:pb-14 sm:px-14">
                     <div className="w-full relative">
                         <Toaster position='top-right' containerStyle={{ top: 100, right: 20 }} />

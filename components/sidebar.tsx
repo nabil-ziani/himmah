@@ -5,11 +5,20 @@ import { sidebarLinks } from '@/constants'
 import { usePathname } from 'next/navigation'
 
 import Link from 'next/link';
-import { ClipboardList, LayoutDashboard, ListTodo, LucideFocus, Settings2Icon, UsersRoundIcon } from 'lucide-react';
+import { ClipboardList, LayoutDashboard, LucideFocus, Settings2Icon, UsersRoundIcon } from 'lucide-react';
 import LogoutButton from './logout-button';
+import { Badge } from './ui/badge';
+import useFriendRequestNotifications from '@/hooks/useFriendRequestNotification';
+import { User } from '@supabase/supabase-js';
 
-const Sidebar = ({ }) => {
+interface SidebarProps {
+    user: User
+}
+
+const Sidebar = ({ user }: SidebarProps) => {
     const pathname = usePathname();
+
+    const friendRequestCount = useFriendRequestNotifications(user.id);
 
     const renderIcon = (route: string, color: string) => {
         switch (route) {
@@ -26,7 +35,6 @@ const Sidebar = ({ }) => {
             default:
                 return null;
         }
-
     }
 
     return (
@@ -37,8 +45,13 @@ const Sidebar = ({ }) => {
                         const isActive = pathname.split('?')[0] === link.route.split('?')[0];
 
                         return (
-                            <Link href={`${link.route}`} key={link.label} className={cn('flex gap-4 items-center p-4 rounded-lg justify-start text-[#303030] hover:bg-white/15', { 'bg-white hover:bg-white': isActive })}>
+                            <Link href={`${link.route}`} key={link.label} className={cn('flex relative gap-4 items-center p-4 rounded-lg justify-start text-[#303030] hover:bg-white/15', { 'bg-white hover:bg-white': isActive })}>
                                 {renderIcon(link.route, isActive ? '#303030' : 'white')}
+                                {link.route == '/dashboard/friends' && friendRequestCount > 0 && (
+                                    <Badge className="w-6 h-6 rounded-full border-2 bg-[#FF5C5C] text-white font-bold absolute right-5 flex justify-center items-center">
+                                        {friendRequestCount}
+                                    </Badge>
+                                )}
                                 <p className={`text-md font-semibold max-lg:hidden ${isActive ? 'text-[#303030]' : 'text-white'}`}>
                                     {link.label}
                                 </p>
