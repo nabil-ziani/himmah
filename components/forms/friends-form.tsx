@@ -56,7 +56,7 @@ const FriendsForm = ({ setIsOpen }: CreateTaskFormProps) => {
                             fieldType={FormFieldType.INPUT}
                             control={form.control}
                             name="email"
-                            label="Email"
+                            label="Friend's email"
                             placeholder="name@example.com"
                         />
                     </div>
@@ -66,7 +66,7 @@ const FriendsForm = ({ setIsOpen }: CreateTaskFormProps) => {
                 <FormSuccess message={success} />
                 <div className="flex justify-center">
                     <Button size={"lg"} className="mt-8 text-md w-full">
-                        Add...
+                        Add Friend
                     </Button>
                 </div>
             </form>
