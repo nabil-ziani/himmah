@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { Friendship } from "@/lib/types";
 
 const useRealtimeFriendships = (userId: string) => {
     const [friendships, setFriendships] = useState<any[]>([]);
@@ -30,8 +31,10 @@ const useRealtimeFriendships = (userId: string) => {
                     )
                 `)
                 .or(`user_id.eq.${userId}, friend_id.eq.${userId}`)
+                .returns<Friendship[]>()
 
             if (friendsData) {
+                console.log(friendsData)
                 setFriendships(friendsData.filter(f => f.status === 'accepted'));
                 setPendingRequests(friendsData.filter(f => f.status === 'pending' && f.friend.id === userId))
             }

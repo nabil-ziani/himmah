@@ -8,3 +8,18 @@ export type TaskType = {
     type: 'create' | 'edit'
     status: TaskStatus
 }
+
+export type Friendship = {
+    id: string,
+    status: string,
+    friend: {
+        id: string,
+        name: string,
+        email: string
+    },
+    user: {
+        id: string,
+        name: string,
+        email: string
+    }
+}
