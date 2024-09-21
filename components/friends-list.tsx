@@ -42,7 +42,7 @@ const FriendsList = ({ user }: FriendsListProps) => {
     }
 
     const handleDelete = async (friendshipId: string, friendName: string) => {
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from('friends')
             .delete()
             .eq('id', friendshipId)
