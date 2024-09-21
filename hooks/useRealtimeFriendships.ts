@@ -34,7 +34,6 @@ const useRealtimeFriendships = (userId: string) => {
                 .returns<Friendship[]>()
 
             if (friendsData) {
-                console.log(friendsData)
                 setFriendships(friendsData.filter(f => f.status === 'accepted'));
                 setPendingRequests(friendsData.filter(f => f.status === 'pending' && f.friend.id === userId))
             }

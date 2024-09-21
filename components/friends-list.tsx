@@ -35,7 +35,7 @@ const FriendsList = ({ user }: FriendsListProps) => {
             .eq('id', friendshipId);
 
         if (!error) {
-            toast.success('Friend request rejected and removed!');
+            toast.success('Friend request rejected!');
         } else {
             toast.error(error.message);
         }

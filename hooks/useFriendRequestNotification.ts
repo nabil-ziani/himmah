@@ -38,6 +38,7 @@ const useFriendRequestNotifications = (userId: string): number => {
                     filter: `friend_id=eq.${userId}`,
                 },
                 (payload) => {
+                    console.log(payload)
                     if (payload.new.friend_id === userId) {
                         console.log("Vriendschapsverzoek ontvangen!", payload)
                         setFriendRequestCount((prev) => prev + 1);
@@ -52,6 +53,7 @@ const useFriendRequestNotifications = (userId: string): number => {
                     filter: `friend_id=eq.${userId}, status=eq.accepted`
                 },
                 (payload) => {
+                    console.log(payload)
                     if (payload.new.friend_id === userId) {
                         console.log("Vriendschapsverzoek geaccepteerd!", payload)
                         setFriendRequestCount((prev) => Math.max(prev - 1, 0));
@@ -66,6 +68,7 @@ const useFriendRequestNotifications = (userId: string): number => {
                     filter: `friend_id=eq.${userId}`
                 },
                 (payload) => {
+                    console.log(payload)
                     if (payload.old.friend_id === userId) {
                         console.log("Vriendschapsverzoek geweigerd!", payload)
                         setFriendRequestCount((prev) => Math.max(prev - 1, 0));
