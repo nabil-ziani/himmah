@@ -3,7 +3,7 @@
 import { User } from "@supabase/supabase-js"
 import { Button } from "./ui/button"
 import { Friendship } from "@/lib/types"
-import { UserRoundX } from "lucide-react"
+import { Trash2, UserRoundX } from "lucide-react"
 
 interface FriendshipCardProps {
     friendship: any
@@ -21,9 +21,14 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
         <li key={friendship.id} className="flex m-5 gap-5">
             <div className="flex justify-between items-center w-[450px] bg-gray-200 rounded-xl relative px-2">
                 <div className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 flex gap-2 items-center">
-                    <span className="inline-block h-3 w-3 rounded-full bg-green-300 ring-2 ring-white mr-4" />
+                    <span className="inline-block h-3 w-3 rounded-full bg-green-300 mr-4" />
                     <span className="block text-gray-900 font-bold">{friendName}</span>
                 </div>
+                {friendship.status === 'accepted' && (
+                    <span onClick={() => handleDelete!(friendship.id, friendName)} className="cursor-pointer">
+                        <Trash2 className="mr-2 h-5 w-5" color="#FF5C5C" />
+                    </span>
+                )}
             </div>
             {friendship.status === 'pending' && (
                 <div className="flex gap-2 items-center">
@@ -32,14 +37,6 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
                     </Button>
                     <Button size={"sm"} onClick={() => handleReject!(friendship.id)} className="text-white bg-[#FF5C5C]">
                         Reject
-                    </Button>
-                </div>
-            )}
-            {friendship.status === 'accepted' && (
-                <div className="flex gap-2 items-center">
-                    <Button size={"sm"} onClick={() => handleDelete!(friendship.id, friendName)} className="text-white bg-[#FF5C5C]">
-                        <UserRoundX className="mr-2 h-5 w-5" />
-                        Remove
                     </Button>
                 </div>
             )}
