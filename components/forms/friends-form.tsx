@@ -42,6 +42,7 @@ const FriendsForm = ({ setIsOpen }: CreateTaskFormProps) => {
                 }
 
                 toast.success('Friend request has been sent!')
+                setIsOpen(false)
             })
         })
     }

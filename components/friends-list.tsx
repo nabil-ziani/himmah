@@ -1,13 +1,13 @@
 'use client'
 
 import { createClient } from "@/utils/supabase/client";
-import { Badge } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Button } from "./ui/button";
+import FriendshipCard from "./friendship-card";
 
 const FriendsList = () => {
     const [friendships, setFriendships] = useState<any[]>([]);
+    const [pendingRequests, setPendingRequests] = useState<any[]>([])
 
     const supabase = createClient()
 
@@ -37,6 +37,7 @@ const FriendsList = () => {
                         email
                     )
                 `)
+                .eq('status', 'accepted')
                 .or(`user_id.eq.${currentUser.id}, friend_id.eq.${currentUser.id}`)
 
             if (error) {
@@ -46,7 +47,43 @@ const FriendsList = () => {
             }
         }
 
+        const getPendingRequests = async () => {
+            // Retrieve current user
+            const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser()
+            if (userError || !currentUser) {
+                return { error: "Failed to retrieve the current user." }
+            }
+
+            // Ophalen van de vrienden waar de huidige gebruiker bij betrokken is (als verzender of ontvanger)
+            const { data: pendingRequests, error: pendingError } = await supabase
+                .from('friends')
+                .select(`
+                    id,
+                    status,
+                    friend:profiles!friends_friend_id_fkey (
+                        id,
+                        name,
+                        email
+                    ),
+                    user:profiles!friends_user_id_fkey (
+                        id,
+                        name,
+                        email
+                    )
+                `)
+                .eq('status', 'pending') // Filter alleen pending verzoeken
+                .or(`user_id.eq.${currentUser.id}, friend_id.eq.${currentUser.id}`);
+
+
+            if (pendingError) {
+                toast.error(pendingError.message)
+            } else {
+                setPendingRequests(pendingRequests || [])
+            }
+        }
+
         getFriends()
+        getPendingRequests()
     }, []);
 
     const handleAccept = async (friendshipId: string) => {
@@ -65,55 +102,48 @@ const FriendsList = () => {
         } else {
             toast.error(error.message);
         }
-    };
+    }
 
     const handleReject = async (friendshipId: string) => {
         const { error } = await supabase
             .from('friends')
-            .update({ status: 'rejected' })
-            .eq('id', friendshipId)
+            .delete()
+            .eq('id', friendshipId); // Verwijder het verzoek op basis van id
 
         if (!error) {
+            // Verwijder de friendship ook uit de state
             setFriendships((prevFriends) =>
-                prevFriends.map((friend) =>
-                    friend.id === friendshipId ? { ...friend, status: 'rejected' } : friend
-                )
+                prevFriends.filter((friend) => friend.id !== friendshipId) // Filter het verwijderde verzoek uit de lijst
             )
-            toast.success('Friend request rejected!')
+            toast.success('Friend request rejected and removed!');
         } else {
             toast.error(error.message);
         }
-    };
+    }
 
     return (
-        <div>
+        <div className="flex flex-col gap-y-10">
+            {pendingRequests.length > 0 && (
+                <>
+                    <h2 className='font-bold leading-none text-[#303030] text-3xl mb-5 text-center'>
+                        Pending Requests
+                    </h2>
+                    <ul>
+                        {pendingRequests.map((f) => {
+                            return (
+                                <FriendshipCard key={f.id} friendship={f} handleAccept={handleAccept} handleReject={handleReject} />
+                            )
+                        })}
+                    </ul>
+                </>
+            )}
             <h2 className='font-bold leading-none text-[#303030] text-3xl mb-5 text-center'>
                 Your Friends
             </h2>
             <ul>
                 {friendships.map((f) => {
                     return (
-                        <li key={f.id} className="flex m-5 gap-5">
-                            <div className="flex justify-between w-96 bg-gray-200 rounded-xl relative">
-                                <div className="whitespace-nowrap px-4 py-4 text-sm text-gray-500">
-                                    <span className="block text-gray-900 font-medium">{f.friend.name}</span>
-                                    <span className="block mt-1 text-gray-500">{f.friend.email}</span>
-                                </div>
-                                <span className="absolute right-2 top-2 items-center rounded-md bg-yellow-100 px-2 py-1 text-xs font-medium text-yellow-600">
-                                    {f.status}
-                                </span>
-                            </div>
-                            {f.status === 'pending' && (
-                                <div className="flex flex-col gap-2">
-                                    <Button size={"sm"} onClick={() => handleAccept(f.id)} className="text-white bg-green-500">
-                                        Accept
-                                    </Button>
-                                    <Button size={"sm"} onClick={() => handleReject(f.id)} className="text-white bg-[#FF5C5C]">
-                                        Reject
-                                    </Button>
-                                </div>
-                            )}
-                        </li>
+                        <FriendshipCard key={f.id} friendship={f} />
                     )
                 })}
             </ul>
