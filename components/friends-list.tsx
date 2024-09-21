@@ -49,12 +49,12 @@ const FriendsList = () => {
 
         const getPendingRequests = async () => {
             // Retrieve current user
-            const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser()
+            const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser();
             if (userError || !currentUser) {
-                return { error: "Failed to retrieve the current user." }
+                return { error: "Failed to retrieve the current user." };
             }
 
-            // Ophalen van de vrienden waar de huidige gebruiker bij betrokken is (als verzender of ontvanger)
+            // Ophalen van de vrienden waar de huidige gebruiker de ontvanger (friend_id) is
             const { data: pendingRequests, error: pendingError } = await supabase
                 .from('friends')
                 .select(`
@@ -72,15 +72,14 @@ const FriendsList = () => {
                     )
                 `)
                 .eq('status', 'pending') // Filter alleen pending verzoeken
-                .or(`user_id.eq.${currentUser.id}, friend_id.eq.${currentUser.id}`);
-
+                .eq('friend_id', currentUser.id); // Huidige gebruiker is de ontvanger
 
             if (pendingError) {
-                toast.error(pendingError.message)
+                toast.error(pendingError.message);
             } else {
-                setPendingRequests(pendingRequests || [])
+                setPendingRequests(pendingRequests || []);
             }
-        }
+        };
 
         getFriends()
         getPendingRequests()
@@ -93,11 +92,9 @@ const FriendsList = () => {
             .eq('id', friendshipId);
 
         if (!error) {
-            setFriendships((prevFriends) =>
-                prevFriends.map((friend) =>
-                    friend.id === friendshipId ? { ...friend, status: 'accepted' } : friend
-                )
-            )
+            setFriendships((prevFriends) => [...prevFriends, pendingRequests.find((request) => request.id === friendshipId)])
+            setPendingRequests((prevRequests) => prevRequests.filter((request) => request.id !== friendshipId))
+
             toast.success('Friend request accepted!')
         } else {
             toast.error(error.message);
@@ -111,10 +108,8 @@ const FriendsList = () => {
             .eq('id', friendshipId); // Verwijder het verzoek op basis van id
 
         if (!error) {
-            // Verwijder de friendship ook uit de state
-            setFriendships((prevFriends) =>
-                prevFriends.filter((friend) => friend.id !== friendshipId) // Filter het verwijderde verzoek uit de lijst
-            )
+            setPendingRequests((prevRequests) => prevRequests.filter((request) => request.id !== friendshipId))
+
             toast.success('Friend request rejected and removed!');
         } else {
             toast.error(error.message);
