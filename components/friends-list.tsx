@@ -4,86 +4,17 @@ import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import FriendshipCard from "./friendship-card";
+import useRealtimeFriendships from "@/hooks/useRealtimeFriendships";
+import { User } from "@supabase/supabase-js";
 
-const FriendsList = () => {
-    const [friendships, setFriendships] = useState<any[]>([]);
-    const [pendingRequests, setPendingRequests] = useState<any[]>([])
+interface FriendsListProps {
+    user: User
+}
 
+const FriendsList = ({ user }: FriendsListProps) => {
     const supabase = createClient()
 
-    useEffect(() => {
-        // Get list of friends when component is mounted
-        const getFriends = async () => {
-            // Retrieve current user
-            const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser()
-            if (userError || !currentUser) {
-                return { error: "Failed to retrieve the current user." }
-            }
-
-            // Ophalen van de vrienden waar de huidige gebruiker bij betrokken is (als verzender of ontvanger)
-            const { data, error } = await supabase
-                .from('friends')
-                .select(`
-                    id,
-                    status,
-                    friend:profiles!friends_friend_id_fkey (
-                        id,
-                        name,
-                        email
-                    ),
-                    user:profiles!friends_user_id_fkey (
-                        id,
-                        name,
-                        email
-                    )
-                `)
-                .eq('status', 'accepted')
-                .or(`user_id.eq.${currentUser.id}, friend_id.eq.${currentUser.id}`)
-
-            if (error) {
-                toast.error(error.message)
-            } else {
-                setFriendships(data || [])
-            }
-        }
-
-        const getPendingRequests = async () => {
-            // Retrieve current user
-            const { data: { user: currentUser }, error: userError } = await supabase.auth.getUser();
-            if (userError || !currentUser) {
-                return { error: "Failed to retrieve the current user." };
-            }
-
-            // Ophalen van de vrienden waar de huidige gebruiker de ontvanger (friend_id) is
-            const { data: pendingRequests, error: pendingError } = await supabase
-                .from('friends')
-                .select(`
-                    id,
-                    status,
-                    friend:profiles!friends_friend_id_fkey (
-                        id,
-                        name,
-                        email
-                    ),
-                    user:profiles!friends_user_id_fkey (
-                        id,
-                        name,
-                        email
-                    )
-                `)
-                .eq('status', 'pending') // Filter alleen pending verzoeken
-                .eq('friend_id', currentUser.id); // Huidige gebruiker is de ontvanger
-
-            if (pendingError) {
-                toast.error(pendingError.message);
-            } else {
-                setPendingRequests(pendingRequests || []);
-            }
-        };
-
-        getFriends()
-        getPendingRequests()
-    }, []);
+    const { friendships, pendingRequests } = useRealtimeFriendships(user.id)
 
     const handleAccept = async (friendshipId: string) => {
         const { error } = await supabase
@@ -92,10 +23,7 @@ const FriendsList = () => {
             .eq('id', friendshipId);
 
         if (!error) {
-            setFriendships((prevFriends) => [...prevFriends, pendingRequests.find((request) => request.id === friendshipId)])
-            setPendingRequests((prevRequests) => prevRequests.filter((request) => request.id !== friendshipId))
-
-            toast.success('Friend request accepted!')
+            toast.success('Friend request accepted!');
         } else {
             toast.error(error.message);
         }
@@ -105,11 +33,9 @@ const FriendsList = () => {
         const { error } = await supabase
             .from('friends')
             .delete()
-            .eq('id', friendshipId); // Verwijder het verzoek op basis van id
+            .eq('id', friendshipId);
 
         if (!error) {
-            setPendingRequests((prevRequests) => prevRequests.filter((request) => request.id !== friendshipId))
-
             toast.success('Friend request rejected and removed!');
         } else {
             toast.error(error.message);
@@ -126,7 +52,7 @@ const FriendsList = () => {
                     <ul>
                         {pendingRequests.map((f) => {
                             return (
-                                <FriendshipCard key={f.id} friendship={f} handleAccept={handleAccept} handleReject={handleReject} />
+                                <FriendshipCard key={f.id} friendship={f} currentUser={user} handleAccept={handleAccept} handleReject={handleReject} />
                             )
                         })}
                     </ul>
@@ -138,7 +64,7 @@ const FriendsList = () => {
             <ul>
                 {friendships.map((f) => {
                     return (
-                        <FriendshipCard key={f.id} friendship={f} />
+                        <FriendshipCard key={f.id} friendship={f} currentUser={user} />
                     )
                 })}
             </ul>

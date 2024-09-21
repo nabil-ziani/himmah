@@ -17,7 +17,7 @@ const useFriendRequestNotifications = (userId: string): number => {
                 .from('friends')
                 .select('*', { count: 'exact' })
                 .eq('friend_id', userId)
-                .eq('status', 'pending'); // Zorg ervoor dat je alleen pending requests ophaalt
+                .eq('status', 'pending');
 
             if (error) {
                 console.error('Error fetching pending requests:', error);
@@ -28,6 +28,7 @@ const useFriendRequestNotifications = (userId: string): number => {
 
         fetchPendingRequests();
 
+        // Luister naar veranderingen in de friend requests
         const friendRequestSubscription = supabase
             .channel('public:friends')
             .on(
@@ -35,11 +36,37 @@ const useFriendRequestNotifications = (userId: string): number => {
                 {
                     event: 'INSERT',
                     schema: 'public',
-                    filter: `friend_id=eq.${userId}`, // Filter op friend_id om alleen de ontvanger notificaties te sturen
+                    filter: `friend_id=eq.${userId}`, // Nieuwe friend requests
                 },
                 (payload) => {
                     if (payload.new.friend_id === userId) {
                         setFriendRequestCount((prev) => prev + 1);
+                    }
+                }
+            )
+            .on(
+                'postgres_changes',
+                {
+                    event: 'UPDATE',
+                    schema: 'public',
+                    filter: `friend_id=eq.${userId}, status=eq.accepted`, // Als verzoek wordt geaccepteerd
+                },
+                (payload) => {
+                    if (payload.new.friend_id === userId) {
+                        setFriendRequestCount((prev) => Math.max(prev - 1, 0));
+                    }
+                }
+            )
+            .on(
+                'postgres_changes',
+                {
+                    event: 'DELETE',
+                    schema: 'public',
+                    filter: `friend_id=eq.${userId}`, // Als verzoek wordt verwijderd (rejected)
+                },
+                (payload) => {
+                    if (payload.old.friend_id === userId) {
+                        setFriendRequestCount((prev) => Math.max(prev - 1, 0));
                     }
                 }
             )
@@ -51,7 +78,7 @@ const useFriendRequestNotifications = (userId: string): number => {
         }
     }, [userId]);
 
-    return friendRequestCount
+    return friendRequestCount;
 };
 
-export default useFriendRequestNotifications
+export default useFriendRequestNotifications;

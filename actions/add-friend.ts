@@ -23,10 +23,8 @@ export const addFriend = async (values: z.infer<typeof AddFriendSchema>) => {
         .eq('email', email)
         .single()
 
-    console.log(profile)
 
     if (profileError) {
-        console.log(profileError)
         return { error: "No user found with this email." };
     }
 

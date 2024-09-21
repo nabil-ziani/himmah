@@ -314,7 +314,7 @@ const BurnBarrel = ({ setCards, supabase }: any) => {
         // Verwijder lokaal
         setCards((prev: any[]) => {
             const updatedCards = prev.filter((c: { id: number }) => c.id !== cardId);
-            console.log("Updated cards:", updatedCards); // Check of de state lokaal wordt bijgewerkt
+
             return updatedCards;
         });
 
