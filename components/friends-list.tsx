@@ -41,11 +41,24 @@ const FriendsList = ({ user }: FriendsListProps) => {
         }
     }
 
+    const handleDelete = async (friendshipId: string, friendName: string) => {
+        const { data, error } = await supabase
+            .from('friends')
+            .delete()
+            .eq('id', friendshipId)
+
+        if (!error) {
+            toast.success(`${friendName} has been removed from your friends!`);
+        } else {
+            toast.error(error.message);
+        }
+    }
+
     return (
         <div className="flex flex-col gap-y-10">
             {pendingRequests.length > 0 && (
                 <>
-                    <h2 className='font-bold leading-none text-[#303030] text-3xl mb-5 text-center'>
+                    <h2 className='font-bold leading-none text-[#303030] text-3xl mb-2 text-center'>
                         Pending Requests
                     </h2>
                     <ul>
@@ -57,13 +70,13 @@ const FriendsList = ({ user }: FriendsListProps) => {
                     </ul>
                 </>
             )}
-            <h2 className='font-bold leading-none text-[#303030] text-3xl mb-5 text-center'>
+            <h2 className='font-bold leading-none text-[#303030] text-3xl mb-2 text-center'>
                 Your Friends
             </h2>
             <ul>
                 {friendships.map((f) => {
                     return (
-                        <FriendshipCard key={f.id} friendship={f} currentUser={user} />
+                        <FriendshipCard key={f.id} friendship={f} currentUser={user} handleDelete={handleDelete} />
                     )
                 })}
             </ul>
