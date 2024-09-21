@@ -28,7 +28,6 @@ const useFriendRequestNotifications = (userId: string): number => {
 
         fetchPendingRequests();
 
-        // Luister naar veranderingen in de friend requests
         const friendRequestSubscription = supabase
             .channel('public:friends')
             .on(
@@ -36,10 +35,11 @@ const useFriendRequestNotifications = (userId: string): number => {
                 {
                     event: 'INSERT',
                     schema: 'public',
-                    filter: `friend_id=eq.${userId}`, // Nieuwe friend requests
+                    filter: `friend_id=eq.${userId}`,
                 },
                 (payload) => {
                     if (payload.new.friend_id === userId) {
+                        console.log("Vriendschapsverzoek ontvangen!", payload)
                         setFriendRequestCount((prev) => prev + 1);
                     }
                 }
@@ -49,10 +49,11 @@ const useFriendRequestNotifications = (userId: string): number => {
                 {
                     event: 'UPDATE',
                     schema: 'public',
-                    filter: `friend_id=eq.${userId}, status=eq.accepted`, // Als verzoek wordt geaccepteerd
+                    filter: `friend_id=eq.${userId}, status=eq.accepted`
                 },
                 (payload) => {
                     if (payload.new.friend_id === userId) {
+                        console.log("Vriendschapsverzoek geaccepteerd!", payload)
                         setFriendRequestCount((prev) => Math.max(prev - 1, 0));
                     }
                 }
@@ -62,10 +63,11 @@ const useFriendRequestNotifications = (userId: string): number => {
                 {
                     event: 'DELETE',
                     schema: 'public',
-                    filter: `friend_id=eq.${userId}`, // Als verzoek wordt verwijderd (rejected)
+                    filter: `friend_id=eq.${userId}`
                 },
                 (payload) => {
                     if (payload.old.friend_id === userId) {
+                        console.log("Vriendschapsverzoek geweigerd!", payload)
                         setFriendRequestCount((prev) => Math.max(prev - 1, 0));
                     }
                 }

@@ -1,7 +1,6 @@
 'use client'
 
 import { createClient } from "@/utils/supabase/client";
-import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import FriendshipCard from "./friendship-card";
 import useRealtimeFriendships from "@/hooks/useRealtimeFriendships";
