@@ -45,10 +45,14 @@ const useRealtimeFriendships = (userId: string) => {
 
         // Realtime abonnement op updates in de "friends" tabel
         const subscription = supabase
-            .channel(`public:friends`)
+            .channel(`friends`)
             .on(
                 "postgres_changes",
-                { event: "*", schema: "public", table: "friends" },
+                {
+                    event: "*",
+                    schema: "public",
+                    table: "friends"
+                },
                 (payload) => {
                     fetchFriendships()
                 }

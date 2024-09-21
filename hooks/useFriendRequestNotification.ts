@@ -29,7 +29,7 @@ const useFriendRequestNotifications = (userId: string): number => {
         fetchPendingRequests();
 
         const friendRequestSubscription = supabase
-            .channel('public:friends')
+            .channel('friends')
             .on(
                 'postgres_changes',
                 {
