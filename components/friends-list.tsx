@@ -3,8 +3,8 @@
 import { createClient } from "@/utils/supabase/client";
 import toast from "react-hot-toast";
 import FriendshipCard from "./friendship-card";
-import useRealtimeFriendships from "@/hooks/useRealtimeFriendships";
 import { User } from "@supabase/supabase-js";
+import useFriendRequests from "@/hooks/useFriendRequests";
 
 interface FriendsListProps {
     user: User
@@ -13,7 +13,7 @@ interface FriendsListProps {
 const FriendsList = ({ user }: FriendsListProps) => {
     const supabase = createClient()
 
-    const { friendships, pendingRequests } = useRealtimeFriendships(user.id)
+    const { friendships, pendingRequests } = useFriendRequests(user.id)
 
     const handleAccept = async (friendshipId: string) => {
         const { error } = await supabase

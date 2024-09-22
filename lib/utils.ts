@@ -47,3 +47,15 @@ export async function getBackgrounds(supabase: SupabaseClient, folder: string) {
 
   return files
 }
+
+export const fetchProfileData = async (supabase: SupabaseClient, id: string) => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select('id, name, email')
+    .eq('id', id)
+    .single()
+  if (error) {
+    console.error('Error fetching profile data:', error);
+  }
+  return data;
+}

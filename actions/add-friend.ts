@@ -46,9 +46,9 @@ export const addFriend = async (values: z.infer<typeof AddFriendSchema>) => {
         .eq('friend_id', profile.id)
         .single();
 
-    if (existingRequest) {
-        return { error: "A friend request already exists." };
-    }
+    if (existingRequest)
+        return { error: "A friend request already exists." }
+
 
     // Add friend request to `friends` table
     const { data, error } = await supabase

@@ -8,8 +8,8 @@ import Link from 'next/link';
 import { ClipboardList, LayoutDashboard, LucideFocus, Settings2Icon, UsersRoundIcon } from 'lucide-react';
 import LogoutButton from './logout-button';
 import { Badge } from './ui/badge';
-import useFriendRequestNotifications from '@/hooks/useFriendRequestNotification';
 import { User } from '@supabase/supabase-js';
+import useFriendRequests from '@/hooks/useFriendRequests';
 
 interface SidebarProps {
     user: User
@@ -18,7 +18,7 @@ interface SidebarProps {
 const Sidebar = ({ user }: SidebarProps) => {
     const pathname = usePathname();
 
-    const friendRequestCount = useFriendRequestNotifications(user.id);
+    const { pendingRequests } = useFriendRequests(user.id);
 
     const renderIcon = (route: string, color: string) => {
         switch (route) {
@@ -47,9 +47,9 @@ const Sidebar = ({ user }: SidebarProps) => {
                         return (
                             <Link href={`${link.route}`} key={link.label} className={cn('flex relative gap-4 items-center p-4 rounded-lg justify-start text-[#303030] hover:bg-white/15', { 'bg-white hover:bg-white': isActive })}>
                                 {renderIcon(link.route, isActive ? '#303030' : 'white')}
-                                {link.route == '/dashboard/friends' && friendRequestCount > 0 && (
+                                {link.route == '/dashboard/friends' && pendingRequests.length > 0 && (
                                     <Badge className="w-6 h-6 rounded-full border-2 bg-[#FF5C5C] text-white font-bold absolute right-5 flex justify-center items-center">
-                                        {friendRequestCount}
+                                        {pendingRequests.length}
                                     </Badge>
                                 )}
                                 <p className={`text-md font-semibold max-lg:hidden ${isActive ? 'text-[#303030]' : 'text-white'}`}>

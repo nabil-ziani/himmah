@@ -2,11 +2,11 @@
 
 import { User } from "@supabase/supabase-js"
 import { Button } from "./ui/button"
+import { Trash2 } from "lucide-react"
 import { Friendship } from "@/lib/types"
-import { Trash2, UserRoundX } from "lucide-react"
 
 interface FriendshipCardProps {
-    friendship: any
+    friendship: Friendship
     currentUser: User
     handleAccept?: (friendshipId: string) => Promise<void>
     handleReject?: (friendshipId: string) => Promise<void>
@@ -15,7 +15,7 @@ interface FriendshipCardProps {
 
 const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, handleDelete }: FriendshipCardProps) => {
 
-    const friendName = friendship.friend?.id === currentUser.id ? friendship.user.name : friendship.friend.name;
+    const friendName = friendship?.friend?.id === currentUser.id ? friendship.user.name : friendship.friend.name;
 
     return (
         <li key={friendship.id} className="flex m-5 gap-5">
