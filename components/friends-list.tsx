@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import toast from "react-hot-toast";
 import FriendshipCard from "./friendship-card";
 import { User } from "@supabase/supabase-js";
-import { useFriendContext } from "@/context/friendshipContext";
+import { useFriendContext } from "@/contexts/friendshipContext";
 
 interface FriendsListProps {
     user: User

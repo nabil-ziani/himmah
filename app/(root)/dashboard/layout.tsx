@@ -1,7 +1,7 @@
 import DashboardNavbar from '@/components/dashboard-nav';
 import Sidebar from '@/components/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { FriendProvider, useFriendContext } from '@/context/friendshipContext';
+import { FriendProvider, useFriendContext } from '@/contexts/friendshipContext';
 import useFriendRequests from '@/hooks/useFriendRequests';
 import { createClient } from '@/utils/supabase/server';
 import { Metadata } from 'next';

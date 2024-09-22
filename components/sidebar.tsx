@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { ClipboardList, LayoutDashboard, LucideFocus, Settings2Icon, UsersRoundIcon } from 'lucide-react';
 import LogoutButton from './logout-button';
 import { Badge } from './ui/badge';
-import { useFriendContext } from '@/context/friendshipContext';
+import { useFriendContext } from '@/contexts/friendshipContext';
 
 interface SidebarProps { }
 
