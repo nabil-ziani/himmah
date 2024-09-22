@@ -84,15 +84,16 @@ const useFriendRequests = (userId: string) => {
             }
         }
 
-        const handleRejection = async (payload: any) => {
-            setPendingRequests(prev => prev.filter(req => req.id !== payload.old.id));
+        const handleDelete = async (payload: any) => {
+            setFriendships(prev => prev.filter(req => req.id !== payload.old.id))
+            setPendingRequests(prev => prev.filter(req => req.id !== payload.old.id))
         }
 
         const subscription = supabase
             .channel(`realtime friends`)
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'friends' }, handleInsert)
             .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'friends' }, handleUpdate)
-            .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'friends' }, handleRejection)
+            .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'friends' }, handleDelete)
             .subscribe();
 
         return () => {

@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/client";
 import toast from "react-hot-toast";
 import FriendshipCard from "./friendship-card";
 import { User } from "@supabase/supabase-js";
-import useFriendRequests from "@/hooks/useFriendRequests";
+import { useFriendContext } from "@/context/friendshipContext";
 
 interface FriendsListProps {
     user: User
@@ -13,7 +13,7 @@ interface FriendsListProps {
 const FriendsList = ({ user }: FriendsListProps) => {
     const supabase = createClient()
 
-    const { friendships, pendingRequests } = useFriendRequests(user.id)
+    const { friendships, pendingRequests } = useFriendContext()
 
     const handleAccept = async (friendshipId: string) => {
         const { error } = await supabase
@@ -48,7 +48,7 @@ const FriendsList = ({ user }: FriendsListProps) => {
             .eq('id', friendshipId)
 
         if (!error) {
-            toast.success(`${friendName} has been removed from your friends!`);
+            toast.success(`${friendName} has been removed!`);
         } else {
             toast.error(error.message);
         }

@@ -8,17 +8,14 @@ import Link from 'next/link';
 import { ClipboardList, LayoutDashboard, LucideFocus, Settings2Icon, UsersRoundIcon } from 'lucide-react';
 import LogoutButton from './logout-button';
 import { Badge } from './ui/badge';
-import { User } from '@supabase/supabase-js';
-import useFriendRequests from '@/hooks/useFriendRequests';
+import { useFriendContext } from '@/context/friendshipContext';
 
-interface SidebarProps {
-    user: User
-}
+interface SidebarProps { }
 
-const Sidebar = ({ user }: SidebarProps) => {
+const Sidebar = ({ }: SidebarProps) => {
     const pathname = usePathname();
 
-    const { pendingRequests } = useFriendRequests(user.id);
+    const { pendingRequests } = useFriendContext();
 
     const renderIcon = (route: string, color: string) => {
         switch (route) {

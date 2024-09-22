@@ -1,6 +1,8 @@
 import DashboardNavbar from '@/components/dashboard-nav';
 import Sidebar from '@/components/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { FriendProvider, useFriendContext } from '@/context/friendshipContext';
+import useFriendRequests from '@/hooks/useFriendRequests';
 import { createClient } from '@/utils/supabase/server';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
@@ -28,18 +30,20 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
 
     return (
         <main className='relative text-foreground bg-slate-50 '>
-            <DashboardNavbar />
-            <div className='flex'>
-                <Sidebar user={user} />
-                <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-28 max-md:pb-14 sm:px-14">
-                    <div className="w-full relative">
-                        <Toaster position='top-right' containerStyle={{ top: 100, right: 20 }} />
-                        <TooltipProvider delayDuration={100}>
-                            {children}
-                        </TooltipProvider>
-                    </div>
-                </section>
-            </div>
+            <FriendProvider userId={user.id}>
+                <DashboardNavbar />
+                <div className='flex'>
+                    <Sidebar />
+                    <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-28 max-md:pb-14 sm:px-14">
+                        <div className="w-full relative">
+                            <Toaster position='top-right' containerStyle={{ top: 100, right: 20 }} />
+                            <TooltipProvider delayDuration={100}>
+                                {children}
+                            </TooltipProvider>
+                        </div>
+                    </section>
+                </div>
+            </FriendProvider>
         </main>
     );
 }
