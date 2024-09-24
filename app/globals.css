@@ -103,6 +103,17 @@
 }
 
 @layer utilities {
+
+    /* Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+    
     /* ===== UTILITIES */
     .bg-custom-gradient {
         background: linear-gradient(120deg, #f86d6d, #f6ce69);

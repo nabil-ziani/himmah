@@ -206,7 +206,7 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, openMo
     const filteredCards = cards.filter((c) => c.status === status);
 
     return (
-        <div className="w-56 shrink-0 overflow-hidden">
+        <div className="w-56 shrink-0">
             <div className="mb-3 flex items-center justify-between">
                 <h3 className={`font-medium text-xl text-[#303030] py-2 px-6 rounded-lg ${headingColor}`}>{title}</h3>
             </div>
@@ -214,7 +214,7 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, openMo
                 onDrop={handleDragEnd}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                className={`overflow-y-scroll h-full w-full transition-colors ${active ? "bg-neutral-800/50" : "bg-neutral-800/0"
+                className={`no-scrollbar overflow-y-auto h-full w-full transition-colors ${active ? "bg-neutral-800/50" : "bg-neutral-800/0"
                     }`}
             >
                 {filteredCards.map((c) => {

@@ -97,7 +97,7 @@ const FocusCard = ({ user }: FocusCardProps) => {
     return (
         <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
             <div className="flex h-[calc(100vh-250px)]">
-                <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[100vw]">
+                <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[calc(100vw-300px)]">
                     <div className="flex justify-end items-center">
                         <div className="flex gap-3">
                             <AudioDropdown title="Audio" audioOptions={audioOptions} setAudio={setAudio} />
