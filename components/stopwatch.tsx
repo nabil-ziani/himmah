@@ -3,24 +3,71 @@
 import { useState } from 'react';
 import { Button } from "./ui/button";
 import FocusDialog from './focus-dialog';
+import { SupabaseClient, User } from '@supabase/supabase-js';
+import { Database } from '@/database.types';
 
 interface StopwatchProps {
     audio: string
     backgrounds: string[]
+    supabase: SupabaseClient<Database>
+    user: User
 }
 
-const Stopwatch = ({ audio, backgrounds }: StopwatchProps) => {
-    const [fullScreen, setFullScreen] = useState(false);
-    const [time, setTime] = useState(0); // Tijd in honderdsten van seconden
-    const [isRunning, setIsRunning] = useState(false);
+const Stopwatch = ({ audio, backgrounds, supabase, user }: StopwatchProps) => {
+    const [fullScreen, setFullScreen] = useState(false)
+    const [time, setTime] = useState(0)
+    const [isRunning, setIsRunning] = useState(false)
+    const [sessionId, setSessionId] = useState<number>()
+    const [start_time, setStartTime] = useState<string | null>(null)
 
     const minutes = Math.floor((time % 360000) / 6000);
     const seconds = Math.floor((time % 6000) / 100);
 
-    const handleStart = () => {
-        setFullScreen(true); // Open de dialog
-        setIsRunning(true);  // Start de stopwatch
-    };
+    const handleStart = async () => {
+        setFullScreen(true)
+        setIsRunning(true)
+
+        const { data, error } = await supabase
+            .from('focus_sessions')
+            .insert({
+                user_id: user.id,
+                type: 'stopwatch'
+            })
+            .select()
+            .single()
+        if (error) {
+            console.error(error)
+        } else {
+            setSessionId(data.id)
+            setStartTime(data.start_time)
+        }
+    }
+
+    const handleSessionEnd = async (completed: boolean) => {
+        if (!start_time) {
+            console.error('Start time is null');
+            return;
+        }
+
+        const end_time = new Date();
+        const startTimeDate = new Date(start_time)
+        const duration = Math.floor((end_time.getTime() - startTimeDate.getTime()) / 1000)
+
+        const { error } = await supabase
+            .from('focus_sessions')
+            .update({
+                end_time: end_time.toISOString(),
+                completed: true,
+                duration
+            })
+            .eq('id', sessionId!);
+
+        if (error) {
+            console.error(error);
+        } else {
+            setFullScreen(false)
+        }
+    }
 
     return (
         <>
@@ -57,6 +104,7 @@ const Stopwatch = ({ audio, backgrounds }: StopwatchProps) => {
                 setTime={setTime} // Zorg ervoor dat de tijd in de dialog kan worden bijgewerkt
                 audio={audio}
                 backgrounds={backgrounds}
+                handleSessionEnd={handleSessionEnd}
             />
         </>
     )

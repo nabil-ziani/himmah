@@ -11,18 +11,24 @@ import Stopwatch from "./stopwatch"
 import Timer from "./timer"
 import { createClient } from "@/utils/supabase/client";
 import SetBackgroundDialog from "./set-background-dialog";
+import { User } from "@supabase/supabase-js";
+import AudioDropdown from "./audio-dropdown";
 
 type AudioFile = {
-    name: string;
-    url: string;
-};
+    name: string
+    url: string
+}
 
 type AudioOption = {
-    label: string;
-    files: AudioFile[];
-};
+    label: string
+    files: AudioFile[]
+}
 
-const FocusCard = () => {
+interface FocusCardProps {
+    user: User
+}
+
+const FocusCard = ({ user }: FocusCardProps) => {
     const [backgrounds, setBackgrounds] = useState<string[]>([])
     const [audio, setAudio] = useState('Weather')
     const [audioOptions, setAudioOptions] = useState<AudioOption[]>([]);
@@ -32,8 +38,8 @@ const FocusCard = () => {
     const searchParams = useSearchParams();
     const supabase = createClient()
 
-    const currentMode = searchParams.get('mode') || 'timer';
-    const [mode, setMode] = useState<'timer' | 'stopwatch'>(currentMode as 'timer' | 'stopwatch');
+    const currentMode = searchParams.get('mode') || 'timer'
+    const [mode, setMode] = useState<'timer' | 'stopwatch'>(currentMode as 'timer' | 'stopwatch')
 
     const toggleMode = () => {
         const newMode = mode === 'timer' ? 'stopwatch' : 'timer';
@@ -41,12 +47,14 @@ const FocusCard = () => {
         router.push(`?mode=${newMode}`, undefined)
     };
 
+    // --- Set mode based on url-query
     useEffect(() => {
         if (currentMode !== mode) {
             setMode(currentMode as 'timer' | 'stopwatch');
         }
     }, [currentMode]);
 
+    // --- set white noise (audioOptions)
     useEffect(() => {
         const getAudioFiles = async (folder: string) => {
             const { data, error } = await supabase.storage
@@ -92,37 +100,7 @@ const FocusCard = () => {
                 <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[100vw]">
                     <div className="flex justify-end items-center">
                         <div className="flex gap-3">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                    <Button size={"lg"} className="bg-[#1E90FF]/60  hover:bg-[#1E90FF]/70 text-white text-xl hover:cursor-pointer">
-                                        <CirclePlay className="mr-3" />
-                                        Audio
-                                    </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="w-56">
-                                    <DropdownMenuSeparator />
-                                    {audioOptions.map((audio) => (
-                                        <DropdownMenuRadioGroup key={audio.label} value={audio.label} onValueChange={setAudio}>
-                                            <DropdownMenuSub>
-                                                <DropdownMenuSubTrigger>
-                                                    {audio.label}
-                                                </DropdownMenuSubTrigger>
-                                                <DropdownMenuPortal>
-                                                    <DropdownMenuSubContent>
-                                                        {audio.files.map((file) => {
-                                                            return (
-                                                                <DropdownMenuRadioItem key={file.name} value={file.url}>
-                                                                    {file.name}
-                                                                </DropdownMenuRadioItem>
-                                                            )
-                                                        })}
-                                                    </DropdownMenuSubContent>
-                                                </DropdownMenuPortal>
-                                            </DropdownMenuSub>
-                                        </DropdownMenuRadioGroup>
-                                    ))}
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                            <AudioDropdown title="Audio" audioOptions={audioOptions} setAudio={setAudio} />
 
                             <Button size={"lg"} className="bg-[#6A0D91]/60  hover:bg-[#6A0D91]/70 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
                                 <Image className="mr-3" />
@@ -134,14 +112,14 @@ const FocusCard = () => {
                         </div>
                     </div>
 
-                    {mode == 'timer' && <Timer audio={audio} backgrounds={backgrounds} />}
-                    {mode == 'stopwatch' && <Stopwatch audio={audio} backgrounds={backgrounds} />}
+                    {mode == 'timer' && <Timer audio={audio} backgrounds={backgrounds} supabase={supabase} user={user} />}
+                    {mode == 'stopwatch' && <Stopwatch audio={audio} backgrounds={backgrounds} supabase={supabase} user={user} />}
 
                     <SetBackgroundDialog isOpen={backgroundDialog} setIsOpen={setBackgroundDialog} backgrounds={backgrounds} setBackgrounds={setBackgrounds} />
                 </section>
             </div>
         </Card>
     )
-}  
+}
 
 export default FocusCard

@@ -1,19 +1,26 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CircleMinus, PlusCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import FocusDialog from "./focus-dialog";
+import { SupabaseClient, User } from "@supabase/supabase-js";
+import { Database } from "@/database.types";
+import toast from "react-hot-toast";
 
 interface TimerProps {
     audio: string
     backgrounds: string[]
+    supabase: SupabaseClient<Database>
+    user: User
 }
 
-const Timer = ({ audio, backgrounds }: TimerProps) => {
-    const [fullScreen, setFullScreen] = useState(false);
-    const [seconds, setSeconds] = useState(1800);
+const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
+    const [fullScreen, setFullScreen] = useState(false)
+    const [sessionId, setSessionId] = useState<number>()
+    const [start_time, setStartTime] = useState<string | null>(null)
+    const [seconds, setSeconds] = useState(1800)
 
     let extraSeconds: string | number = seconds % 60;
     let minutes: string | number = Math.floor(seconds / 60);
@@ -21,13 +28,53 @@ const Timer = ({ audio, backgrounds }: TimerProps) => {
     minutes = minutes < 10 ? "0" + minutes : minutes;
     extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
 
-    const handleStart = () => {
-        setFullScreen(true);
-    };
+    const handleStart = async () => {
+        setFullScreen(true)
+
+        const { data, error } = await supabase
+            .from('focus_sessions')
+            .insert({
+                user_id: user.id,
+                type: 'timer'
+            })
+            .select()
+            .single()
+        if (error) {
+            console.error(error)
+        } else {
+            setSessionId(data.id)
+            setStartTime(data.start_time)
+        }
+    }
+
+    const handleSessionEnd = async (completed: boolean) => {
+        // Should not be possible
+        if (!start_time) {
+            console.error('Start time is null')
+            return
+        }
+
+        const end_time = new Date();
+        const startTimeDate = new Date(start_time)
+        const duration = Math.floor((end_time.getTime() - startTimeDate.getTime()) / 1000)
+
+        const { error } = await supabase
+            .from('focus_sessions')
+            .update({
+                end_time: end_time.toISOString(),
+                completed,
+                duration
+            })
+            .eq('id', sessionId!);
+
+        if (error) toast.error(error.message);
+
+        setFullScreen(false)
+    }
 
     const handlePlusClick = () => {
         setSeconds((s) => s + 300); // Add 5 minutes
-    };
+    }
 
     const handleMinusClick = () => {
         if (seconds <= 300) {
@@ -35,7 +82,7 @@ const Timer = ({ audio, backgrounds }: TimerProps) => {
             return;
         }
         setSeconds((s) => s - 300); // Subtract 5 minutes
-    };
+    }
 
     return (
         <>
@@ -50,21 +97,6 @@ const Timer = ({ audio, backgrounds }: TimerProps) => {
                 </div>
                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
                     <Tooltip>
-                        <TooltipTrigger className="h-12 rounded-lg px-8 bg-gray-600/80  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handlePlusClick}>
-                            <PlusCircle />
-                        </TooltipTrigger>
-                        <TooltipContent side='bottom'>
-                            <div className='bg-white'>
-                                <p className='font-medium'>Increase 5 minutes</p>
-                            </div>
-                        </TooltipContent>
-                    </Tooltip>
-
-                    <Button size={"lg"} className="bg-[#2ecc71] hover:bg-[#2ecc71]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={handleStart}>
-                        Start
-                    </Button>
-
-                    <Tooltip>
                         <TooltipTrigger className="h-12 rounded-lg px-8 bg-gray-600/80  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handleMinusClick}>
                             <CircleMinus />
                         </TooltipTrigger>
@@ -74,10 +106,25 @@ const Timer = ({ audio, backgrounds }: TimerProps) => {
                             </div>
                         </TooltipContent>
                     </Tooltip>
+
+                    <Button size={"lg"} className="bg-[#2ecc71] hover:bg-[#2ecc71]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={handleStart}>
+                        Start
+                    </Button>
+
+                    <Tooltip>
+                        <TooltipTrigger className="h-12 rounded-lg px-8 bg-gray-600/80  hover:shadow-2xl text-white hover:cursor-pointer" onClick={handlePlusClick}>
+                            <PlusCircle />
+                        </TooltipTrigger>
+                        <TooltipContent side='bottom'>
+                            <div className='bg-white'>
+                                <p className='font-medium'>Increase 5 minutes</p>
+                            </div>
+                        </TooltipContent>
+                    </Tooltip>
                 </div>
             </div>
 
-            <FocusDialog isOpen={fullScreen} setIsOpen={setFullScreen} mode='timer' totalSeconds={seconds} audio={audio} backgrounds={backgrounds} />
+            <FocusDialog isOpen={fullScreen} setIsOpen={setFullScreen} mode='timer' totalSeconds={seconds} audio={audio} backgrounds={backgrounds} handleSessionEnd={handleSessionEnd} />
         </>
     );
 }

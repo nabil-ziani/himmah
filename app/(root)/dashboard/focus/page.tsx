@@ -15,7 +15,7 @@ export default async function FocusPage() {
     return (
         <div className="flex flex-col max-h-[calc(100vh-80px)] gap-10 justify-center items-center">
             <h1 className='font-bold leading-none text-[#303030] text-4xl'>Focus</h1>
-            <FocusCard />
+            <FocusCard user={user} />
         </div>
     );
 }

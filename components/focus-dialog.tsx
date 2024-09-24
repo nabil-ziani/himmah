@@ -6,86 +6,92 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
 interface FocusDialogProps {
-    isOpen: boolean,
-    setIsOpen: Dispatch<SetStateAction<boolean>>,
-    mode: 'timer' | 'stopwatch',
-    totalSeconds?: number, // Voor de timer
-    time?: { minutes: string | number, seconds: string | number }, // Voor de stopwatch
-    isRunning?: boolean, // Voor stopwatch functionaliteit
-    setIsRunning?: Dispatch<SetStateAction<boolean>>,
-    setTime?: Dispatch<SetStateAction<number>> // Om de tijd bij te werken
+    isOpen: boolean
+    setIsOpen: Dispatch<SetStateAction<boolean>>
+    mode: 'timer' | 'stopwatch'
+    totalSeconds?: number
+    time?: { minutes: string | number, seconds: string | number }
+    isRunning?: boolean
+    setIsRunning?: Dispatch<SetStateAction<boolean>>
+    setTime?: Dispatch<SetStateAction<number>>
     audio: string
     backgrounds: string[]
+    handleSessionEnd: (completed: boolean) => Promise<void>
 }
 
-const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, setIsRunning, setTime, audio, backgrounds }: FocusDialogProps) => {
-    const [seconds, setSeconds] = useState<number>(mode === 'timer' ? totalSeconds! % 60 : Number(time?.seconds));
-    const [minutes, setMinutes] = useState<number>(mode === 'timer' ? Math.floor(totalSeconds! / 60) : Number(time?.minutes));
-    const [backgroundIndex, setBackgroundIndex] = useState(0);
-    const [currentBackground, setCurrentBackground] = useState<string>(backgrounds[0]);
-
-    const interval = useInterval(() => {
-        if (mode === 'timer') {
-            if (seconds > 0) {
-                setSeconds((s) => s - 1);
-            } else if (seconds === 0 && minutes > 0) {
-                setMinutes((m) => m - 1);
-                setSeconds(59);
-            }
-        } else if (mode === 'stopwatch' && isRunning) {
-            setTime?.((prevTime) => prevTime + 100); // Update in honderdsten van seconden
-        }
-    }, 1000); // Interval van 1000 milliseconden voor volledige seconden
-
-    // Bijwerken van de waarden wanneer props veranderen
-    useEffect(() => {
-        if (mode === 'timer' && totalSeconds !== undefined) {
-            setMinutes(Math.floor(totalSeconds / 60));
-            setSeconds(totalSeconds % 60);
-        } else if (mode === 'stopwatch' && time) {
-            setMinutes(Number(time.minutes));
-            setSeconds(Number(time.seconds));
-        }
-    }, [totalSeconds, time, mode]);
-
-    // Starten en stoppen van de interval afhankelijk van de toestand
-    useEffect(() => {
-        if (isOpen) {
-            if (mode === 'timer') {
-                interval.start();
-            } else if (isRunning) {
-                interval.start();
-            }
-        } else {
-            interval.stop();
-        }
-    }, [isOpen, isRunning, mode, interval]);
-
-    // Stop interval bij sluiten component
-    useEffect(() => {
-        return interval.stop;
-    }, []);
+const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, setIsRunning, setTime, audio, backgrounds, handleSessionEnd }: FocusDialogProps) => {
+    const [seconds, setSeconds] = useState<number>(mode === 'timer' ? totalSeconds! % 60 : Number(time?.seconds))
+    const [minutes, setMinutes] = useState<number>(mode === 'timer' ? Math.floor(totalSeconds! / 60) : Number(time?.minutes))
+    const [backgroundIndex, setBackgroundIndex] = useState(0)
+    const [currentBackground, setCurrentBackground] = useState<string>(backgrounds[0])
 
     // Bereken de seconden en minuten opnieuw wanneer de tijd in honderdsten van seconden wordt bijgewerkt
     const currentMinutes = Math.floor((Number(time?.minutes) || 0) + seconds / 60);
     const currentSeconds = seconds % 60;
 
+    // Interval for 1 second
+    const interval = useInterval(() => {
+        if (mode === 'timer') {
+            if (seconds > 0) {
+                setSeconds((s) => s - 1)
+            } else if (seconds === 0 && minutes > 0) {
+                setMinutes((m) => m - 1)
+                setSeconds(59)
+            } else if (minutes === 0 && seconds === 0) {
+                interval.stop()
+                handleSessionEnd(true)
+            }
+        } else if (mode === 'stopwatch' && isRunning) {
+            setTime?.((prevTime) => prevTime + 100)
+        }
+    }, 1000)
+
+    // Update values when props change
+    useEffect(() => {
+        if (mode === 'timer' && totalSeconds !== undefined) {
+            setMinutes(Math.floor(totalSeconds / 60))
+            setSeconds(totalSeconds % 60)
+        } else if (mode === 'stopwatch' && time) {
+            setMinutes(Number(time.minutes))
+            setSeconds(Number(time.seconds))
+        }
+    }, [totalSeconds, time, mode])
+
+    // Start and stop the interval depending on the mode
+    useEffect(() => {
+        if (isOpen) {
+            if (mode === 'timer') {
+                interval.start()
+            } else if (isRunning) {
+                interval.start()
+            }
+        } else {
+            interval.stop()
+        }
+    }, [isOpen, isRunning, mode, interval])
+
+    // Cleanup interval on unmount
+    useEffect(() => {
+        return interval.stop
+    }, [])
+
+    // Change background every minute
     useEffect(() => {
         const interval = setInterval(() => {
-            setBackgroundIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
-        }, 10000); // Verander achtergrond elke minuut
+            setBackgroundIndex((prevIndex) => (prevIndex + 1) % backgrounds.length)
+        }, 10000)
 
-        return () => clearInterval(interval); // Opruimen van interval bij unmount
-    }, [backgrounds.length]);
+        return () => clearInterval(interval)
+    }, [backgrounds.length])
 
     useEffect(() => {
-        setCurrentBackground(backgrounds[backgroundIndex]);
-    }, [backgroundIndex, backgrounds]);
+        setCurrentBackground(backgrounds[backgroundIndex])
+    }, [backgroundIndex, backgrounds])
 
     return (
         <AnimatePresence>
             {isOpen && (
-                <div onClick={() => setIsOpen(false)} className="fixed inset-0 z-50 grid place-items-center overflow-y-scroll">
+                <div className="fixed inset-0 z-50 grid place-items-center overflow-y-scroll">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -93,7 +99,7 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
                         transition={{ duration: 1, ease: "easeInOut" }}
                         onClick={(e) => e.stopPropagation()}
                         className="w-full h-full bg-white relative grid place-items-center"
-                        style={{ backgroundImage: `url(${currentBackground})`, backgroundSize: 'cover' }} // Stel de achtergrond in
+                        style={{ backgroundImage: `url(${currentBackground})`, backgroundSize: 'cover' }}
                     >
                         {/* Timer-modus */}
                         {mode === 'timer' && (
@@ -105,10 +111,10 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
                                 </div>
                                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
                                     <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => {
-                                        interval.stop();
-                                        setIsOpen(false);
+                                        interval.stop()
+                                        handleSessionEnd(true)
                                     }}>
-                                        Give up
+                                        {mode === 'timer' ? 'Give up' : 'Stop'}
                                     </Button>
                                 </div>
                             </div>
@@ -124,9 +130,9 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
                                 </div>
                                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
                                     <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => {
-                                        interval.stop();
-                                        setIsRunning?.(false);
-                                        setIsOpen(false);
+                                        interval.stop()
+                                        setIsRunning?.(false)
+                                        setIsOpen(false)
                                     }}>
                                         Give up
                                     </Button>

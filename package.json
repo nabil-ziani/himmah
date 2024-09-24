@@ -25,6 +25,7 @@
     "autoprefixer": "10.4.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "embla-carousel-react": "^8.1.8",
     "framer-motion": "^11.3.24",
     "geist": "^1.2.1",
