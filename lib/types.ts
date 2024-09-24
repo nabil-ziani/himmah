@@ -15,11 +15,13 @@ export type Friendship = {
     friend: {
         id: string,
         name: string,
-        email: string
+        email: string,
+        is_online: boolean
     },
     user: {
         id: string,
         name: string,
-        email: string
+        email: string,
+        is_online: boolean
     }
 }

@@ -22,12 +22,14 @@ const useFriendRequests = (userId: string) => {
                     friend:friend_id(
                         id,
                         name,
-                        email
+                        email,
+                        is_online
                     ),
                     user:user_id(
                         id,
                         name,
-                        email
+                        email,
+                        is_online
                     )
                 `)
                 .or(`user_id.eq.${userId}, friend_id.eq.${userId}`)

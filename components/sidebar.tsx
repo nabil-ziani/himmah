@@ -9,13 +9,16 @@ import { ClipboardList, LayoutDashboard, LucideFocus, Settings2Icon, UsersRoundI
 import LogoutButton from './logout-button';
 import { Badge } from './ui/badge';
 import { useFriendContext } from '@/contexts/friendshipContext';
+import { useEffect } from 'react';
+import { createClient } from '@/utils/supabase/client';
+import { Database } from '@/database.types';
 
 interface SidebarProps { }
 
 const Sidebar = ({ }: SidebarProps) => {
-    const pathname = usePathname();
+    const pathname = usePathname()
 
-    const { pendingRequests } = useFriendContext();
+    const { pendingRequests } = useFriendContext()
 
     const renderIcon = (route: string, color: string) => {
         switch (route) {
@@ -33,6 +36,37 @@ const Sidebar = ({ }: SidebarProps) => {
                 return null;
         }
     }
+
+    const supabase = createClient()
+
+    useEffect(() => {
+        const updateOnlineStatus = async (isOnline: boolean) => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                await supabase
+                    .from('profiles')
+                    .update({ is_online: isOnline })
+                    .eq('id', user.id);
+            }
+        };
+
+        const handleFocus = () => updateOnlineStatus(true);
+        const handleBlur = () => updateOnlineStatus(false);
+        const handleUnload = () => updateOnlineStatus(false);
+
+        // Set user as online when component mounts (on page load)
+        updateOnlineStatus(true);
+
+        window.addEventListener('focus', handleFocus);
+        window.addEventListener('blur', handleBlur);
+        window.addEventListener('beforeunload', handleUnload);
+
+        return () => {
+            window.removeEventListener('focus', handleFocus);
+            window.removeEventListener('blur', handleBlur);
+            window.removeEventListener('beforeunload', handleUnload);
+        };
+    }, [supabase])
 
     return (
         <section className="sticky left-0 top-0 flex h-screen w-fit flex-col justify-between bg-[#303030] p-6 pt-28 text-white max-sm:hidden lg:w-[264px]">
