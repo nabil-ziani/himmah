@@ -65,7 +65,9 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
                 completed,
                 duration
             })
-            .eq('id', sessionId!);
+            .eq('id', sessionId!)
+
+        console.log(error)
 
         if (error) toast.error(error.message);
 
