@@ -40,14 +40,18 @@ export const UpdateProfileSchema = z.object({
 export const CreateTaskSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
     description: z.string().min(1, { message: 'Description is required' }),
-    focus_time: z.number({ message: 'Focus time must be a number' }).positive({ message: 'Focus time must be a positive number' }),
+    focus_time: z.number({ message: 'Focus time must be a number' })
+        .positive({ message: 'Focus time must be a positive number' })
+        .max(9999, { message: 'Focus time too high!' })
     // status: z.optional(z.enum(TaskStatus, { message: "Enter a valid option" }))
 })
 
 export const UpdateTaskSchema = z.object({
     title: z.string().min(1, { message: 'Title is required' }),
     description: z.string().min(1, { message: 'Description is required' }),
-    focus_time: z.number({ message: 'Focus time must be a number' }).positive({ message: 'Focus time must be a positive number' }),
+    focus_time: z.number({ message: 'Focus time must be a number' })
+        .positive({ message: 'Focus time must be a positive number' })
+        .max(9999, { message: 'Focus time too high!' })
     // status: z.optional(z.enum(TASK_STATUS, { message: "Enter a valid option" }))
 })
 
