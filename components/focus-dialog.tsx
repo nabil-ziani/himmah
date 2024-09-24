@@ -114,7 +114,7 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
                                         interval.stop()
                                         handleSessionEnd(true)
                                     }}>
-                                        {mode === 'timer' ? 'Give up' : 'Stop'}
+                                        Give up
                                     </Button>
                                 </div>
                             </div>
@@ -132,9 +132,9 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
                                     <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => {
                                         interval.stop()
                                         setIsRunning?.(false)
-                                        setIsOpen(false)
+                                        handleSessionEnd(true)
                                     }}>
-                                        Give up
+                                        Stop
                                     </Button>
                                 </div>
                             </div>
