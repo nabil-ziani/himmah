@@ -107,11 +107,12 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, openMo
     const handleDragEnd = async (e: any) => {
         const cardId = Number(e.dataTransfer.getData("cardId"))
 
-        setActive(false);
-        clearHighlights([]);
+        setActive(false)
+        clearHighlights([])
 
-        const indicators = getIndicators();
-        const { element } = getNearestIndicator(e, indicators);
+        const indicators = getIndicators()
+        const { element } = getNearestIndicator(e, indicators)
+        element.style.opacity = "0"
 
         const before = element.dataset.before || "-1";
 
@@ -141,6 +142,7 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, openMo
             // Update the task status in Supabase
             await updateTaskStatus(cardId, status);
         }
+        clearHighlights([])
     };
 
     const handleDragOver = (e: { preventDefault: () => void; }) => {
@@ -277,7 +279,8 @@ const DropIndicator = ({ beforeId, status }: { beforeId: number | null, status: 
         <div
             data-before={beforeId || "-1"}
             data-column={status}
-            className="my-0.5 h-0.5 rounded-xl w-full bg-[#FF5C5C] opacity-0"
+            className="my-0.5 h-0.5 rounded-xl w-full bg-[#FF5C5C]"
+            style={{ opacity: 0 }}
         />
     );
 };
@@ -325,8 +328,8 @@ const BurnBarrel = ({ setCards, supabase }: any) => {
             console.error("Failed to delete task from Supabase");
         }
 
-        setActive(false);
-    };
+        setActive(false)
+    }
 
     return (
         <div
