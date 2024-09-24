@@ -83,7 +83,7 @@ const ConfigurationForm = () => {
                 <FormError message={error} />
                 <FormSuccess message={success} />
                 <div className="sm:col-span-2">
-                    <Button variant="gradient" className="mt-6" disabled>
+                    <Button className="mt-6 text-white" disabled>
                         Save Settings
                     </Button>
                 </div>

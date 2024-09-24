@@ -156,8 +156,8 @@ const UpdateProfileForm = ({ user }: UpdateProfileFormProps) => {
                 <FormError message={error} />
                 <FormSuccess message={success} />
                 <div className="sm:col-span-3">
-                    <Button variant="gradient" className="mt-6">
-                        Update Profile
+                    <Button className="mt-6 text-white">
+                        Update profile
                     </Button>
                 </div>
             </form>
