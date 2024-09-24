@@ -34,7 +34,7 @@ const TaskForm = ({ setIsOpen, setTasks, mode, task }: CreateTaskFormProps) => {
         defaultValues: {
             title: mode.type === 'edit' && task?.title || '',
             description: mode.type === 'edit' && task?.description || '',
-            focus_time: 15,
+            focus_time: task?.focus_time || 15,
         }
     })
 
