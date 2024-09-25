@@ -2,8 +2,10 @@
 
 import { User } from "@supabase/supabase-js"
 import { Button } from "./ui/button"
-import { Trash2 } from "lucide-react"
+import { Clock, Trash2 } from "lucide-react"
 import { Friendship } from "@/lib/types"
+import { useEffect, useState } from "react"
+import { createClient } from "@/utils/supabase/client"
 
 interface FriendshipCardProps {
     friendship: Friendship
@@ -14,9 +16,36 @@ interface FriendshipCardProps {
 }
 
 const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, handleDelete }: FriendshipCardProps) => {
+    const [totalFocusTime, setTotalFocusTime] = useState<number | null>(null);
+
+    const supabase = createClient()
 
     const friendName = friendship?.friend?.id === currentUser.id ? friendship.user.name : friendship.friend.name
     const friendActive = friendship?.friend?.id === currentUser.id ? friendship.user.is_online : friendship.friend.is_online
+
+    useEffect(() => {
+        const fetchTotalFocusTime = async () => {
+            const userId = friendship?.friend?.id === currentUser.id ? friendship.user.id : friendship.friend.id
+
+            const { data, error } = await supabase
+                .from('focus_sessions')
+                .select('duration')
+                .eq('user_id', userId)
+                .eq('completed', true)
+
+            if (error) {
+                console.error('Error fetching focus sessions:', error);
+                return;
+            }
+
+            // Calculate the total focus time in minutes
+            const totalTime = data?.reduce((acc, session: any) => acc + session.duration, 0)
+            setTotalFocusTime(totalTime || 0)
+        }
+
+        fetchTotalFocusTime();
+    }, [supabase, friendship, currentUser]);
+
 
     return (
         <li key={friendship.id} className="flex m-5 gap-5">
@@ -24,6 +53,12 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
                 <div className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 flex gap-2 items-center">
                     <span className={`inline-block h-3 w-3 rounded-full mr-4 ${friendActive ? 'bg-green-300' : 'bg-red-300'}`} />
                     <span className="block text-gray-900 font-bold">{friendName}</span>
+                    {totalFocusTime !== null && (
+                        <span className="ml-4 text-gray-600 flex items-center">
+                            <Clock className="h-4 w-4 mr-2" />
+                            {totalFocusTime}
+                        </span>
+                    )}
                 </div>
                 {friendship.status === 'accepted' && (
                     <span onClick={() => handleDelete!(friendship.id, friendName)} className="cursor-pointer">
