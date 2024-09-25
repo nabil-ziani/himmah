@@ -16,7 +16,7 @@ interface FriendshipCardProps {
 }
 
 const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, handleDelete }: FriendshipCardProps) => {
-    const [totalFocusTime, setTotalFocusTime] = useState<number | null>(null);
+    const [todayFocusTime, setTodayFocusTime] = useState<number | null>(null);
 
     const supabase = createClient()
 
@@ -24,26 +24,37 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
     const friendActive = friendship?.friend?.id === currentUser.id ? friendship.user.is_online : friendship.friend.is_online
 
     useEffect(() => {
-        const fetchTotalFocusTime = async () => {
-            const userId = friendship?.friend?.id === currentUser.id ? friendship.user.id : friendship.friend.id
+        const fetchTodayFocusTime = async () => {
+            const userId = friendship?.friend?.id === currentUser.id ? friendship.user.id : friendship.friend.id;
+
+            // Get today's date in the format yyyy-mm-dd
+            const today = new Date();
+            const todayStart = new Date(today.setHours(0, 0, 0, 0)).toISOString();
+            const todayEnd = new Date(today.setHours(23, 59, 59, 999)).toISOString();
 
             const { data, error } = await supabase
                 .from('focus_sessions')
                 .select('duration')
                 .eq('user_id', userId)
                 .eq('completed', true)
+                .gte('start_time', todayStart) // Only focus sessions from today
+                .lte('end_time', todayEnd);
 
             if (error) {
                 console.error('Error fetching focus sessions:', error);
                 return;
             }
 
-            // Calculate the total focus time in minutes
-            const totalTime = data?.reduce((acc, session: any) => acc + session.duration, 0)
-            setTotalFocusTime(totalTime || 0)
-        }
+            // Calculate total focus time in minutes
+            const totalMinutes = data?.reduce((acc, session: any) => acc + session.duration, 0);
 
-        fetchTotalFocusTime();
+            // Convert minutes to hours and minutes (1.25 format)
+            const totalHours = totalMinutes ? (totalMinutes / 60).toFixed(2) : 0;
+
+            setTodayFocusTime(Number(totalHours));
+        };
+
+        fetchTodayFocusTime();
     }, [supabase, friendship, currentUser]);
 
 
@@ -53,10 +64,10 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
                 <div className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 flex gap-2 items-center">
                     <span className={`inline-block h-3 w-3 rounded-full mr-4 ${friendActive ? 'bg-green-300' : 'bg-red-300'}`} />
                     <span className="block text-gray-900 font-bold">{friendName}</span>
-                    {totalFocusTime !== null && (
+                    {todayFocusTime !== null && (
                         <span className="ml-4 text-gray-600 flex items-center">
                             <Clock className="h-4 w-4 mr-2" />
-                            {totalFocusTime}
+                            {todayFocusTime} hours
                         </span>
                     )}
                 </div>
