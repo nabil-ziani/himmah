@@ -16,7 +16,7 @@ interface FriendshipCardProps {
 }
 
 const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, handleDelete }: FriendshipCardProps) => {
-    const [todayFocusTime, setTodayFocusTime] = useState<number | null>(null);
+    const [todayFocusTime, setTodayFocusTime] = useState<number | null>(null)
 
     const supabase = createClient()
 
@@ -24,38 +24,47 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
     const friendActive = friendship?.friend?.id === currentUser.id ? friendship.user.is_online : friendship.friend.is_online
 
     useEffect(() => {
-        const fetchTodayFocusTime = async () => {
-            const userId = friendship?.friend?.id === currentUser.id ? friendship.user.id : friendship.friend.id;
+        const parseDuration = (duration: string) => {
+            const [hours, minutes, seconds] = duration.split(':').map(Number)
+            return hours * 60 + minutes + seconds / 60
+        }
 
-            // Get today's date in the format yyyy-mm-dd
-            const today = new Date();
-            const todayStart = new Date(today.setHours(0, 0, 0, 0)).toISOString();
-            const todayEnd = new Date(today.setHours(23, 59, 59, 999)).toISOString();
+        const fetchTodayFocusTime = async () => {
+            const userId = friendship?.friend?.id === currentUser.id ? friendship.user.id : friendship.friend.id
+
+            const today = new Date()
+            const todayStart = new Date(today.setHours(0, 0, 0, 0)).toISOString()
+            const todayEnd = new Date(today.setHours(23, 59, 59, 999)).toISOString()
 
             const { data, error } = await supabase
                 .from('focus_sessions')
                 .select('duration')
                 .eq('user_id', userId)
                 .eq('completed', true)
-                .gte('start_time', todayStart) // Only focus sessions from today
-                .lte('end_time', todayEnd);
+                .gte('start_time', todayStart)
+                .lte('end_time', todayEnd)
 
             if (error) {
-                console.error('Error fetching focus sessions:', error);
+                console.error('Error fetching focus sessions:', error)
                 return;
             }
 
-            // Calculate total focus time in minutes
-            const totalMinutes = data?.reduce((acc, session: any) => acc + session.duration, 0);
+            if (data && data.length > 0) {
+                // Calculate total focus time in minutes by parsing each duration string
+                const totalMinutes = data.reduce((acc, session: any) => acc + parseDuration(session.duration), 0)
 
-            // Convert minutes to hours and minutes (1.25 format)
-            const totalHours = totalMinutes ? (totalMinutes / 60).toFixed(2) : 0;
+                // Convert minutes to hours and decimal format (1.25 hours for 1 hour and 15 minutes)
+                const totalHours = (totalMinutes / 60).toFixed(2)
 
-            setTodayFocusTime(Number(totalHours));
-        };
+                setTodayFocusTime(Number(totalHours))
+            } else {
+                // If no focus sessions are found, set the focus time to 0
+                setTodayFocusTime(0)
+            }
+        }
 
         fetchTodayFocusTime();
-    }, [supabase, friendship, currentUser]);
+    }, [supabase, friendship, currentUser])
 
 
     return (
