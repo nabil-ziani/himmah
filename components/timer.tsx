@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CircleMinus, PlusCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
@@ -23,8 +23,8 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
     const [initialTime, setInitialTime] = useState(1800)
     const [time, setTime] = useState(initialTime)
 
-    const minutes = Math.floor(time / 60)
-    const seconds = time % 60
+    const minutes = Math.floor(initialTime / 60)
+    const seconds = initialTime % 60
 
     const handleSessionStart = async () => {
         setFullScreen(true)
@@ -69,7 +69,7 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
         if (error) toast.error(error.message);
 
         setFullScreen(false)
-        setTime(initialTime)
+        setTime(initialTime) // Reset time
     }
 
     const handlePlusClick = () => {
@@ -128,7 +128,7 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
                 isOpen={fullScreen}
                 mode='timer'
                 time={{ minutes, seconds }}
-                setTime={setTime} // Zorg ervoor dat de tijd in de dialog kan worden bijgewerkt
+                setTime={setTime}
                 audio={audio}
                 backgrounds={backgrounds}
                 handleSessionEnd={handleSessionEnd}

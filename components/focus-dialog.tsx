@@ -2,7 +2,7 @@
 
 import { useInterval } from "@mantine/hooks";
 import { AnimatePresence, motion } from "framer-motion";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 
 interface FocusDialogProps {
@@ -18,23 +18,26 @@ interface FocusDialogProps {
 }
 
 const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, audio, backgrounds, handleSessionEnd }: FocusDialogProps) => {
+    const [timerCompleted, setTimerCompleted] = useState(false)
     const [seconds, setSeconds] = useState<number>(Number(time.seconds))
     const [minutes, setMinutes] = useState<number>(Number(time.minutes))
 
     const [backgroundIndex, setBackgroundIndex] = useState(0)
     const [currentBackground, setCurrentBackground] = useState<string>(backgrounds[0])
 
+    const audioRef = useRef<HTMLAudioElement>(null);
+
     // Interval for 1 second
     const interval = useInterval(() => {
         if (mode === 'timer') {
             if (seconds > 0) {
-                setSeconds((s) => s - 1);
+                setSeconds((s) => s - 1)
             } else if (seconds === 0 && minutes > 0) {
                 setMinutes((m) => m - 1);
-                setSeconds(59);
+                setSeconds(59)
             } else if (minutes === 0 && seconds === 0) {
-                interval.stop();
-                handleSessionEnd(true);
+                setTimerCompleted(true)
+                handleTimerMode()
             }
         } else if (mode === 'stopwatch' && isRunning) {
             setTime?.((prevTime) => prevTime + 100)
@@ -50,11 +53,11 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
     // Start and stop the interval depending on the mode
     useEffect(() => {
         if (isOpen && (mode === 'timer' || isRunning)) {
-            interval.start();
+            interval.start()
         } else {
-            interval.stop();
+            interval.stop()
         }
-    }, [isOpen, isRunning, mode, interval]);
+    }, [isOpen, isRunning, mode, interval])
 
     // Cleanup interval on unmount
     useEffect(() => {
@@ -74,6 +77,19 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
         setCurrentBackground(backgrounds[backgroundIndex])
     }, [backgroundIndex, backgrounds])
 
+    const handleTimerMode = async () => {
+        interval.stop()
+
+        if (audioRef.current && timerCompleted) {
+            await audioRef.current.play();
+        }
+    }
+
+    const handleStopwatchMode = async () => {
+        setIsRunning?.(false)
+        handleSessionEnd(true)
+    }
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -87,54 +103,42 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
                         className="w-full h-full bg-white relative grid place-items-center"
                         style={{ backgroundImage: `url(${currentBackground})`, backgroundSize: 'cover' }}
                     >
-                        {/* Timer-modus */}
-                        {mode === 'timer' && (
-                            <div className="h-full justify-center flex flex-col items-center">
-                                <div className=" flex items-center justify-center text-[126px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
-                                    <div>{minutes.toString().padStart(2, '0')}</div>
-                                    <div>:</div>
-                                    <div>{seconds.toString().padStart(2, '0')}</div>
-                                </div>
-                                <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
-                                    <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => {
-                                        interval.stop()
-                                        handleSessionEnd(true)
-                                    }}>
-                                        Give up
-                                    </Button>
-                                </div>
-                            </div>
-                        )}
 
-                        {/* Stopwatch-modus */}
-                        {mode === 'stopwatch' && (
-                            <div className="h-full justify-center flex flex-col items-center">
-                                <div className="flex items-center justify-center text-[126px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
-                                    <div>{minutes.toString().padStart(2, '0')}</div>
-                                    <div>:</div>
-                                    <div>{seconds.toString().padStart(2, '0')}</div>
-                                </div>
-                                <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
-                                    <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => {
-                                        setIsRunning?.(false)
-                                        handleSessionEnd(true)
-                                    }}>
-                                        Stop
-                                    </Button>
-                                </div>
+                        <div className="h-full justify-center flex flex-col items-center">
+                            <div className=" flex items-center justify-center text-[126px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
+                                <div>{minutes.toString().padStart(2, '0')}</div>
+                                <div>:</div>
+                                <div>{seconds.toString().padStart(2, '0')}</div>
                             </div>
-                        )}
+                            <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
+                                {timerCompleted ?
+                                    (
+                                        <Button size={"lg"} className="bg-green-400 hover:bg-green-400/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => handleSessionEnd(true)}>
+                                            Claim Victory 🏆
+                                        </Button>
+                                    ) : (
+                                        <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={mode === 'timer' ? () => handleSessionEnd(false) : handleStopwatchMode}>
+                                            {mode === 'timer' ? 'Give up' : 'Stop'}
+                                        </Button>
+                                    )
+                                }
+                            </div>
+                        </div>
 
+                        {/* White Noise */}
                         <audio
                             className="hidden"
                             src={audio}
                             loop={true}
                             autoPlay={true}
                         />
+
+                        {/* Notification Sound */}
+                        <audio ref={audioRef} src="/audio/kitchen_timer.mp3" crossOrigin="anonymous" />
                     </motion.div>
-                </div>
+                </div >
             )}
-        </AnimatePresence>
+        </AnimatePresence >
     );
 }
 
