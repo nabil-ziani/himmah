@@ -91,17 +91,37 @@ const useFriendRequests = (userId: string) => {
             setPendingRequests(prev => prev.filter(req => req.id !== payload.old.id))
         }
 
-        const subscription = supabase
+        const handleProfileUpdate = (payload: any) => {
+            const updatedProfile = payload.new
+            setFriendships(prev =>
+                prev.map(friendship =>
+                    friendship.friend.id === updatedProfile.id
+                        ? { ...friendship, friend: { ...friendship.friend, is_online: updatedProfile.is_online } }
+                        : friendship
+                )
+            )
+        }
+
+        // Subscribe to friends updates
+        const friendSubscription = supabase
             .channel(`realtime friends`)
             .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'friends' }, handleInsert)
             .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'friends' }, handleUpdate)
             .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'friends' }, handleDelete)
-            .subscribe();
+            .subscribe()
+
+        // Subscribe to online status changes in the profiles table
+        const profileSubscription = supabase
+            .channel('realtime profiles')
+            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles', filter: 'is_online' }, handleProfileUpdate)
+            .subscribe()
+
 
         return () => {
-            supabase.removeChannel(subscription);
+            supabase.removeChannel(friendSubscription)
+            supabase.removeChannel(profileSubscription)
         }
-    }, [userId])
+    }, [userId, supabase])
 
     return { friendships, pendingRequests }
 }

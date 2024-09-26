@@ -3,7 +3,6 @@
 import { Friendship } from '@/lib/types';
 import { createContext, useContext } from 'react';
 import { ReactNode } from 'react';
-import { createClient } from '@/utils/supabase/client';
 import useFriendRequests from '@/hooks/useFriendRequests'
 
 interface FriendContextType {

@@ -40,12 +40,12 @@ const Sidebar = ({ }: SidebarProps) => {
 
     useEffect(() => {
         const updateOnlineStatus = async (isOnline: boolean) => {
-            const { data: { user } } = await supabase.auth.getUser()
+            const { data: { user } } = await supabase.auth.getUser();
             if (user) {
                 await supabase
                     .from('profiles')
                     .update({ is_online: isOnline })
-                    .eq('id', user.id)
+                    .eq('id', user.id);
             }
         }
 
@@ -58,7 +58,7 @@ const Sidebar = ({ }: SidebarProps) => {
         return () => {
             clearInterval(intervalId)
             updateOnlineStatus(false) // Set the user offline when they leave the page
-        }
+        };
     }, [supabase])
 
 
