@@ -68,7 +68,6 @@ const useFriendRequests = (userId: string) => {
 
         const handleUpdate = async (payload: any) => {
             if (payload.new.friend_id === userId && payload.new.status === 'accepted') {
-                console.log('Vriendschapsverzoek geaccepteerd: ', payload);
 
                 const friendProfile = await fetchProfileData(supabase, payload.new.user_id)
                 const userProfile = await fetchProfileData(supabase, payload.new.friend_id)
@@ -108,14 +107,9 @@ const useFriendRequests = (userId: string) => {
             },
         })
 
-        console.log('Gebruikers-ID voor Presence Kanaal:', userId);
-
         presenceChannel.on('presence', { event: 'sync' }, () => {
-            console.log('Presence sync triggered');
             const presenceState = presenceChannel.presenceState();
-            console.log('Presence State:', presenceState); // Moet de ID's tonen van online gebruikers
             const onlineFriends = Object.keys(presenceState);
-            console.log('Online friends:', onlineFriends); // Lijst met online vrienden
             setOnlineUsers(onlineFriends);
         });
 

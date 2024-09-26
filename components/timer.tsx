@@ -20,7 +20,8 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
     const [fullScreen, setFullScreen] = useState(false)
     const [sessionId, setSessionId] = useState<number>()
     const [start_time, setStartTime] = useState<string | null>(null)
-    const [seconds, setSeconds] = useState(1800)
+    const [initialTime, setInitialTime] = useState(1800)
+    const [seconds, setSeconds] = useState(initialTime)
 
     let extraSeconds: string | number = seconds % 60;
     let minutes: string | number = Math.floor(seconds / 60);
@@ -28,7 +29,7 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
     minutes = minutes < 10 ? "0" + minutes : minutes;
     extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
 
-    const handleStart = async () => {
+    const handleSessionStart = async () => {
         setFullScreen(true)
 
         const { data, error } = await supabase
@@ -39,6 +40,7 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
             })
             .select()
             .single()
+
         if (error) {
             console.error(error)
         } else {
@@ -67,23 +69,22 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
             })
             .eq('id', sessionId!)
 
-        console.log(error)
-
         if (error) toast.error(error.message);
 
         setFullScreen(false)
+        setSeconds(initialTime)
     }
 
     const handlePlusClick = () => {
-        setSeconds((s) => s + 300); // Add 5 minutes
+        setInitialTime((t) => t + 300)
     }
 
     const handleMinusClick = () => {
-        if (seconds <= 300) {
-            setSeconds(0);
-            return;
+        if (initialTime <= 300) {
+            setInitialTime(0)
+            return
         }
-        setSeconds((s) => s - 300); // Subtract 5 minutes
+        setInitialTime((t) => t - 300)
     }
 
     return (
@@ -109,7 +110,7 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
                         </TooltipContent>
                     </Tooltip>
 
-                    <Button size={"lg"} className="bg-[#2ecc71] hover:bg-[#2ecc71]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={handleStart}>
+                    <Button size={"lg"} className="bg-[#2ecc71] hover:bg-[#2ecc71]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={handleSessionStart}>
                         Start
                     </Button>
 
@@ -126,9 +127,16 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
                 </div>
             </div>
 
-            <FocusDialog isOpen={fullScreen} setIsOpen={setFullScreen} mode='timer' totalSeconds={seconds} audio={audio} backgrounds={backgrounds} handleSessionEnd={handleSessionEnd} />
+            <FocusDialog
+                isOpen={fullScreen}
+                mode='timer'
+                totalSeconds={seconds}
+                audio={audio}
+                backgrounds={backgrounds}
+                handleSessionEnd={handleSessionEnd}
+            />
         </>
-    );
+    )
 }
 
 export default Timer;

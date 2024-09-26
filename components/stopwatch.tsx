@@ -96,7 +96,6 @@ const Stopwatch = ({ audio, backgrounds, supabase, user }: StopwatchProps) => {
             {/* Geef de minuten en seconden door aan de FocusDialog */}
             <FocusDialog
                 isOpen={fullScreen}
-                setIsOpen={setFullScreen}
                 mode='stopwatch'
                 time={{ minutes, seconds }}
                 isRunning={isRunning}

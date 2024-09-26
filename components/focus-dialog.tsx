@@ -7,7 +7,6 @@ import { Button } from "./ui/button";
 
 interface FocusDialogProps {
     isOpen: boolean
-    setIsOpen: Dispatch<SetStateAction<boolean>>
     mode: 'timer' | 'stopwatch'
     totalSeconds?: number
     time?: { minutes: string | number, seconds: string | number }
@@ -19,15 +18,16 @@ interface FocusDialogProps {
     handleSessionEnd: (completed: boolean) => Promise<void>
 }
 
-const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, setIsRunning, setTime, audio, backgrounds, handleSessionEnd }: FocusDialogProps) => {
+const FocusDialog = ({ isOpen, mode, totalSeconds, time, isRunning, setIsRunning, setTime, audio, backgrounds, handleSessionEnd }: FocusDialogProps) => {
+    // STATE TOTALSECONDS WORDT NIET GEBRUIKT!!!
     const [seconds, setSeconds] = useState<number>(mode === 'timer' ? totalSeconds! % 60 : Number(time?.seconds))
     const [minutes, setMinutes] = useState<number>(mode === 'timer' ? Math.floor(totalSeconds! / 60) : Number(time?.minutes))
     const [backgroundIndex, setBackgroundIndex] = useState(0)
     const [currentBackground, setCurrentBackground] = useState<string>(backgrounds[0])
 
     // Bereken de seconden en minuten opnieuw wanneer de tijd in honderdsten van seconden wordt bijgewerkt
-    const currentMinutes = Math.floor((Number(time?.minutes) || 0) + seconds / 60);
-    const currentSeconds = seconds % 60;
+    const currentMinutes = Math.floor((Number(time?.minutes) || 0) + seconds / 60)
+    const currentSeconds = seconds % 60
 
     // Interval for 1 second
     const interval = useInterval(() => {
@@ -59,12 +59,8 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
 
     // Start and stop the interval depending on the mode
     useEffect(() => {
-        if (isOpen) {
-            if (mode === 'timer') {
-                interval.start()
-            } else if (isRunning) {
-                interval.start()
-            }
+        if (isOpen && (mode === 'timer' || isRunning)) {
+            interval.start()
         } else {
             interval.stop()
         }
@@ -130,7 +126,6 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
                                 </div>
                                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
                                     <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => {
-                                        interval.stop()
                                         setIsRunning?.(false)
                                         handleSessionEnd(true)
                                     }}>
@@ -151,6 +146,6 @@ const FocusDialog = ({ isOpen, setIsOpen, mode, totalSeconds, time, isRunning, s
             )}
         </AnimatePresence>
     );
-};
+}
 
 export default FocusDialog;
