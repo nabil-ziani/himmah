@@ -15,7 +15,8 @@ interface StopwatchProps {
 
 const Stopwatch = ({ audio, backgrounds, supabase, user }: StopwatchProps) => {
     const [fullScreen, setFullScreen] = useState(false)
-    const [time, setTime] = useState(0)
+    const [initialTime, setInitialTime] = useState(0)
+    const [time, setTime] = useState(initialTime)
     const [isRunning, setIsRunning] = useState(false)
     const [sessionId, setSessionId] = useState<number>()
     const [start_time, setStartTime] = useState<string | null>(null)
@@ -66,6 +67,7 @@ const Stopwatch = ({ audio, backgrounds, supabase, user }: StopwatchProps) => {
             console.error(error);
         } else {
             setFullScreen(false)
+            setTime(initialTime)
         }
     }
 
@@ -77,12 +79,10 @@ const Stopwatch = ({ audio, backgrounds, supabase, user }: StopwatchProps) => {
                 </div>
                 <div className="flex items-center justify-center text-[126px] text-[#323238] font-semibold dark:text-white font-nunito">
                     <div>
-                        00:
-                        {/* {minutes.toString().padStart(2, "0")}: */}
+                        {minutes.toString().padStart(2, "0")}:
                     </div>
                     <div>
-                        00
-                        {/* {seconds.toString().padStart(2, "0")} */}
+                        {seconds.toString().padStart(2, "0")}
                     </div>
                 </div>
 
