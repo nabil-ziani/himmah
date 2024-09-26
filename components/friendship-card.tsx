@@ -2,10 +2,11 @@
 
 import { User } from "@supabase/supabase-js"
 import { Button } from "./ui/button"
-import { Clock, Trash2 } from "lucide-react"
+import { CircleX, Clock, Trash2, UserRoundX, X } from "lucide-react"
 import { Friendship } from "@/lib/types"
 import { useEffect, useState } from "react"
 import { createClient } from "@/utils/supabase/client"
+import { GoClockFill } from "react-icons/go";
 
 interface FriendshipCardProps {
     friendship: Friendship
@@ -70,21 +71,23 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
         <li key={friendship.id} className="flex m-5 gap-5">
             <div className="flex justify-between items-center w-[450px] bg-gray-200 rounded-xl relative px-2">
                 <div className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 flex gap-2 items-center">
-                    <span className={`inline-block h-3 w-3 rounded-full mr-4 ${isOnline ? 'bg-green-300' : 'bg-red-300'}`} />
+                    <span className={`inline-block h-3 w-3 rounded-full mr-4 ${isOnline ? 'bg-green-300' : 'bg-gray-400'}`} />
                     <span className="block text-gray-900 font-bold">{friendName}</span>
-                    {todayFocusTime !== null && (
-                        <span className="ml-4 text-gray-600 flex items-center">
-                            <Clock className="h-4 w-4 mr-2" />
-                            {todayFocusTime} hours
-                        </span>
-                    )}
                 </div>
-                {friendship.status === 'accepted' && (
-                    <span onClick={() => handleDelete!(friendship.id, friendName)} className="cursor-pointer">
-                        <Trash2 className="mr-2 h-5 w-5" color="#FF5C5C" />
+                {todayFocusTime !== null && (
+                    <span className="ml-4 text-gray-900 flex items-center">
+                        <GoClockFill className="h-5 w-5 mr-2" />
+                        {todayFocusTime}
                     </span>
                 )}
             </div>
+            {friendship.status === 'accepted' && (
+                <div className="flex items-center justify-center bg-[#FF5C5C] cursor-pointer rounded-md">
+                    <span onClick={() => handleDelete!(friendship.id, friendName)} className="p-3">
+                        <UserRoundX className="h-5 w-5" color="white" />
+                    </span>
+                </div>
+            )}
             {friendship.status === 'pending' && (
                 <div className="flex gap-2 items-center">
                     <Button size={"sm"} onClick={() => handleAccept!(friendship.id)} className="text-white bg-green-500">
