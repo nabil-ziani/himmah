@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import FriendshipCard from "./friendship-card";
 import { User } from "@supabase/supabase-js";
 import { useFriendContext } from "@/contexts/friendshipContext";
+import { useEffect, useState } from "react";
 
 interface FriendsListProps {
     user: User
@@ -53,6 +54,21 @@ const FriendsList = ({ user }: FriendsListProps) => {
             toast.error(error.message);
         }
     }
+
+    // Listen to changes in the `profiles` table
+    useEffect(() => {
+        const subscription = supabase
+            .channel('realtime profiles')
+            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, (payload: any) => {
+                console.log('Een gebruiker is online/offline: ', payload.new)
+            })
+            .subscribe()
+
+        // Clean up the subscription when the component unmounts
+        return () => {
+            supabase.removeChannel(subscription)
+        }
+    }, [supabase, user.id])
 
     return (
         <div className="flex flex-col gap-y-10">

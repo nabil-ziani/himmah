@@ -11,7 +11,6 @@ import { Badge } from './ui/badge';
 import { useFriendContext } from '@/contexts/friendshipContext';
 import { useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
-import { Database } from '@/database.types';
 
 interface SidebarProps { }
 
@@ -41,32 +40,27 @@ const Sidebar = ({ }: SidebarProps) => {
 
     useEffect(() => {
         const updateOnlineStatus = async (isOnline: boolean) => {
-            const { data: { user } } = await supabase.auth.getUser();
+            const { data: { user } } = await supabase.auth.getUser()
             if (user) {
                 await supabase
                     .from('profiles')
                     .update({ is_online: isOnline })
-                    .eq('id', user.id);
+                    .eq('id', user.id)
             }
-        };
+        }
 
-        const handleFocus = () => updateOnlineStatus(true);
-        const handleBlur = () => updateOnlineStatus(false);
-        const handleUnload = () => updateOnlineStatus(false);
+        // Periodically update the online status
+        const intervalId = setInterval(() => {
+            updateOnlineStatus(true) // Set the user as online every 10 seconds
+        }, 10000) // Every 10 seconds
 
-        // Set user as online when component mounts (on page load)
-        updateOnlineStatus(true);
-
-        window.addEventListener('focus', handleFocus);
-        window.addEventListener('blur', handleBlur);
-        window.addEventListener('beforeunload', handleUnload);
-
+        // When the component unmounts, stop the interval and set the user offline
         return () => {
-            window.removeEventListener('focus', handleFocus);
-            window.removeEventListener('blur', handleBlur);
-            window.removeEventListener('beforeunload', handleUnload);
-        };
+            clearInterval(intervalId)
+            updateOnlineStatus(false) // Set the user offline when they leave the page
+        }
     }, [supabase])
+
 
     return (
         <section className="sticky left-0 top-0 flex h-screen w-fit flex-col justify-between bg-[#303030] p-6 pt-28 text-white max-sm:hidden lg:w-[264px]">
