@@ -8,6 +8,9 @@ import { redirect } from 'next/navigation';
 import { ReactNode } from 'react'
 import { Toaster } from "react-hot-toast";
 
+import { poppins, nunito } from "../../ui/fonts";
+
+
 const defaultUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : "http://localhost:3000";
@@ -28,7 +31,7 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
     }
 
     return (
-        <main className='relative text-foreground bg-slate-50 '>
+        <main className={`relative text-foreground bg-slate-50 ${poppins.variable} ${nunito.variable}`}>
             <FriendProvider userId={user.id}>
                 <DashboardNavbar supabase={supabase} />
                 <div className='flex'>
