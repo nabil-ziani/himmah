@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import FriendshipCard from "./friendship-card";
 import { User } from "@supabase/supabase-js";
 import { useFriendContext } from "@/contexts/friendshipContext";
-import { useEffect, useState } from "react";
 
 interface FriendsListProps {
     user: User
@@ -14,7 +13,7 @@ interface FriendsListProps {
 const FriendsList = ({ user }: FriendsListProps) => {
     const supabase = createClient()
 
-    const { friendships, pendingRequests } = useFriendContext()
+    const { friendships, pendingRequests, onlineUsers } = useFriendContext()
 
     const handleAccept = async (friendshipId: string) => {
         const { error } = await supabase
@@ -64,8 +63,11 @@ const FriendsList = ({ user }: FriendsListProps) => {
                     </h2>
                     <ul>
                         {pendingRequests.map((f) => {
+                            const friendId = f?.friend?.id === user.id ? f.user.id : f.friend.id
+                            const isFriendOnline = onlineUsers.includes(friendId)
+
                             return (
-                                <FriendshipCard key={f.id} friendship={f} currentUser={user} handleAccept={handleAccept} handleReject={handleReject} />
+                                <FriendshipCard key={f.id} friendship={f} currentUser={user} handleAccept={handleAccept} handleReject={handleReject} isOnline={isFriendOnline} />
                             )
                         })}
                     </ul>
@@ -76,8 +78,11 @@ const FriendsList = ({ user }: FriendsListProps) => {
             </h2>
             <ul>
                 {friendships.map((f) => {
+                    const friendId = f?.friend?.id === user.id ? f.user.id : f.friend.id
+                    const isFriendOnline = onlineUsers.includes(friendId)
+
                     return (
-                        <FriendshipCard key={f.id} friendship={f} currentUser={user} handleDelete={handleDelete} />
+                        <FriendshipCard key={f.id} friendship={f} currentUser={user} handleDelete={handleDelete} isOnline={isFriendOnline} />
                     )
                 })}
             </ul>

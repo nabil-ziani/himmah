@@ -6,8 +6,9 @@ import { ReactNode } from 'react';
 import useFriendRequests from '@/hooks/useFriendRequests'
 
 interface FriendContextType {
-    friendships: Friendship[];
-    pendingRequests: Friendship[];
+    friendships: Friendship[]
+    pendingRequests: Friendship[]
+    onlineUsers: string[]
 }
 
 const FriendContext = createContext<FriendContextType | undefined>(undefined);
@@ -21,9 +22,9 @@ export const useFriendContext = () => {
 }
 
 export const FriendProvider = ({ userId, children }: { userId: string, children: ReactNode }) => {
-    const { friendships, pendingRequests } = useFriendRequests(userId);
+    const { friendships, pendingRequests, onlineUsers } = useFriendRequests(userId);
 
-    const value = { friendships, pendingRequests };
+    const value = { friendships, pendingRequests, onlineUsers };
 
     return (
         <FriendContext.Provider value={value}>

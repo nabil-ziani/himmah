@@ -13,15 +13,15 @@ interface FriendshipCardProps {
     handleAccept?: (friendshipId: string) => Promise<void>
     handleReject?: (friendshipId: string) => Promise<void>
     handleDelete?: (friendshipId: string, name: string) => Promise<void>
+    isOnline: boolean
 }
 
-const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, handleDelete }: FriendshipCardProps) => {
+const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, handleDelete, isOnline }: FriendshipCardProps) => {
     const [todayFocusTime, setTodayFocusTime] = useState<number | null>(null)
 
     const supabase = createClient()
 
     const friendName = friendship?.friend?.id === currentUser.id ? friendship.user.name : friendship.friend.name
-    const friendActive = friendship?.friend?.id === currentUser.id ? friendship.user.is_online : friendship.friend.is_online
 
     useEffect(() => {
         const parseDuration = (duration: string) => {
@@ -66,12 +66,11 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
         fetchTodayFocusTime();
     }, [supabase, friendship, currentUser])
 
-
     return (
         <li key={friendship.id} className="flex m-5 gap-5">
             <div className="flex justify-between items-center w-[450px] bg-gray-200 rounded-xl relative px-2">
                 <div className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 flex gap-2 items-center">
-                    <span className={`inline-block h-3 w-3 rounded-full mr-4 ${friendActive ? 'bg-green-300' : 'bg-red-300'}`} />
+                    <span className={`inline-block h-3 w-3 rounded-full mr-4 ${isOnline ? 'bg-green-300' : 'bg-red-300'}`} />
                     <span className="block text-gray-900 font-bold">{friendName}</span>
                     {todayFocusTime !== null && (
                         <span className="ml-4 text-gray-600 flex items-center">

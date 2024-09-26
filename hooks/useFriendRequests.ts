@@ -6,8 +6,9 @@ import { Friendship } from "@/lib/types";
 import { fetchProfileData } from '@/lib/utils';
 
 const useFriendRequests = (userId: string) => {
-    const [friendships, setFriendships] = useState<Friendship[]>([]);
-    const [pendingRequests, setPendingRequests] = useState<Friendship[]>([]);
+    const [friendships, setFriendships] = useState<Friendship[]>([])
+    const [pendingRequests, setPendingRequests] = useState<Friendship[]>([])
+    const [onlineUsers, setOnlineUsers] = useState<string[]>([])
     const supabase = createClient();
 
     useEffect(() => {
@@ -91,17 +92,6 @@ const useFriendRequests = (userId: string) => {
             setPendingRequests(prev => prev.filter(req => req.id !== payload.old.id))
         }
 
-        const handleProfileUpdate = (payload: any) => {
-            const updatedProfile = payload.new
-            setFriendships(prev =>
-                prev.map(friendship =>
-                    friendship.friend.id === updatedProfile.id
-                        ? { ...friendship, friend: { ...friendship.friend, is_online: updatedProfile.is_online } }
-                        : friendship
-                )
-            )
-        }
-
         // Subscribe to friends updates
         const friendSubscription = supabase
             .channel(`realtime friends`)
@@ -110,20 +100,46 @@ const useFriendRequests = (userId: string) => {
             .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'friends' }, handleDelete)
             .subscribe()
 
-        // Subscribe to online status changes in the profiles table
-        const profileSubscription = supabase
-            .channel('realtime profiles')
-            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles', filter: 'is_online' }, handleProfileUpdate)
-            .subscribe()
+        const presenceChannel = supabase.channel('presence:friends', {
+            config: {
+                presence: {
+                    key: userId, // Use userId to track the user in the presence channel
+                },
+            },
+        })
+
+        console.log('Gebruikers-ID voor Presence Kanaal:', userId);
+
+        presenceChannel.on('presence', { event: 'sync' }, () => {
+            console.log('Presence sync triggered');
+            const presenceState = presenceChannel.presenceState();
+            console.log('Presence State:', presenceState); // Moet de ID's tonen van online gebruikers
+            const onlineFriends = Object.keys(presenceState);
+            console.log('Online friends:', onlineFriends); // Lijst met online vrienden
+            setOnlineUsers(onlineFriends);
+        });
+
+        presenceChannel.subscribe(async (status) => {
+            if (status === 'SUBSCRIBED') {
+                console.log('Presence channel subscribed')
+            }
+        })
+
+        presenceChannel.track({
+            userId: userId,
+            status: 'online',
+        })
+            .then(() => console.log('User is being tracked successfully'))
+            .catch(err => console.error('Error tracking user:', err));
 
 
         return () => {
             supabase.removeChannel(friendSubscription)
-            supabase.removeChannel(profileSubscription)
+            presenceChannel.unsubscribe()
         }
     }, [userId, supabase])
 
-    return { friendships, pendingRequests }
+    return { friendships, pendingRequests, onlineUsers }
 }
 
 export default useFriendRequests;
