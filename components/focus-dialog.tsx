@@ -137,7 +137,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
                         />
 
                         {/* Notification Sound */}
-                        <audio ref={audioRef} src="/audio/level_up.mp3" crossOrigin="anonymous" onEnded={() => audioRef?.current?.pause()} />
+                        <audio ref={audioRef} src="/audio/level_up.mp3" crossOrigin="anonymous" onEnded={() => audioRef.current?.pause()} />
                     </motion.div>
                 </div >
             )}
