@@ -21,13 +21,10 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
     const [sessionId, setSessionId] = useState<number>()
     const [start_time, setStartTime] = useState<string | null>(null)
     const [initialTime, setInitialTime] = useState(1800)
-    const [seconds, setSeconds] = useState(initialTime)
+    const [time, setTime] = useState(initialTime)
 
-    let extraSeconds: string | number = seconds % 60;
-    let minutes: string | number = Math.floor(seconds / 60);
-
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    extraSeconds = extraSeconds < 10 ? "0" + extraSeconds : extraSeconds;
+    const minutes = Math.floor(time / 60)
+    const seconds = time % 60
 
     const handleSessionStart = async () => {
         setFullScreen(true)
@@ -72,7 +69,7 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
         if (error) toast.error(error.message);
 
         setFullScreen(false)
-        setSeconds(initialTime)
+        setTime(initialTime)
     }
 
     const handlePlusClick = () => {
@@ -94,9 +91,9 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
                     <h2 className="text-5xl">Timer</h2>
                 </div>
                 <div className=" flex items-center justify-center text-[126px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
-                    <div>{minutes}</div>
+                    <div>{minutes.toString().padStart(2, '0')}</div>
                     <div>:</div>
-                    <div>{extraSeconds}</div>
+                    <div>{seconds.toString().padStart(2, '0')}</div>
                 </div>
                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
                     <Tooltip>
@@ -130,7 +127,8 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
             <FocusDialog
                 isOpen={fullScreen}
                 mode='timer'
-                totalSeconds={seconds}
+                time={{ minutes, seconds }}
+                setTime={setTime} // Zorg ervoor dat de tijd in de dialog kan worden bijgewerkt
                 audio={audio}
                 backgrounds={backgrounds}
                 handleSessionEnd={handleSessionEnd}
