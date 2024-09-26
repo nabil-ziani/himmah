@@ -68,14 +68,14 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
     }, [supabase, friendship, currentUser])
 
     return (
-        <li key={friendship.id} className="flex m-5 gap-5">
-            <div className="flex justify-between items-center w-[450px] bg-gray-200 rounded-xl relative px-2">
+        <li key={friendship.id} className="flex m-5 gap-4">
+            <div className="flex justify-between items-center w-[450px] bg-gray-200 rounded-md relative px-2">
                 <div className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 flex gap-2 items-center">
                     <span className={`inline-block h-3 w-3 rounded-full mr-4 ${isOnline ? 'bg-green-300' : 'bg-gray-400'}`} />
                     <span className="block text-gray-900 font-bold">{friendName}</span>
                 </div>
                 {todayFocusTime !== null && (
-                    <span className="ml-4 text-gray-900 flex items-center">
+                    <span className="mr-2 text-gray-900 flex items-center">
                         <GoClockFill className="h-5 w-5 mr-2" />
                         {todayFocusTime}
                     </span>
