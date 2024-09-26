@@ -81,7 +81,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
         interval.stop()
 
         if (audioRef.current && timerCompleted) {
-            await audioRef.current.play();
+            await audioRef.current.play()
         }
     }
 
@@ -113,7 +113,10 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
                             <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
                                 {timerCompleted ?
                                     (
-                                        <Button size={"lg"} className="bg-green-400 hover:bg-green-400/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => handleSessionEnd(true)}>
+                                        <Button size={"lg"} className="bg-green-400 hover:bg-green-400/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => {
+                                            setTimerCompleted(false)
+                                            handleSessionEnd(true)
+                                        }}>
                                             Claim Victory 🏆
                                         </Button>
                                     ) : (
@@ -134,7 +137,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
                         />
 
                         {/* Notification Sound */}
-                        <audio ref={audioRef} src="/audio/kitchen_timer.mp3" crossOrigin="anonymous" />
+                        <audio ref={audioRef} src="/audio/level_up.mp3" crossOrigin="anonymous" onEnded={() => audioRef?.current?.pause()} />
                     </motion.div>
                 </div >
             )}
