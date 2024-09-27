@@ -69,7 +69,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
         return interval.stop
     }, [])
 
-    // Change background every minute
+    // Change background & affirmation every minute
     useEffect(() => {
         const interval = setInterval(() => {
             setBackgroundIndex((prevIndex) => (prevIndex + 1) % backgrounds.length)
@@ -80,16 +80,10 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
 
     useEffect(() => {
         setCurrentBackground(backgrounds[backgroundIndex])
+
+        const randomAffirmation = getRandomAffirmation(affirmations)
+        setCurrentAffirmation(randomAffirmation)
     }, [backgroundIndex, backgrounds])
-
-    // Change affirmation every minute
-    useEffect(() => {
-        const affirmationInterval = setInterval(() => {
-            setCurrentAffirmation(getRandomAffirmation(affirmations))
-        }, 60000); // 1 minuut interval
-
-        return () => clearInterval(affirmationInterval)
-    }, [affirmations])
 
     const handleTimerMode = async () => {
         interval.stop()
@@ -108,6 +102,8 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
         return affirmations[Math.floor(Math.random() * affirmations.length)];
     }
 
+    console.log(currentAffirmation)
+
     return (
         isOpen && (
             <div className="fixed inset-0 z-50 overflow-y-scroll">
@@ -121,14 +117,14 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
                     transition={{ duration: 1 }}
                 >
                     {currentAffirmation && (
-                        <Blockquote className="absolute top-28 max-w-[60vw]">
+                        <Blockquote className="absolute top-20 max-w-[60vw]">
                             {currentAffirmation.verse}
                             <BlockquoteAuthor>{currentAffirmation?.surah} {currentAffirmation?.ayah}</BlockquoteAuthor>
                         </Blockquote>
                     )}
                     <div className="flex justify-center flex-col items-center">
                         <div className="flex items-center justify-center text-[200px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
-                            <div className="flex bg-white/70 px-20 mb-10 rounded-3xl">
+                            <div className="flex bg-white/60 backdrop-blur-lg backdrop-filter px-20 mb-10 rounded-3xl">
                                 <div>
                                     {minutes.toString().padStart(2, '0')}
                                 </div>

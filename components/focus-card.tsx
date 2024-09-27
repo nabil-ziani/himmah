@@ -132,8 +132,6 @@ const FocusCard = ({ user }: FocusCardProps) => {
         fetchAffirmationOptions()
     }, [])
 
-    console.log(affirmationCategory)
-
     return (
         <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
             <div className="flex h-[calc(100vh-250px)]">
