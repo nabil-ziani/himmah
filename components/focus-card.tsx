@@ -32,8 +32,7 @@ interface FocusCardProps {
 
 const FocusCard = ({ user }: FocusCardProps) => {
     const [backgrounds, setBackgrounds] = useState<string[]>([])
-    const [audio, setAudio] = useState('Weather')
-    const [audioOptions, setAudioOptions] = useState<AudioOption[]>([])
+    const [audio, setAudio] = useState('')
 
     const [affirmationCategory, setAffirmationCategory] = useState('Allah')
     const [affirmationOptions, setAffirmationOptions] = useState<AffirmationOption[]>([])
@@ -51,54 +50,14 @@ const FocusCard = ({ user }: FocusCardProps) => {
         const newMode = mode === 'timer' ? 'stopwatch' : 'timer';
         setMode(newMode);
         router.push(`?mode=${newMode}`, undefined)
-    };
+    }
 
     // --- Set mode based on url-query
     useEffect(() => {
         if (currentMode !== mode) {
             setMode(currentMode as 'timer' | 'stopwatch');
         }
-    }, [currentMode]);
-
-    // --- set white noise (audioOptions)
-    useEffect(() => {
-        const getAudioFiles = async (folder: string) => {
-            const { data, error } = await supabase.storage
-                .from('white_noise')
-                .list(folder)
-
-            if (error) {
-                console.error('Error retrieving files:', error)
-                return []
-            }
-
-            const files = data.map(file => {
-                return {
-                    name: file.name,
-                    url: supabase.storage
-                        .from('white_noise')
-                        .getPublicUrl(`${folder}/${file.name}`).data.publicUrl
-                }
-            })
-
-            return files
-        }
-
-        const fetchAudioOptions = async () => {
-            const options = [
-                { label: 'Animals', files: await getAudioFiles('Animals') },
-                { label: 'City', files: await getAudioFiles('City') },
-                { label: 'Fire', files: await getAudioFiles('Fire') },
-                { label: 'Transport', files: await getAudioFiles('Transport') },
-                { label: 'Unfit', files: await getAudioFiles('Unfit') },
-                { label: 'Water', files: await getAudioFiles('Water') },
-                { label: 'Weather', files: await getAudioFiles('Weather') }
-            ]
-            setAudioOptions(options)
-        }
-
-        fetchAudioOptions()
-    }, [])
+    }, [currentMode])
 
     // --- Set affirmations
     useEffect(() => {
@@ -139,7 +98,7 @@ const FocusCard = ({ user }: FocusCardProps) => {
                     <div className="flex justify-end items-center">
                         <div className="flex gap-3">
                             <AffirmationDropdown category={affirmationCategory} setCategory={setAffirmationCategory} />
-                            <AudioDropdown title="White Noise" audioOptions={audioOptions} setAudio={setAudio} />
+                            <AudioDropdown title="White Noise" audio={audio} setAudio={setAudio} />
 
                             <Button size={"lg"} className="bg-blue-600/80  hover:bg-blue-600/90 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
                                 <TbBackground className="mr-3" />

@@ -1,7 +1,7 @@
 'use client'
 
 import { useInterval } from "@mantine/hooks";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Affirmation } from "@/lib/types";
@@ -101,8 +101,6 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
     const getRandomAffirmation = (affirmations: Affirmation[]) => {
         return affirmations[Math.floor(Math.random() * affirmations.length)];
     }
-
-    console.log(currentAffirmation)
 
     return (
         isOpen && (
