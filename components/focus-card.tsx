@@ -138,7 +138,7 @@ const FocusCard = ({ user }: FocusCardProps) => {
                 <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[calc(100vw-300px)]">
                     <div className="flex justify-end items-center">
                         <div className="flex gap-3">
-                            <AffirmationDropdown options={affirmationOptions} setCategory={setAffirmationCategory} />
+                            <AffirmationDropdown options={affirmationOptions} category={affirmationCategory} setCategory={setAffirmationCategory} />
                             <AudioDropdown title="White Noise" audioOptions={audioOptions} setAudio={setAudio} />
 
                             <Button size={"lg"} className="bg-blue-600/80  hover:bg-blue-600/90 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>

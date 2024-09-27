@@ -108,8 +108,6 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
         return affirmations[Math.floor(Math.random() * affirmations.length)];
     }
 
-    console.log(currentAffirmation)
-
     return (
         isOpen && (
             <div className="fixed inset-0 z-50 overflow-y-scroll">
@@ -123,7 +121,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
                     transition={{ duration: 1 }}
                 >
                     {currentAffirmation && (
-                        <Blockquote className="absolute top-28">
+                        <Blockquote className="absolute top-28 max-w-[60vw]">
                             {currentAffirmation.verse}
                             <BlockquoteAuthor>{currentAffirmation?.surah} {currentAffirmation?.ayah}</BlockquoteAuthor>
                         </Blockquote>
