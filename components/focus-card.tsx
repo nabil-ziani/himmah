@@ -11,12 +11,10 @@ import { createClient } from "@/utils/supabase/client";
 import SetBackgroundDialog from "./set-background-dialog";
 import { User } from "@supabase/supabase-js";
 import AudioDropdown from "./audio-dropdown";
-import { BiSolidFlame } from "react-icons/bi";
 import { TbBackground } from "react-icons/tb";
-import { FaClock } from "react-icons/fa6";
-import { FaStopwatch } from "react-icons/fa6";
-import { PiTimerFill } from "react-icons/pi";
 import { Clock, TimerIcon } from "lucide-react";
+import AffirmationDropdown from "./affirmation-dropdown";
+import { AffirmationOption } from "@/lib/types";
 
 type AudioFile = {
     name: string
@@ -35,7 +33,11 @@ interface FocusCardProps {
 const FocusCard = ({ user }: FocusCardProps) => {
     const [backgrounds, setBackgrounds] = useState<string[]>([])
     const [audio, setAudio] = useState('Weather')
-    const [audioOptions, setAudioOptions] = useState<AudioOption[]>([]);
+    const [audioOptions, setAudioOptions] = useState<AudioOption[]>([])
+
+    const [affirmationCategory, setAffirmationCategory] = useState('Allah')
+    const [affirmationOptions, setAffirmationOptions] = useState<AffirmationOption[]>([])
+
     const [backgroundDialog, setBackgroundDialog] = useState(false)
 
     const router = useRouter();
@@ -98,17 +100,45 @@ const FocusCard = ({ user }: FocusCardProps) => {
         fetchAudioOptions()
     }, [])
 
+    // --- Set affirmations
+    useEffect(() => {
+        const getAffirmations = async (category: string) => {
+            const { data: affirmations, error } = await supabase
+                .from("affirmations")
+                .select()
+                .eq('category', category)
+
+            if (error) {
+                console.error('Error retrieving affirmations:', error)
+                return []
+            }
+
+            return affirmations
+        }
+
+        const fetchAffirmationOptions = async () => {
+            const affirmationOptions = [
+                { label: 'Allah', affirmations: await getAffirmations('Allah') },
+                { label: 'Certainty', affirmations: await getAffirmations('Certainty') },
+                { label: 'Struggle', affirmations: await getAffirmations('Struggle') },
+                { label: 'Wisdom', affirmations: await getAffirmations('Wisdom') },
+                { label: 'Punishment', affirmations: await getAffirmations('Punishment') },
+                { label: 'Reward', affirmations: await getAffirmations('Reward') }
+            ]
+
+            setAffirmationOptions(affirmationOptions)
+        }
+
+        fetchAffirmationOptions()
+    }, [])
+
     return (
         <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
             <div className="flex h-[calc(100vh-250px)]">
                 <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[calc(100vw-300px)]">
                     <div className="flex justify-end items-center">
                         <div className="flex gap-3">
-                            <Button size={"lg"} className="bg-orange-600/80  hover:bg-orange-600/90 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
-                                <BiSolidFlame className="mr-3" />
-                                Affirmations
-                            </Button>
-
+                            <AffirmationDropdown options={affirmationOptions} setCategory={setAffirmationCategory} />
                             <AudioDropdown title="White Noise" audioOptions={audioOptions} setAudio={setAudio} />
 
                             <Button size={"lg"} className="bg-blue-600/80  hover:bg-blue-600/90 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
@@ -122,8 +152,8 @@ const FocusCard = ({ user }: FocusCardProps) => {
                         </div>
                     </div>
 
-                    {mode == 'timer' && <Timer audio={audio} backgrounds={backgrounds} supabase={supabase} user={user} />}
-                    {mode == 'stopwatch' && <Stopwatch audio={audio} backgrounds={backgrounds} supabase={supabase} user={user} />}
+                    {mode == 'timer' && <Timer audio={audio} backgrounds={backgrounds} affirmations={affirmationOptions.filter(aff => aff.label == affirmationCategory).flatMap(aff => aff.affirmations)} supabase={supabase} user={user} />}
+                    {mode == 'stopwatch' && <Stopwatch audio={audio} backgrounds={backgrounds} affirmations={affirmationOptions.filter(aff => aff.label == affirmationCategory).flatMap(aff => aff.affirmations)} supabase={supabase} user={user} />}
 
                     <SetBackgroundDialog isOpen={backgroundDialog} setIsOpen={setBackgroundDialog} backgrounds={backgrounds} setBackgrounds={setBackgrounds} />
                 </section>

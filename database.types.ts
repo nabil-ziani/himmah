@@ -9,6 +9,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      affirmations: {
+        Row: {
+          ayah: string | null
+          category: Database["public"]["Enums"]["affirmation_category"]
+          id: string
+          surah: string | null
+          verse: string
+        }
+        Insert: {
+          ayah?: string | null
+          category: Database["public"]["Enums"]["affirmation_category"]
+          id?: string
+          surah?: string | null
+          verse?: string
+        }
+        Update: {
+          ayah?: string | null
+          category?: Database["public"]["Enums"]["affirmation_category"]
+          id?: string
+          surah?: string | null
+          verse?: string
+        }
+        Relationships: []
+      }
       focus_sessions: {
         Row: {
           completed: boolean | null
@@ -172,6 +196,13 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      affirmation_category:
+        | "Allah"
+        | "Certainty"
+        | "Struggle"
+        | "Wisdom"
+        | "Punishment"
+        | "Reward"
       focus_type: "stopwatch" | "timer"
       friendship_status: "pending" | "accepted" | "rejected" | "blocked"
       Sex: "Male" | "Female"

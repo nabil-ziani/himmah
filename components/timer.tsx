@@ -1,22 +1,24 @@
 'use client'
 
 import { useState } from "react";
-import { CircleMinus, Minus, Plus, PlusCircle } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import FocusDialog from "./focus-dialog";
 import { SupabaseClient, User } from "@supabase/supabase-js";
 import { Database } from "@/database.types";
 import toast from "react-hot-toast";
+import { Affirmation } from "@/lib/types";
 
 interface TimerProps {
     audio: string
     backgrounds: string[]
     supabase: SupabaseClient<Database>
     user: User
+    affirmations: Affirmation[]
 }
 
-const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
+const Timer = ({ audio, backgrounds, affirmations, supabase, user }: TimerProps) => {
     const [fullScreen, setFullScreen] = useState(false)
     const [sessionId, setSessionId] = useState<number>()
     const [start_time, setStartTime] = useState<string | null>(null)
@@ -133,6 +135,7 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
                 audio={audio}
                 backgrounds={backgrounds}
                 handleSessionEnd={handleSessionEnd}
+                affirmations={affirmations}
             />
         </>
     )

@@ -5,15 +5,17 @@ import { Button } from "./ui/button";
 import FocusDialog from './focus-dialog';
 import { SupabaseClient, User } from '@supabase/supabase-js';
 import { Database } from '@/database.types';
+import { Affirmation } from '@/lib/types';
 
 interface StopwatchProps {
     audio: string
     backgrounds: string[]
     supabase: SupabaseClient<Database>
     user: User
+    affirmations: Affirmation[]
 }
 
-const Stopwatch = ({ audio, backgrounds, supabase, user }: StopwatchProps) => {
+const Stopwatch = ({ audio, backgrounds, affirmations, supabase, user }: StopwatchProps) => {
     const [fullScreen, setFullScreen] = useState(false)
     const [initialTime, setInitialTime] = useState(0)
     const [time, setTime] = useState(initialTime)
@@ -100,6 +102,7 @@ const Stopwatch = ({ audio, backgrounds, supabase, user }: StopwatchProps) => {
                 audio={audio}
                 backgrounds={backgrounds}
                 handleSessionEnd={handleSessionEnd}
+                affirmations={affirmations}
             />
         </>
     )

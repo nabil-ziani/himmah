@@ -20,6 +20,7 @@ export const fetchProfileData = async (supabase: SupabaseClient, id: string) => 
     .select('id, name, email, is_online')
     .eq('id', id)
     .single()
+
   if (error) {
     console.error('Error fetching profile data:', error);
   }

@@ -1,4 +1,4 @@
-import { Database } from "@/database.types"
+import { Database, Tables } from "@/database.types"
 
 export type Task = Database["public"]["Tables"]["tasks"]["Row"]
 
@@ -24,4 +24,11 @@ export type Friendship = {
         email: string,
         is_online: boolean
     }
+}
+
+export type Affirmation = Tables<'affirmations'>
+
+export type AffirmationOption = {
+    label: string
+    affirmations: Affirmation[]
 }
