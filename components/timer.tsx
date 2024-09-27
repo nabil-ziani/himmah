@@ -95,9 +95,9 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
                     <Tooltip>
                         <TooltipTrigger>
-                            <Button className="bg-gray-600/80 font-semibold text-white h-16 rounded-lg px-3" onClick={handleMinusClick}>
+                            <div className="flex justify-center items-center bg-gray-600/80 font-semibold text-white h-16 rounded-lg px-3" onClick={handleMinusClick}>
                                 <Minus className="h-10 w-10" />
-                            </Button>
+                            </div>
                         </TooltipTrigger>
                         <TooltipContent side='bottom'>
                             <div className='bg-white'>
@@ -112,9 +112,9 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
 
                     <Tooltip>
                         <TooltipTrigger>
-                            <Button className="bg-gray-600/80 font-semibold text-white h-16 rounded-lg px-3" onClick={handlePlusClick}>
+                            <div className="flex justify-center items-center bg-gray-600/80 font-semibold text-white h-16 rounded-lg px-3" onClick={handlePlusClick}>
                                 <Plus className="h-10 w-10" />
-                            </Button>
+                            </div>
                         </TooltipTrigger>
                         <TooltipContent side='bottom'>
                             <div className='bg-white'>
