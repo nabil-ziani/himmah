@@ -1,5 +1,5 @@
 import { Button } from "./ui/button"
-import { CirclePlay } from "lucide-react"
+import { CirclePlay, Loader2 } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -42,26 +42,32 @@ const AudioDropdown = ({ title, audioOptions, setAudio }: AudioDropdownProps) =>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
                 <DropdownMenuSeparator />
-                {audioOptions.map((audio) => (
-                    <DropdownMenuRadioGroup key={audio.label} value={audio.label} onValueChange={setAudio}>
-                        <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>
-                                {audio.label}
-                            </DropdownMenuSubTrigger>
-                            <DropdownMenuPortal>
-                                <DropdownMenuSubContent>
-                                    {audio.files.map((file) => {
-                                        return (
-                                            <DropdownMenuRadioItem key={file.name} value={file.url}>
-                                                {file.name}
-                                            </DropdownMenuRadioItem>
-                                        )
-                                    })}
-                                </DropdownMenuSubContent>
-                            </DropdownMenuPortal>
-                        </DropdownMenuSub>
-                    </DropdownMenuRadioGroup>
-                ))}
+                {audioOptions.length > 0 ?
+                    (audioOptions.map((audio) => (
+                        <DropdownMenuRadioGroup key={audio.label} value={audio.label} onValueChange={setAudio}>
+                            <DropdownMenuSub>
+                                <DropdownMenuSubTrigger>
+                                    {audio.label}
+                                </DropdownMenuSubTrigger>
+                                <DropdownMenuPortal>
+                                    <DropdownMenuSubContent>
+                                        {audio.files.map((file) => {
+                                            return (
+                                                <DropdownMenuRadioItem key={file.name} value={file.url}>
+                                                    {file.name}
+                                                </DropdownMenuRadioItem>
+                                            )
+                                        })}
+                                    </DropdownMenuSubContent>
+                                </DropdownMenuPortal>
+                            </DropdownMenuSub>
+                        </DropdownMenuRadioGroup>
+                    ))) :
+                    (
+                        <div className="flex justify-center items-center">
+                            <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+                        </div>
+                    )}
             </DropdownMenuContent>
         </DropdownMenu>
     )

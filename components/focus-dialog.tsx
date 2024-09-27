@@ -93,7 +93,15 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
     return (
         isOpen && (
             <div className="fixed inset-0 z-50 grid place-items-center overflow-y-scroll">
-                <div className="w-full h-full bg-white relative grid place-items-center" style={{ backgroundImage: `url(${currentBackground})`, backgroundSize: 'cover' }}>
+                <motion.div
+                    className="w-full h-full bg-white relative grid place-items-center"
+                    style={{ backgroundImage: `url(${currentBackground})`, backgroundSize: 'cover' }}
+                    key={backgroundIndex}
+                    initial={{ opacity: 0.5 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0.5 }}
+                    transition={{ duration: 1 }}
+                >
                     <div className="h-full justify-center flex flex-col items-center">
                         <div className="flex items-center justify-center text-[200px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
                             <div className="flex bg-white/70 px-20 mb-10 rounded-3xl">
@@ -129,7 +137,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
 
                     {/* Notification Sound */}
                     <audio ref={audioRef} src="/audio/level_up.mp3" crossOrigin="anonymous" loop={false} onEnded={() => audioRef.current?.pause()} />
-                </div>
+                </motion.div>
             </div >
         )
     )

@@ -17,5 +17,5 @@ export default async function FocusPage() {
             <h1 className='font-bold leading-none text-[#303030] text-4xl'>Focus</h1>
             <FocusCard user={user} />
         </div>
-    );
+    )
 }
