@@ -74,10 +74,7 @@ const Stopwatch = ({ audio, backgrounds, supabase, user }: StopwatchProps) => {
     return (
         <>
             <div className="h-full justify-center flex flex-col items-center">
-                <div className="p-5">
-                    <h2 className="text-5xl">Stopwatch</h2>
-                </div>
-                <div className="flex items-center justify-center text-[126px] text-[#323238] font-semibold dark:text-white font-nunito">
+                <div className="flex items-center justify-center text-[200px] text-[#323238] font-semibold dark:text-white font-nunito">
                     <div>
                         {minutes.toString().padStart(2, "0")}:
                     </div>
@@ -87,20 +84,19 @@ const Stopwatch = ({ audio, backgrounds, supabase, user }: StopwatchProps) => {
                 </div>
 
                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
-                    <Button size={"lg"} className="bg-green-500 hover:bg-green-500/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={handleStart}>
+                    <Button className="bg-green-600/80 hover:shadow-md font-semibold text-4xl text-white h-16 rounded-lg px-16" onClick={handleStart}>
                         Start
                     </Button>
                 </div>
             </div>
 
-            {/* Geef de minuten en seconden door aan de FocusDialog */}
             <FocusDialog
                 isOpen={fullScreen}
                 mode='stopwatch'
                 time={{ minutes, seconds }}
                 isRunning={isRunning}
                 setIsRunning={setIsRunning}
-                setTime={setTime} // Zorg ervoor dat de tijd in de dialog kan worden bijgewerkt
+                setTime={setTime}
                 audio={audio}
                 backgrounds={backgrounds}
                 handleSessionEnd={handleSessionEnd}

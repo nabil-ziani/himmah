@@ -4,8 +4,6 @@ import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card } from "./ui/card"
 import { Button } from "./ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuPortal, DropdownMenuSubContent } from "@/components/ui/dropdown-menu"
-import { CirclePlay, Image } from "lucide-react"
 
 import Stopwatch from "./stopwatch"
 import Timer from "./timer"
@@ -13,6 +11,12 @@ import { createClient } from "@/utils/supabase/client";
 import SetBackgroundDialog from "./set-background-dialog";
 import { User } from "@supabase/supabase-js";
 import AudioDropdown from "./audio-dropdown";
+import { BiSolidFlame } from "react-icons/bi";
+import { TbBackground } from "react-icons/tb";
+import { FaClock } from "react-icons/fa6";
+import { FaStopwatch } from "react-icons/fa6";
+import { PiTimerFill } from "react-icons/pi";
+import { Clock, TimerIcon } from "lucide-react";
 
 type AudioFile = {
     name: string
@@ -100,14 +104,20 @@ const FocusCard = ({ user }: FocusCardProps) => {
                 <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[calc(100vw-300px)]">
                     <div className="flex justify-end items-center">
                         <div className="flex gap-3">
-                            <AudioDropdown title="Audio" audioOptions={audioOptions} setAudio={setAudio} />
+                            <Button size={"lg"} className="bg-orange-600/80  hover:bg-orange-600/90 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
+                                <BiSolidFlame className="mr-3" />
+                                Affirmations
+                            </Button>
 
-                            <Button size={"lg"} className="bg-[#6A0D91]/60  hover:bg-[#6A0D91]/70 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
-                                <Image className="mr-3" />
+                            <AudioDropdown title="White Noise" audioOptions={audioOptions} setAudio={setAudio} />
+
+                            <Button size={"lg"} className="bg-blue-600/80  hover:bg-blue-600/90 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
+                                <TbBackground className="mr-3" />
                                 Background
                             </Button>
-                            <Button size={"lg"} className="bg-gray-600/60  hover:bg-gray-600/70 text-white text-xl hover:cursor-pointer" onClick={toggleMode}>
-                                Change Mode
+                            <Button size={"lg"} className="bg-gray-600/80  hover:bg-gray-600/90 text-white text-xl hover:cursor-pointer" onClick={toggleMode}>
+                                {mode === 'timer' ? <Clock className="mr-3" /> : <TimerIcon className="mr-3" />}
+                                Mode
                             </Button>
                         </div>
                     </div>

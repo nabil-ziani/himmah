@@ -12,6 +12,7 @@ import {
     DropdownMenuPortal,
     DropdownMenuSubContent
 } from "@/components/ui/dropdown-menu"
+import { RiLeafFill } from "react-icons/ri";
 import { Dispatch, SetStateAction } from "react"
 
 type AudioFile = {
@@ -34,8 +35,8 @@ const AudioDropdown = ({ title, audioOptions, setAudio }: AudioDropdownProps) =>
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button size={"lg"} className="bg-[#1E90FF]/60  hover:bg-[#1E90FF]/70 text-white text-xl hover:cursor-pointer">
-                    <CirclePlay className="mr-3" />
+                <Button size={"lg"} className="bg-green-600/80  hover:bg-green-600/90 text-white text-xl hover:cursor-pointer">
+                    <RiLeafFill className="mr-3" />
                     {title}
                 </Button>
             </DropdownMenuTrigger>
