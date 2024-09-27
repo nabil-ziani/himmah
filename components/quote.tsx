@@ -3,8 +3,8 @@ import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 type BlockquoteProps = {
-    children?: React.ReactNode;
-    className?: string;
+    children?: React.ReactNode
+    className?: string
 }
 
 const Blockquote = ({ children, className }: BlockquoteProps) => {
@@ -21,15 +21,15 @@ const Blockquote = ({ children, className }: BlockquoteProps) => {
         >
             {children}
         </motion.div>
-    );
-};
+    )
+}
 
 const BlockquoteAuthor = ({ children, className }: BlockquoteProps) => {
     return (
         <p className={cn('mt-5 pr-4 text-right font-bold not-italic text-gray-700', className)}>
             {children}
         </p>
-    );
-};
+    )
+}
 
-export { Blockquote, BlockquoteAuthor };
+export { Blockquote, BlockquoteAuthor }
