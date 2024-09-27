@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { CircleMinus, PlusCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
@@ -137,4 +137,4 @@ const Timer = ({ audio, backgrounds, supabase, user }: TimerProps) => {
     )
 }
 
-export default Timer;
+export default Timer

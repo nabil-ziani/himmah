@@ -2,7 +2,7 @@
 
 import { useInterval } from "@mantine/hooks";
 import { AnimatePresence, motion } from "framer-motion";
-import { Dispatch, RefObject, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 
 interface FocusDialogProps {
@@ -106,7 +106,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
 
                         <div className="h-full justify-center flex flex-col items-center">
                             <div className="flex items-center justify-center text-[200px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
-                                <div className="flex bg-white px-20 mb-10 rounded-3xl">
+                                <div className="flex bg-white/70 px-20 mb-10 rounded-3xl">
                                     <div>
                                         {minutes.toString().padStart(2, '0')}
                                     </div>
@@ -115,19 +115,6 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
                                         {seconds.toString().padStart(2, '0')}
                                     </div>
                                 </div>
-                                {/* {minutes.toString().padStart(2, '0').split('').map((digit, index) => (
-                                    <div key={index} className="bg-white p-4 m-1 rounded">
-                                        {digit}
-                                    </div>
-                                ))}
-
-                                <div className="m-1 bg-white p-4 rounded">:</div>
-
-                                {seconds.toString().padStart(2, '0').split('').map((digit, index) => (
-                                    <div key={index} className="bg-white  p-4 m-1 rounded">
-                                        {digit}
-                                    </div>
-                                ))} */}
                             </div>
                             <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
                                 {timerCompleted ?
@@ -161,7 +148,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
                 </div >
             )}
         </AnimatePresence >
-    );
+    )
 }
 
-export default FocusDialog;
+export default FocusDialog
