@@ -105,22 +105,41 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
                     >
 
                         <div className="h-full justify-center flex flex-col items-center">
-                            <div className=" flex items-center justify-center text-[126px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
-                                <div>{minutes.toString().padStart(2, '0')}</div>
-                                <div>:</div>
-                                <div>{seconds.toString().padStart(2, '0')}</div>
+                            <div className="flex items-center justify-center text-[200px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
+                                <div className="flex bg-white px-20 mb-10 rounded-3xl">
+                                    <div>
+                                        {minutes.toString().padStart(2, '0')}
+                                    </div>
+                                    <div>{" "}:{" "}</div>
+                                    <div>
+                                        {seconds.toString().padStart(2, '0')}
+                                    </div>
+                                </div>
+                                {/* {minutes.toString().padStart(2, '0').split('').map((digit, index) => (
+                                    <div key={index} className="bg-white p-4 m-1 rounded">
+                                        {digit}
+                                    </div>
+                                ))}
+
+                                <div className="m-1 bg-white p-4 rounded">:</div>
+
+                                {seconds.toString().padStart(2, '0').split('').map((digit, index) => (
+                                    <div key={index} className="bg-white  p-4 m-1 rounded">
+                                        {digit}
+                                    </div>
+                                ))} */}
                             </div>
                             <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
                                 {timerCompleted ?
                                     (
-                                        <Button size={"lg"} className="bg-green-400 hover:bg-green-400/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={() => {
+                                        <Button className="bg-green-400 font-semibold text-4xl text-white h-16 rounded-xl px-8" onClick={() => {
                                             setTimerCompleted(false)
                                             handleSessionEnd(true)
                                         }}>
                                             Claim Victory 🏆
                                         </Button>
                                     ) : (
-                                        <Button size={"lg"} className="bg-[#e74c3c] hover:bg-[#e74c3c]/80 hover:shadow-2xl font-semibold text-xl text-white" onClick={mode === 'timer' ? () => handleSessionEnd(false) : handleStopwatchMode}>
+                                        <Button className="bg-red-500 font-semibold text-4xl text-white h-16 rounded-xl px-8" onClick={mode === 'timer' ? () => handleSessionEnd(false) : handleStopwatchMode}>
                                             {mode === 'timer' ? 'Give up' : 'Stop'}
                                         </Button>
                                     )
