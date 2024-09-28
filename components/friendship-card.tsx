@@ -2,11 +2,11 @@
 
 import { User } from "@supabase/supabase-js"
 import { Button } from "./ui/button"
-import { CircleX, Clock, Trash2, UserRoundX, X } from "lucide-react"
+import { UserRoundX } from "lucide-react"
 import { Friendship } from "@/lib/types"
 import { useEffect, useState } from "react"
-import { createClient } from "@/utils/supabase/client"
 import { GoClockFill } from "react-icons/go";
+import { useSupabase } from "@/contexts/supabaseClient"
 
 interface FriendshipCardProps {
     friendship: Friendship
@@ -20,7 +20,7 @@ interface FriendshipCardProps {
 const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, handleDelete, isOnline }: FriendshipCardProps) => {
     const [todayFocusTime, setTodayFocusTime] = useState<number | null>(null)
 
-    const supabase = createClient()
+    const supabase = useSupabase()
 
     const friendName = friendship?.friend?.id === currentUser.id ? friendship.user.name : friendship.friend.name
 
@@ -52,7 +52,7 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
 
             if (data && data.length > 0) {
                 // Calculate total focus time in minutes by parsing each duration string
-                const totalMinutes = data.reduce((acc, session: any) => acc + parseDuration(session.duration), 0)
+                const totalMinutes = data.reduce((acc: any, session: any) => acc + parseDuration(session.duration), 0)
 
                 // Convert minutes to hours and decimal format (1.25 hours for 1 hour and 15 minutes)
                 const totalHours = (totalMinutes / 60).toFixed(2)

@@ -1,15 +1,16 @@
 'use client'
 
-import { createClient } from '@/utils/supabase/client'
 import { useEffect, useState } from 'react'
 import { Friendship } from "@/lib/types";
 import { fetchProfileData } from '@/lib/utils';
+import { useSupabase } from '@/contexts/supabaseClient';
 
 const useFriendRequests = (userId: string) => {
     const [friendships, setFriendships] = useState<Friendship[]>([])
     const [pendingRequests, setPendingRequests] = useState<Friendship[]>([])
     const [onlineUsers, setOnlineUsers] = useState<string[]>([])
-    const supabase = createClient();
+
+    const supabase = useSupabase()
 
     useEffect(() => {
         if (!userId) return;

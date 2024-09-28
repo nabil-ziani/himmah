@@ -1,10 +1,10 @@
-import { useSupabase } from "@/contexts/supabaseClient";
 import { redirect } from "next/navigation";
 
 import FocusCard from "@/components/focus-card";
+import { createClient } from "@/utils/supabase/server";
 
 export default async function FocusPage() {
-    const supabase = useSupabase();
+    const supabase = createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
 

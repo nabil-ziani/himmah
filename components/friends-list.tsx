@@ -1,17 +1,17 @@
 'use client'
 
-import { createClient } from "@/utils/supabase/client";
 import toast from "react-hot-toast";
 import FriendshipCard from "./friendship-card";
 import { User } from "@supabase/supabase-js";
 import { useFriendContext } from "@/contexts/friendshipContext";
+import { useSupabase } from "@/contexts/supabaseClient";
 
 interface FriendsListProps {
     user: User
 }
 
 const FriendsList = ({ user }: FriendsListProps) => {
-    const supabase = createClient()
+    const supabase = useSupabase()
 
     const { friendships, pendingRequests, onlineUsers } = useFriendContext()
 

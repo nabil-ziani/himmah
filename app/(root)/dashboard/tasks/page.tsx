@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
-import { useSupabase } from "@/contexts/supabaseClient";
 
 import TaskCard from "@/components/task-card";
+import { createClient } from "@/utils/supabase/server";
 
 export default async function TasksPage() {
-    const supabase = useSupabase();
+    const supabase = createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
 

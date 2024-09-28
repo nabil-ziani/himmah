@@ -7,7 +7,6 @@ import { Button } from "./ui/button"
 
 import Stopwatch from "./stopwatch"
 import Timer from "./timer"
-import { createClient } from "@/utils/supabase/client";
 import SetBackgroundDialog from "./set-background-dialog";
 import { User } from "@supabase/supabase-js";
 import AudioDropdown from "./audio-dropdown";
@@ -15,6 +14,7 @@ import { TbBackground } from "react-icons/tb";
 import { Clock, TimerIcon } from "lucide-react";
 import AffirmationDropdown from "./affirmation-dropdown";
 import { AffirmationOption } from "@/lib/types";
+import { useSupabase } from "@/contexts/supabaseClient";
 
 interface FocusCardProps {
     user: User
@@ -31,7 +31,7 @@ const FocusCard = ({ user }: FocusCardProps) => {
 
     const router = useRouter();
     const searchParams = useSearchParams();
-    const supabase = createClient()
+    const supabase = useSupabase()
 
     const currentMode = searchParams.get('mode') || 'timer'
     const [mode, setMode] = useState<'timer' | 'stopwatch'>(currentMode as 'timer' | 'stopwatch')

@@ -8,7 +8,8 @@ import { ReactNode } from 'react'
 import { Toaster } from "react-hot-toast";
 
 import { poppins, nunito } from "../../ui/fonts";
-import { SupabaseProvider, useSupabase } from '@/contexts/supabaseClient';
+import { SupabaseProvider } from '@/contexts/supabaseClient';
+import { createClient } from '@/utils/supabase/server';
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
-    const supabase = useSupabase();
+    const supabase = createClient()
 
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -34,7 +35,7 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
         <SupabaseProvider>
             <main className={`relative text-foreground bg-slate-50 ${poppins.variable} ${nunito.variable}`}>
                 <FriendProvider userId={user.id}>
-                    <DashboardNavbar supabase={supabase} />
+                    <DashboardNavbar />
                     <div className='flex'>
                         <Sidebar />
                         <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-28 max-md:pb-14 sm:px-14">

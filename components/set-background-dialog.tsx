@@ -1,7 +1,7 @@
 'use client'
 
+import { useSupabase } from "@/contexts/supabaseClient"
 import { getCategories, getBackgrounds } from "@/lib/utils"
-import { createClient } from "@/utils/supabase/client"
 import { CircleChevronRight, CircleX, Loader2 } from "lucide-react"
 import Image from "next/image"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
@@ -46,7 +46,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen, backgrounds, setBackgrounds }:
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSubcategory, setActiveSubcategory] = useState<Subcategory>()
 
-    const supabase = createClient()
+    const supabase = useSupabase()
 
     useEffect(() => {
         const fetchBackgroundOptions = async () => {

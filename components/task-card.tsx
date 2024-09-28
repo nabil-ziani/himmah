@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { Card } from './ui/card'
 import TaskModal from './task-modal'
 import { KanbanBoard } from './kanban-board'
-import { createClient } from '@/utils/supabase/client'
 import { Task, TaskType } from '@/lib/types'
 import { User } from '@supabase/supabase-js'
+import { useSupabase } from '@/contexts/supabaseClient'
 
 interface TaskCardProps {
     user: User
@@ -18,7 +18,7 @@ const TaskCard = ({ user }: TaskCardProps) => {
     const [tasks, setTasks] = useState<Task[]>([])
     const [selectedTask, setSelectedTask] = useState<Task | undefined>(undefined)
 
-    const supabase = createClient()
+    const supabase = useSupabase()
 
     useEffect(() => {
         const getData = async () => {
