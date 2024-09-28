@@ -29,8 +29,8 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
     const [currentBackground, setCurrentBackground] = useState<string>(backgrounds[0])
 
     const [currentAffirmation, setCurrentAffirmation] = useState<Affirmation>(affirmations[0])
-
-    const audioRef = useRef<HTMLAudioElement>(null);
+    const [hasPlayedAudio, setHasPlayedAudio] = useState(false)
+    const audioRef = useRef<HTMLAudioElement>(null)
 
     // Interval for 1 second
     const interval = useInterval(() => {
@@ -85,8 +85,11 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
     const handleTimerMode = async () => {
         interval.stop()
 
-        if (audioRef.current && timerCompleted) {
-            await audioRef.current.play()
+        if (timerCompleted && !hasPlayedAudio) {
+            if (audioRef.current) {
+                await audioRef.current.play()
+                setHasPlayedAudio(true)
+            }
         }
     }
 
@@ -114,6 +117,13 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
         const randomAffirmation = getRandomAffirmation(affirmations)
         setCurrentAffirmation(randomAffirmation)
     }, [affirmations])
+
+    // Reset audio state wanneer de timer wordt gereset of herstart
+    useEffect(() => {
+        if (!timerCompleted) {
+            setHasPlayedAudio(false)
+        }
+    }, [timerCompleted])
 
     return (
         isOpen && (
@@ -167,7 +177,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
                     <audio className="hidden" src={audio} loop={true} autoPlay={true} />
 
                     {/* Notification Sound */}
-                    <audio ref={audioRef} src="/audio/level_up.mp3" crossOrigin="anonymous" loop={false} onEnded={() => audioRef.current?.pause()} />
+                    <audio ref={audioRef} src="/audio/kitchen_timer.mp3" crossOrigin="anonymous" onEnded={() => audioRef.current?.pause()} />
                 </motion.div>
             </div >
         )

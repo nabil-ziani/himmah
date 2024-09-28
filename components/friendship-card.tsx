@@ -67,6 +67,13 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
         fetchTodayFocusTime();
     }, [supabase, friendship, currentUser])
 
+    const formatTime = (focusTime: number) => {
+        const hours = Math.floor(focusTime)
+        const minutes = Math.round((focusTime - hours) * 60)
+
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
+    };
+
     return (
         <li key={friendship.id} className="flex m-5 gap-4">
             <div className="flex justify-between items-center w-[450px] bg-gray-200 rounded-md relative px-2">
@@ -77,7 +84,9 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
                 {todayFocusTime !== null && (
                     <span className="mr-2 text-gray-900 flex items-center">
                         <GoClockFill className="h-5 w-5 mr-2" />
-                        {todayFocusTime}
+                        <span className="font-nunito">
+                            {formatTime(todayFocusTime)}
+                        </span>
                     </span>
                 )}
             </div>
