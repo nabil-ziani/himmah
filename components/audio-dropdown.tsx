@@ -17,18 +17,17 @@ import { RiLeafFill } from "react-icons/ri";
 import { Dispatch, SetStateAction } from "react"
 
 interface AudioDropdownProps {
-    title: string,
-    audio: string,
+    audio: string
     setAudio: Dispatch<SetStateAction<string>>
 }
 
-const AudioDropdown = ({ title, audio, setAudio }: AudioDropdownProps) => {
+const AudioDropdown = ({ audio, setAudio }: AudioDropdownProps) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button size={"lg"} className="bg-green-600/80  hover:bg-green-600/90 text-white text-xl hover:cursor-pointer">
                     <RiLeafFill className="mr-3" />
-                    {title}
+                    White Noise
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">

@@ -80,9 +80,6 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
 
     useEffect(() => {
         setCurrentBackground(backgrounds[backgroundIndex])
-
-        const randomAffirmation = getRandomAffirmation(affirmations)
-        setCurrentAffirmation(randomAffirmation)
     }, [backgroundIndex, backgrounds])
 
     const handleTimerMode = async () => {
@@ -101,6 +98,22 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, aud
     const getRandomAffirmation = (affirmations: Affirmation[]) => {
         return affirmations[Math.floor(Math.random() * affirmations.length)];
     }
+
+    // Set a random affirmation every minute
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const randomAffirmation = getRandomAffirmation(affirmations)
+            setCurrentAffirmation(randomAffirmation)
+        }, 60000)
+
+        return () => clearInterval(interval)
+    }, [affirmations])
+
+    // Initial affirmation on component mount
+    useEffect(() => {
+        const randomAffirmation = getRandomAffirmation(affirmations)
+        setCurrentAffirmation(randomAffirmation)
+    }, [affirmations])
 
     return (
         isOpen && (

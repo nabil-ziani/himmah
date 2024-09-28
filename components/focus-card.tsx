@@ -98,7 +98,7 @@ const FocusCard = ({ user }: FocusCardProps) => {
                     <div className="flex justify-end items-center">
                         <div className="flex gap-3">
                             <AffirmationDropdown category={affirmationCategory} setCategory={setAffirmationCategory} />
-                            <AudioDropdown title="White Noise" audio={audio} setAudio={setAudio} />
+                            <AudioDropdown audio={audio} setAudio={setAudio} />
 
                             <Button size={"lg"} className="bg-blue-600/80  hover:bg-blue-600/90 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
                                 <TbBackground className="mr-3" />
