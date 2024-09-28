@@ -1,11 +1,11 @@
-import { createClient } from "@/utils/supabase/server";
+import { useSupabase } from "@/contexts/supabaseClient";
 import { redirect } from "next/navigation";
 import { durationToSeconds, formatFocusTime } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import dayjs from "dayjs";
 
 export default async function DashboardPage() {
-  const supabase = createClient()
+  const supabase = useSupabase()
 
   const { data: { user } } = await supabase.auth.getUser()
 

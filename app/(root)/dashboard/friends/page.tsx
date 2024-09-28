@@ -1,9 +1,10 @@
-import FriendsCard from "@/components/friends-card";
-import { createClient } from "@/utils/supabase/server";
+import { useSupabase } from "@/contexts/supabaseClient";
 import { redirect } from "next/navigation";
 
+import FriendsCard from "@/components/friends-card";
+
 export default async function FriendsPage() {
-    const supabase = createClient();
+    const supabase = useSupabase();
 
     const { data: { user } } = await supabase.auth.getUser();
 

@@ -1,12 +1,12 @@
-import { createClient } from "@/utils/supabase/server";
+import { useSupabase } from "@/contexts/supabaseClient";
 import { redirect } from "next/navigation";
 
-import { Card } from "@/components/ui/card";
 import UpdateProfileForm from "@/components/forms/update-profile-form";
 import ConfigurationForm from "@/components/forms/configuration-form";
+import { Card } from "@/components/ui/card";
 
 export default async function SettingsPage() {
-    const supabase = createClient();
+    const supabase = useSupabase();
 
     const { data: { user } } = await supabase.auth.getUser();
 

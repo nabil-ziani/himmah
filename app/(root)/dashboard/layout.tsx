@@ -2,13 +2,13 @@ import DashboardNavbar from '@/components/dashboard-nav';
 import Sidebar from '@/components/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { FriendProvider } from '@/contexts/friendshipContext';
-import { createClient } from '@/utils/supabase/server';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react'
 import { Toaster } from "react-hot-toast";
 
 import { poppins, nunito } from "../../ui/fonts";
+import { SupabaseProvider, useSupabase } from '@/contexts/supabaseClient';
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 };
 
 const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
-    const supabase = createClient();
+    const supabase = useSupabase();
 
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -31,22 +31,24 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
     }
 
     return (
-        <main className={`relative text-foreground bg-slate-50 ${poppins.variable} ${nunito.variable}`}>
-            <FriendProvider userId={user.id}>
-                <DashboardNavbar supabase={supabase} />
-                <div className='flex'>
-                    <Sidebar />
-                    <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-28 max-md:pb-14 sm:px-14">
-                        <div className="w-full relative">
-                            <Toaster position='top-right' containerStyle={{ top: 100, right: 20 }} />
-                            <TooltipProvider delayDuration={100}>
-                                {children}
-                            </TooltipProvider>
-                        </div>
-                    </section>
-                </div>
-            </FriendProvider>
-        </main>
+        <SupabaseProvider>
+            <main className={`relative text-foreground bg-slate-50 ${poppins.variable} ${nunito.variable}`}>
+                <FriendProvider userId={user.id}>
+                    <DashboardNavbar supabase={supabase} />
+                    <div className='flex'>
+                        <Sidebar />
+                        <section className="flex min-h-screen flex-1 flex-col px-6 pb-6 pt-28 max-md:pb-14 sm:px-14">
+                            <div className="w-full relative">
+                                <Toaster position='top-right' containerStyle={{ top: 100, right: 20 }} />
+                                <TooltipProvider delayDuration={100}>
+                                    {children}
+                                </TooltipProvider>
+                            </div>
+                        </section>
+                    </div>
+                </FriendProvider>
+            </main>
+        </SupabaseProvider>
     );
 }
 

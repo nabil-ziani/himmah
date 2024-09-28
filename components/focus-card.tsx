@@ -16,16 +16,6 @@ import { Clock, TimerIcon } from "lucide-react";
 import AffirmationDropdown from "./affirmation-dropdown";
 import { AffirmationOption } from "@/lib/types";
 
-type AudioFile = {
-    name: string
-    url: string
-}
-
-type AudioOption = {
-    label: string
-    files: AudioFile[]
-}
-
 interface FocusCardProps {
     user: User
 }
