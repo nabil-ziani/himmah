@@ -6,6 +6,7 @@ import FocusDialog from './focus-dialog';
 import { SupabaseClient, User } from '@supabase/supabase-js';
 import { Database } from '@/database.types';
 import { Affirmation } from '@/lib/types';
+import toast from 'react-hot-toast';
 
 interface StopwatchProps {
     audio: string
@@ -39,7 +40,8 @@ const Stopwatch = ({ audio, backgrounds, affirmations, supabase, user }: Stopwat
             .select()
             .single()
         if (error) {
-            console.error(error)
+            toast.error(error.message)
+            console.error("Error starting focus session: ", error)
         } else {
             setSessionId(data.id)
             setStartTime(data.start_time)
@@ -48,8 +50,8 @@ const Stopwatch = ({ audio, backgrounds, affirmations, supabase, user }: Stopwat
 
     const handleSessionEnd = async (completed: boolean) => {
         if (!start_time) {
-            console.error('Start time is null');
-            return;
+            toast.error('Start time is null');
+            return
         }
 
         const end_time = new Date();
@@ -66,7 +68,8 @@ const Stopwatch = ({ audio, backgrounds, affirmations, supabase, user }: Stopwat
             .eq('id', sessionId!);
 
         if (error) {
-            console.error(error);
+            toast.error(error.message)
+            console.error("Error updating focus session: ", error)
         } else {
             setFullScreen(false)
             setTime(initialTime)

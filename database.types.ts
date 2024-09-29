@@ -33,6 +33,36 @@ export type Database = {
         }
         Relationships: []
       }
+      backgrounds: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          subcategory: string | null
+          url: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          subcategory?: string | null
+          url?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          subcategory?: string | null
+          url?: string
+        }
+        Relationships: []
+      }
       focus_sessions: {
         Row: {
           completed: boolean | null

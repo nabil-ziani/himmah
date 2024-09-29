@@ -15,6 +15,10 @@ import { Clock, TimerIcon } from "lucide-react";
 import AffirmationDropdown from "./affirmation-dropdown";
 import { AffirmationOption } from "@/lib/types";
 import { useSupabase } from "@/contexts/supabaseClient";
+import { fetchAllBackgrounds } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { Tables } from "@/database.types";
+import toast from "react-hot-toast";
 
 interface FocusCardProps {
     user: User
@@ -58,6 +62,7 @@ const FocusCard = ({ user }: FocusCardProps) => {
                 .eq('category', category)
 
             if (error) {
+                toast.error(error.message)
                 console.error('Error retrieving affirmations:', error)
                 return []
             }
@@ -80,6 +85,12 @@ const FocusCard = ({ user }: FocusCardProps) => {
 
         fetchAffirmationOptions()
     }, [])
+
+    const { data: allBackgrounds = [], isLoading, error } = useQuery<Tables<'backgrounds'>[]>({
+        queryKey: ['backgrounds'],
+        queryFn: () => fetchAllBackgrounds(supabase),
+        // staleTime: 1000 * 60 * 5, // 5 minuten
+    })
 
     return (
         <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
@@ -104,7 +115,15 @@ const FocusCard = ({ user }: FocusCardProps) => {
                     {mode == 'timer' && <Timer audio={audio} backgrounds={backgrounds} affirmations={affirmationOptions.filter(aff => aff.label == affirmationCategory).flatMap(aff => aff.affirmations)} supabase={supabase} user={user} />}
                     {mode == 'stopwatch' && <Stopwatch audio={audio} backgrounds={backgrounds} affirmations={affirmationOptions.filter(aff => aff.label == affirmationCategory).flatMap(aff => aff.affirmations)} supabase={supabase} user={user} />}
 
-                    <SetBackgroundDialog isOpen={backgroundDialog} setIsOpen={setBackgroundDialog} backgrounds={backgrounds} setBackgrounds={setBackgrounds} />
+                    <SetBackgroundDialog
+                        isOpen={backgroundDialog}
+                        setIsOpen={setBackgroundDialog}
+                        backgrounds={backgrounds}
+                        setBackgrounds={setBackgrounds}
+                        allBackgrounds={allBackgrounds}
+                        isLoading={isLoading}
+                        error={error}
+                    />
                 </section>
             </div>
         </Card>

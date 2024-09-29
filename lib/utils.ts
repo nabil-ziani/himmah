@@ -1,4 +1,3 @@
-import { createClient } from "@/utils/supabase/server";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -24,43 +23,23 @@ export const fetchProfileData = async (supabase: SupabaseClient, id: string) => 
   if (error) {
     console.error('Error fetching profile data:', error);
   }
-  return data;
-}
-
-// --------- FOCUS ---------
-export async function getCategories(supabase: SupabaseClient, folder: string) {
-  const { data, error } = await supabase.storage
-    .from('focus_backgrounds')
-    .list(folder)
-
-  if (error) {
-    console.error('Error retrieving files:', error)
-    return []
-  }
 
   return data
 }
 
-export async function getBackgrounds(supabase: SupabaseClient, folder: string) {
-  const { data, error } = await supabase.storage
-    .from('focus_backgrounds')
-    .list(folder, { limit: 20 })
+// --------- FOCUS ---------
+export const fetchAllBackgrounds = async (supabase: SupabaseClient) => {
+  const { data, error } = await supabase
+    .from('backgrounds')
+    .select('*')
+  // .returns<Tables<'backgrounds'>[]>()
 
   if (error) {
-    console.error('Error retrieving files:', error)
+    console.error('Error fetching backgrounds:', error)
     return []
   }
 
-  const files = data.map(file => {
-    return {
-      name: file.name,
-      url: supabase.storage
-        .from('focus_backgrounds')
-        .getPublicUrl(`${folder}/${file.name}`).data.publicUrl
-    }
-  })
-
-  return files
+  return data
 }
 
 // Helper functie om de tijd te converteren naar een leesbaar formaat

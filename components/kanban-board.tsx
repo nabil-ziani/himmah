@@ -7,6 +7,7 @@ import { Task, TaskStatus, TaskType } from "@/lib/types";
 import { Database } from "@/database.types";
 import { Clock } from "lucide-react";
 import { SupabaseClient } from "@supabase/supabase-js";
+import toast from "react-hot-toast";
 
 interface KanbanBoardProps {
     tasks: Task[]
@@ -96,6 +97,7 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, openMo
             .eq('id', taskId)
 
         if (error) {
+            toast.error(error.message)
             console.error("Error updating task status:", error.message);
         }
     };
@@ -295,6 +297,7 @@ const BurnBarrel = ({ setCards, supabase }: any) => {
             .eq('id', taskId);
 
         if (error) {
+            toast.error(error.message)
             console.error("Error deleting task:", error);
             return false;
         }
@@ -325,7 +328,7 @@ const BurnBarrel = ({ setCards, supabase }: any) => {
         const success = await deleteTask(cardId);
 
         if (!success) {
-            console.error("Failed to delete task from Supabase");
+            toast.error("Failed to delete task!")
         }
 
         setActive(false)

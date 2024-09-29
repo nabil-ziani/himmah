@@ -1,16 +1,19 @@
 'use client'
 
-import { useSupabase } from "@/contexts/supabaseClient"
-import { getCategories, getBackgrounds } from "@/lib/utils"
 import { CircleChevronRight, CircleX, Loader2 } from "lucide-react"
 import Image from "next/image"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Tables } from "@/database.types"
+import toast from "react-hot-toast"
 
 interface SetBackgroundDialogProps {
     isOpen: boolean,
     setIsOpen: Dispatch<SetStateAction<boolean>>
     backgrounds: string[]
     setBackgrounds: Dispatch<SetStateAction<string[]>>
+    allBackgrounds: Tables<'backgrounds'>[]
+    isLoading: boolean
+    error: Error | null
 }
 
 type Option =
@@ -34,80 +37,70 @@ type Option =
     }
 
 type Subcategory = {
-    name: string;
+    name: string
     images: {
-        name: string;
-        url: string;
-    }[];
+        name: string
+        url: string
+    }[]
 }
 
-const SetBackgroundDialog = ({ isOpen, setIsOpen, backgrounds, setBackgrounds }: SetBackgroundDialogProps) => {
+const SetBackgroundDialog = ({ isOpen, setIsOpen, backgrounds, setBackgrounds, allBackgrounds, isLoading, error }: SetBackgroundDialogProps) => {
     const [categories, setCategories] = useState<Option[]>([])
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSubcategory, setActiveSubcategory] = useState<Subcategory>()
 
-    const supabase = useSupabase()
-
+    // Fetch backgrounds
     useEffect(() => {
-        const fetchBackgroundOptions = async () => {
-            const categoriesList = [
-                { label: 'Animals' },
-                { label: 'Artificial' },
-                { label: 'Cities' },
-                { label: 'Colors' },
-                { label: 'Flora' },
-                { label: 'Food' },
-                { label: 'Landscapes' },
-                { label: 'Lighting' },
-                { label: 'Natural' },
-                { label: 'Objects' },
-                { label: 'Structures' }
-            ];
+        if (allBackgrounds.length > 0) {
+            // Verwerk de data naar categorieën en subcategorieën
+            const categoriesMap: { [key: string]: Subcategory[] } = {};
 
-            const options = await Promise.all(
-                categoriesList.map(async (categoryObj) => {
-                    if (categoryObj.label === 'Objects') {
-                        const images = await getBackgrounds(supabase, 'Objects');
-                        return { label: 'Objects', subcategories: [], images };
-                    } else {
-                        const subcategories = await getCategories(supabase, categoryObj.label);
+            allBackgrounds.forEach(bg => {
+                const { category, subcategory } = bg;
+                if (!categoriesMap[category]) {
+                    categoriesMap[category] = [];
+                }
+                if (subcategory) {
+                    categoriesMap[category].push({ name: subcategory, images: [] });
+                }
+            });
 
-                        const subcategoriesWithImages = await Promise.all(
-                            subcategories.map(async (subcategory) => {
-                                const images = await getBackgrounds(supabase, `${categoryObj.label}/${subcategory.name}`);
-                                return {
-                                    name: subcategory.name,
-                                    images
-                                };
-                            })
-                        );
+            const categoriesList = Object.keys(categoriesMap).map(category => ({
+                label: category,
+                subcategories: categoriesMap[category]
+            }));
 
-                        return { label: categoryObj.label, subcategories: subcategoriesWithImages };
-                    }
-                })
-            );
+            setCategories(categoriesList);
+        }
+    }, [allBackgrounds])
 
-            setCategories(options);
-        };
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center">
+                <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+            </div>
+        )
+    }
 
-        fetchBackgroundOptions();
-    }, []);
+    if (error) {
+        toast.error(error.message)
+    }
 
     const handleCategoryChange = (categoryLabel: string) => {
         setActiveCategory(categoryLabel);
         setActiveSubcategory(undefined);
-    };
+    }
 
     const handleSubcategoryChange = (subcategory: Subcategory) => {
         setActiveSubcategory(subcategory);
-    };
+    }
 
     const handleSelectBackground = (img: any) => {
         setBackgrounds(prev =>
             prev.includes(img.url)
-                ? prev.filter(url => url !== img.url) // Verwijder de URL als hij al geselecteerd is
-                : [...prev, img.url] // Voeg de URL toe als hij nog niet geselecteerd is
-        );
+                ? prev.filter(url => url !== img.url)
+                : [...prev, img.url]
+        )
     }
 
     return (

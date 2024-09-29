@@ -7,6 +7,7 @@ import { Friendship } from "@/lib/types"
 import { useEffect, useState } from "react"
 import { GoClockFill } from "react-icons/go";
 import { useSupabase } from "@/contexts/supabaseClient"
+import toast from "react-hot-toast"
 
 interface FriendshipCardProps {
     friendship: Friendship
@@ -46,6 +47,7 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
                 .lte('end_time', todayEnd)
 
             if (error) {
+                toast.error(error.message)
                 console.error('Error fetching focus sessions:', error)
                 return;
             }

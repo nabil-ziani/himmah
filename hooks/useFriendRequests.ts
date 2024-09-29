@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { Friendship } from "@/lib/types";
 import { fetchProfileData } from '@/lib/utils';
 import { useSupabase } from '@/contexts/supabaseClient';
+import toast from 'react-hot-toast';
 
 const useFriendRequests = (userId: string) => {
     const [friendships, setFriendships] = useState<Friendship[]>([])
@@ -37,6 +38,7 @@ const useFriendRequests = (userId: string) => {
                 .or(`user_id.eq.${userId}, friend_id.eq.${userId}`)
                 .returns<Friendship[]>()
             if (error) {
+                toast.error(error.message)
                 console.error("Error fetching friendships:", error)
             } else {
                 setFriendships(friendsData.filter(f => f.status === 'accepted'))

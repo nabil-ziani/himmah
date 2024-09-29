@@ -7,6 +7,7 @@ import { KanbanBoard } from './kanban-board'
 import { Task, TaskType } from '@/lib/types'
 import { User } from '@supabase/supabase-js'
 import { useSupabase } from '@/contexts/supabaseClient'
+import toast from 'react-hot-toast'
 
 interface TaskCardProps {
     user: User
@@ -31,6 +32,7 @@ const TaskCard = ({ user }: TaskCardProps) => {
                     .eq('created_by', userId)
 
                 if (error) {
+                    toast.error(error.message)
                     console.error("Error fetching tasks:", error);
                 } else {
                     setTasks(tasks || []);

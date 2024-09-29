@@ -41,7 +41,8 @@ const Timer = ({ audio, backgrounds, affirmations, supabase, user }: TimerProps)
             .single()
 
         if (error) {
-            console.error(error)
+            toast.error(error.message)
+            console.error("Error starting focus session: ", error)
         } else {
             setSessionId(data.id)
             setStartTime(data.start_time)
@@ -51,7 +52,7 @@ const Timer = ({ audio, backgrounds, affirmations, supabase, user }: TimerProps)
     const handleSessionEnd = async (completed: boolean) => {
         // Should not be possible
         if (!start_time) {
-            console.error('Start time is null')
+            toast.error('Start time is null')
             return
         }
 
@@ -68,7 +69,10 @@ const Timer = ({ audio, backgrounds, affirmations, supabase, user }: TimerProps)
             })
             .eq('id', sessionId!)
 
-        if (error) toast.error(error.message);
+        if (error) {
+            toast.error(error.message)
+            console.error("Error updating focus session: ", error);
+        }
 
         setFullScreen(false)
         setTime(initialTime) // Reset time

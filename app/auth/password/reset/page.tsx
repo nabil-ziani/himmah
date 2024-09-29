@@ -1,6 +1,4 @@
 import Logo from "@/components/logo";
-import Separator from "@/components/seperator";
-import OauthSignIn from "@/components/oauth";
 import ForgotPasswordForm from "@/components/forms/forgot-password-form";
 
 const ResetPasswordPage = () => {
@@ -10,10 +8,6 @@ const ResetPasswordPage = () => {
                 <div className="sub-container max-w-[496px] flex flex-row gap-10">
                     <Logo hideOnSmallDevice={false} />
                     <ForgotPasswordForm />
-                    {/* <div>
-                        <Separator text="OR CONTINUE WITH" />
-                        <OauthSignIn />
-                    </div> */}
                 </div>
             </section>
 
