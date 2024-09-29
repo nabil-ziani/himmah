@@ -1,3 +1,4 @@
+import { Tables } from "@/database.types";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
@@ -41,6 +42,20 @@ export const fetchAllBackgrounds = async (supabase: SupabaseClient) => {
 
   return data
 }
+
+export const fetchAffirmations = async (supabase: SupabaseClient, category: string) => {
+  const { data: affirmations, error } = await supabase
+    .from('affirmations')
+    .select('*')
+    .eq('category', category);
+
+  if (error) {
+    console.error('Error fetching backgrounds:', error)
+    return []
+  }
+
+  return affirmations
+};
 
 // Helper functie om de tijd te converteren naar een leesbaar formaat
 export function formatFocusTime(totalMinutes: number): string {

@@ -8,9 +8,9 @@ import { ReactNode } from 'react'
 import { Toaster } from "react-hot-toast"
 
 import { poppins, nunito } from "../../ui/fonts"
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SupabaseProvider } from '@/contexts/supabaseClient'
 import { createClient } from '@/utils/supabase/server'
+import QueryProvider from '@/components/query-provider'
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -23,7 +23,6 @@ export const metadata: Metadata = {
     description: "Productivity App"
 }
 
-const queryClient = new QueryClient();
 
 const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
     const supabase = createClient()
@@ -36,7 +35,7 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
 
     return (
         <SupabaseProvider>
-            <QueryClientProvider client={queryClient}>
+            <QueryProvider>
                 <main className={`relative text-foreground bg-slate-50 ${poppins.variable} ${nunito.variable}`}>
                     <FriendProvider userId={user.id}>
                         <DashboardNavbar />
@@ -53,7 +52,7 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
                         </div>
                     </FriendProvider>
                 </main>
-            </QueryClientProvider>
+            </QueryProvider>
         </SupabaseProvider>
     );
 }

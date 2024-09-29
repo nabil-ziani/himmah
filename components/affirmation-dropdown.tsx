@@ -1,14 +1,12 @@
 import { Button } from "./ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuRadioItem, DropdownMenuLabel } from "@/components/ui/dropdown-menu"
+import { useStore } from "@/hooks/useStore";
 import { BiSolidFlame } from "react-icons/bi";
-import { Dispatch, SetStateAction } from "react";
 
-interface AffirmationDropdownProps {
-    setCategory: Dispatch<SetStateAction<string>>
-    category: string
-}
+const AffirmationDropdown = () => {
+    const category = useStore((state) => state.affirmationCategory);
+    const setCategory = useStore((state) => state.setAffirmationCategory);
 
-const AffirmationDropdown = ({ setCategory, category }: AffirmationDropdownProps) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

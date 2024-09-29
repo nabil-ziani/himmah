@@ -1,75 +1,71 @@
 'use client'
 
-import { CircleChevronRight, CircleX, Loader2 } from "lucide-react"
-import Image from "next/image"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Tables } from "@/database.types"
 import toast from "react-hot-toast"
+import { useStore } from "@/hooks/useStore"
+import Image from "next/image"
+import { CircleChevronRight, CircleX, Loader2 } from "lucide-react"
 
 interface SetBackgroundDialogProps {
     isOpen: boolean,
-    setIsOpen: Dispatch<SetStateAction<boolean>>
-    backgrounds: string[]
-    setBackgrounds: Dispatch<SetStateAction<string[]>>
+    setIsOpen: (isOpen: boolean) => void
     allBackgrounds: Tables<'backgrounds'>[]
+    selectedBackgrounds: string[]
+    setSelectedBackgrounds: (bg: string[]) => void
     isLoading: boolean
     error: Error | null
 }
 
-type Option =
-    {
-        label: string;
-        subcategories: never[];
-        images: {
-            name: string;
-            url: string;
-        }[];
-    } | {
-        label: string;
-        subcategories: {
-            name: string;
-            images: {
-                name: string;
-                url: string;
-            }[];
-        }[];
-        images?: undefined;
-    }
-
-type Subcategory = {
+interface Subcategory {
     name: string
-    images: {
-        name: string
-        url: string
-    }[]
+    images: { name: string, url: string }[]
 }
 
-const SetBackgroundDialog = ({ isOpen, setIsOpen, backgrounds, setBackgrounds, allBackgrounds, isLoading, error }: SetBackgroundDialogProps) => {
-    const [categories, setCategories] = useState<Option[]>([])
+interface Category {
+    name: string;
+    subcategories: Subcategory[];
+}
+
+const SetBackgroundDialog = ({ isOpen, setIsOpen, allBackgrounds, selectedBackgrounds, setSelectedBackgrounds, isLoading, error }: SetBackgroundDialogProps) => {
+    const [categories, setCategories] = useState<Category[]>([])
     const [activeCategory, setActiveCategory] = useState('')
-    const [activeSubcategory, setActiveSubcategory] = useState<Subcategory>()
+    const [activeSubcategory, setActiveSubcategory] = useState<Subcategory | undefined>(undefined)
 
     // Fetch backgrounds
     useEffect(() => {
         if (allBackgrounds.length > 0) {
-            // Verwerk de data naar categorieën en subcategorieën
-            const categoriesMap: { [key: string]: Subcategory[] } = {};
+            const categoriesMap: { [key: string]: Category } = {}
 
             allBackgrounds.forEach(bg => {
-                const { category, subcategory } = bg;
+                const { category, subcategory, url, name } = bg
+
                 if (!categoriesMap[category]) {
-                    categoriesMap[category] = [];
+                    categoriesMap[category] = { name: category, subcategories: [] }
                 }
+
+                const subcatIndex = categoriesMap[category].subcategories.findIndex(s => s.name === subcategory);
                 if (subcategory) {
-                    categoriesMap[category].push({ name: subcategory, images: [] });
+                    if (subcatIndex !== -1) {
+                        // Subcategorie bestaat al, voeg de afbeelding toe
+                        categoriesMap[category].subcategories[subcatIndex].images.push({ url, name });
+                    } else {
+                        // Nieuwe subcategorie, maak deze aan
+                        categoriesMap[category].subcategories.push({
+                            name: subcategory,
+                            images: [{ url, name }] // Voeg afbeelding toe
+                        });
+                    }
+                } else {
+                    // Geen subcategorie, voeg afbeelding direct toe aan de hoofdcategorie
+                    categoriesMap[category].subcategories.push({
+                        name: category,
+                        images: [{ url, name }] // Voeg afbeelding toe
+                    })
                 }
-            });
+            })
 
-            const categoriesList = Object.keys(categoriesMap).map(category => ({
-                label: category,
-                subcategories: categoriesMap[category]
-            }));
-
+            const categoriesList = Object.keys(categoriesMap).map(category => categoriesMap[category]);
             setCategories(categoriesList);
         }
     }, [allBackgrounds])
@@ -95,12 +91,14 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen, backgrounds, setBackgrounds, a
         setActiveSubcategory(subcategory);
     }
 
-    const handleSelectBackground = (img: any) => {
-        setBackgrounds(prev =>
-            prev.includes(img.url)
-                ? prev.filter(url => url !== img.url)
-                : [...prev, img.url]
-        )
+    const handleSelectBackground = (img: { name: string, url: string }) => {
+        const isSelected = selectedBackgrounds.includes(img.url)
+
+        if (isSelected) {
+            setSelectedBackgrounds(selectedBackgrounds.filter(url => url !== img.url))
+        } else {
+            setSelectedBackgrounds([...selectedBackgrounds, img.url])
+        }
     }
 
     return (
@@ -117,11 +115,11 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen, backgrounds, setBackgrounds, a
                                 </h3>
                                 {categories.length > 0 ?
                                     categories.map((category) => {
-                                        const isActive = category.label === activeCategory
+                                        const isActive = category.name === activeCategory
 
                                         return (
-                                            <p key={category.label} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleCategoryChange(category.label)}>
-                                                {category.label}
+                                            <p key={category.name} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleCategoryChange(category.name)}>
+                                                {category.name}
                                             </p>
                                         )
                                     })
@@ -134,12 +132,12 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen, backgrounds, setBackgrounds, a
                         </section>
 
                         {/* Check if subcategories is not empty (as is the case for "Objects")  */}
-                        {activeCategory && categories.find(c => c.label === activeCategory)!.subcategories.length > 0 && (
+                        {activeCategory && categories.find(c => c.name === activeCategory)!.subcategories.length > 0 && (
                             <>
                                 <section id="subcategories" className=" flex h-full w-fit flex-col justify-start pt-28 bg-[#303030]/90 text-white max-sm:hidden lg:w-[350px] relative">
                                     <CircleChevronRight className="absolute top-10 -left-2" />
                                     <div className='flex flex-col gap-4'>
-                                        {categories.find(c => c.label === activeCategory)!.subcategories.map((subcategory) => {
+                                        {categories.find(c => c.name === activeCategory)!.subcategories.map((subcategory) => {
                                             const isActive = subcategory.name === activeSubcategory?.name
 
                                             return (
@@ -159,7 +157,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen, backgrounds, setBackgrounds, a
                                             {activeSubcategory.images.map(img => (
                                                 <div className={`relative cursor-pointer`} key={img.name} >
                                                     <Image
-                                                        className={`m-2 object-cover h-64 w-120 rounded-2xl ${backgrounds.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
+                                                        className={`m-2 object-cover h-64 w-120 rounded-2xl ${selectedBackgrounds.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
                                                         src={img.url}
                                                         alt={img.name}
                                                         width={400}
@@ -168,7 +166,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen, backgrounds, setBackgrounds, a
                                                         priority={true}
                                                         onClick={() => handleSelectBackground(img)}
                                                     />
-                                                    <div className={`${backgrounds.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-5 left-5 rounded-md`}></div>
+                                                    <div className={`${selectedBackgrounds.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-5 left-5 rounded-md`}></div>
                                                 </div>
                                             ))}
                                         </div>

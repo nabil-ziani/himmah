@@ -15,82 +15,46 @@ import { Clock, TimerIcon } from "lucide-react";
 import AffirmationDropdown from "./affirmation-dropdown";
 import { AffirmationOption } from "@/lib/types";
 import { useSupabase } from "@/contexts/supabaseClient";
-import { fetchAllBackgrounds } from "@/lib/utils";
+import { fetchAffirmations, fetchAllBackgrounds } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Tables } from "@/database.types";
 import toast from "react-hot-toast";
+import { useStore } from "@/hooks/useStore";
 
 interface FocusCardProps {
     user: User
 }
 
 const FocusCard = ({ user }: FocusCardProps) => {
-    const [backgrounds, setBackgrounds] = useState<string[]>([])
-    const [audio, setAudio] = useState('')
 
-    const [affirmationCategory, setAffirmationCategory] = useState('Allah')
-    const [affirmationOptions, setAffirmationOptions] = useState<AffirmationOption[]>([])
-
-    const [backgroundDialog, setBackgroundDialog] = useState(false)
-
-    const router = useRouter();
     const searchParams = useSearchParams();
-    const supabase = useSupabase()
+    const supabase = useSupabase();
 
-    const currentMode = searchParams.get('mode') || 'timer'
-    const [mode, setMode] = useState<'timer' | 'stopwatch'>(currentMode as 'timer' | 'stopwatch')
+    const { mode, toggleMode, selectedBackgrounds, setSelectedBackgrounds, affirmationCategory, backgroundDialog, setBackgroundDialog } = useStore()
 
-    const toggleMode = () => {
-        const newMode = mode === 'timer' ? 'stopwatch' : 'timer';
-        setMode(newMode);
-        router.push(`?mode=${newMode}`, undefined)
-    }
-
-    // --- Set mode based on url-query
-    useEffect(() => {
-        if (currentMode !== mode) {
-            setMode(currentMode as 'timer' | 'stopwatch');
-        }
-    }, [currentMode])
-
-    // --- Set affirmations
-    useEffect(() => {
-        const getAffirmations = async (category: string) => {
-            const { data: affirmations, error } = await supabase
-                .from("affirmations")
-                .select()
-                .eq('category', category)
-
-            if (error) {
-                toast.error(error.message)
-                console.error('Error retrieving affirmations:', error)
-                return []
-            }
-
-            return affirmations
-        }
-
-        const fetchAffirmationOptions = async () => {
-            const affirmationOptions = [
-                { label: 'Allah', affirmations: await getAffirmations('Allah') },
-                { label: 'Certainty', affirmations: await getAffirmations('Certainty') },
-                { label: 'Struggle', affirmations: await getAffirmations('Struggle') },
-                { label: 'Wisdom', affirmations: await getAffirmations('Wisdom') },
-                { label: 'Punishment', affirmations: await getAffirmations('Punishment') },
-                { label: 'Reward', affirmations: await getAffirmations('Reward') }
-            ]
-
-            setAffirmationOptions(affirmationOptions)
-        }
-
-        fetchAffirmationOptions()
-    }, [])
-
-    const { data: allBackgrounds = [], isLoading, error } = useQuery<Tables<'backgrounds'>[]>({
+    const { data: allBackgrounds = [], isLoading: isLoadingBackgrounds, error: errorBackgrounds } = useQuery<Tables<'backgrounds'>[]>({
         queryKey: ['backgrounds'],
         queryFn: () => fetchAllBackgrounds(supabase),
-        // staleTime: 1000 * 60 * 5, // 5 minuten
     })
+
+    const { data: affirmations = [], isLoading: isLoadingAffirmations, error: errorAffirmations } = useQuery({
+        queryKey: ['affirmations', affirmationCategory],
+        queryFn: () => fetchAffirmations(supabase, affirmationCategory),
+        enabled: !!affirmationCategory,
+    })
+
+    const currentMode = searchParams.get('mode') || 'timer';
+
+    useEffect(() => {
+        if (currentMode !== mode) {
+            toggleMode();
+        }
+    }, [currentMode]);
+
+    useEffect(() => {
+        if (errorBackgrounds) toast.error(errorBackgrounds.message)
+        if (errorAffirmations) toast.error(errorAffirmations.message)
+    }, [errorBackgrounds, errorAffirmations])
 
     return (
         <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
@@ -98,8 +62,8 @@ const FocusCard = ({ user }: FocusCardProps) => {
                 <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[calc(100vw-300px)]">
                     <div className="flex justify-end items-center">
                         <div className="flex gap-3">
-                            <AffirmationDropdown category={affirmationCategory} setCategory={setAffirmationCategory} />
-                            <AudioDropdown audio={audio} setAudio={setAudio} />
+                            <AffirmationDropdown />
+                            <AudioDropdown />
 
                             <Button size={"lg"} className="bg-blue-600/80  hover:bg-blue-600/90 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
                                 <TbBackground className="mr-3" />
@@ -112,17 +76,17 @@ const FocusCard = ({ user }: FocusCardProps) => {
                         </div>
                     </div>
 
-                    {mode == 'timer' && <Timer audio={audio} backgrounds={backgrounds} affirmations={affirmationOptions.filter(aff => aff.label == affirmationCategory).flatMap(aff => aff.affirmations)} supabase={supabase} user={user} />}
-                    {mode == 'stopwatch' && <Stopwatch audio={audio} backgrounds={backgrounds} affirmations={affirmationOptions.filter(aff => aff.label == affirmationCategory).flatMap(aff => aff.affirmations)} supabase={supabase} user={user} />}
+                    {mode === 'timer' && <Timer supabase={supabase} user={user} />}
+                    {mode === 'stopwatch' && <Stopwatch supabase={supabase} user={user} />}
 
                     <SetBackgroundDialog
                         isOpen={backgroundDialog}
                         setIsOpen={setBackgroundDialog}
-                        backgrounds={backgrounds}
-                        setBackgrounds={setBackgrounds}
                         allBackgrounds={allBackgrounds}
-                        isLoading={isLoading}
-                        error={error}
+                        selectedBackgrounds={selectedBackgrounds}
+                        setSelectedBackgrounds={setSelectedBackgrounds}
+                        isLoading={isLoadingBackgrounds}
+                        error={errorBackgrounds}
                     />
                 </section>
             </div>

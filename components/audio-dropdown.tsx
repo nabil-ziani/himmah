@@ -1,27 +1,13 @@
 import { Button } from "./ui/button"
-import { Loader2 } from "lucide-react"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
-    DropdownMenuTrigger,
-    DropdownMenuSeparator,
-    DropdownMenuSub,
-    DropdownMenuSubTrigger,
-    DropdownMenuPortal,
-    DropdownMenuSubContent,
-    DropdownMenuLabel
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuPortal, DropdownMenuSubContent, DropdownMenuLabel } from "@/components/ui/dropdown-menu"
 import { RiLeafFill } from "react-icons/ri";
-import { Dispatch, SetStateAction } from "react"
+import { useStore } from "@/hooks/useStore"
 
-interface AudioDropdownProps {
-    audio: string
-    setAudio: Dispatch<SetStateAction<string>>
-}
+const AudioDropdown = () => {
 
-const AudioDropdown = ({ audio, setAudio }: AudioDropdownProps) => {
+    const audio = useStore((state) => state.audio);
+    const setAudio = useStore((state) => state.setAudio);
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

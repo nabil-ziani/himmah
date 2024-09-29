@@ -1,4 +1,5 @@
 'use client'
+
 import { createContext, useContext, useMemo } from 'react'
 import { createClient as createBrowserClient } from '@/utils/supabase/client'
 import { SupabaseClient } from '@supabase/supabase-js'
