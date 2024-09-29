@@ -17,7 +17,7 @@ export function adjustForTimezone(date: Date): Date {
 export const fetchProfileData = async (supabase: SupabaseClient, id: string) => {
   const { data, error } = await supabase
     .from("profiles")
-    .select('id, name, email, is_online')
+    .select('id, name, email')
     .eq('id', id)
     .single()
 
@@ -33,7 +33,6 @@ export const fetchAllBackgrounds = async (supabase: SupabaseClient) => {
   const { data, error } = await supabase
     .from('backgrounds')
     .select('*')
-  // .returns<Tables<'backgrounds'>[]>()
 
   if (error) {
     console.error('Error fetching backgrounds:', error)
@@ -55,7 +54,7 @@ export const fetchAffirmations = async (supabase: SupabaseClient, category: stri
   }
 
   return affirmations
-};
+}
 
 // Helper functie om de tijd te converteren naar een leesbaar formaat
 export function formatFocusTime(totalMinutes: number): string {

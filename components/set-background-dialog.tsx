@@ -92,6 +92,7 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen, allBackgrounds, selectedBackgr
     }
 
     const handleSelectBackground = (img: { name: string, url: string }) => {
+        console.log(selectedBackgrounds)
         const isSelected = selectedBackgrounds.includes(img.url)
 
         if (isSelected) {

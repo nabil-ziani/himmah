@@ -16,13 +16,11 @@ export type Friendship = {
         id: string,
         name: string,
         email: string,
-        is_online: boolean
     },
     user: {
         id: string,
         name: string,
         email: string,
-        is_online: boolean
     }
 }
 

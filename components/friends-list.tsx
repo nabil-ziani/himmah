@@ -5,6 +5,8 @@ import FriendshipCard from "./friendship-card";
 import { User } from "@supabase/supabase-js";
 import { useFriendContext } from "@/contexts/friendshipContext";
 import { useSupabase } from "@/contexts/supabaseClient";
+import { useEffect, useState } from "react";
+import { Friendship } from "@/lib/types";
 
 interface FriendsListProps {
     user: User
