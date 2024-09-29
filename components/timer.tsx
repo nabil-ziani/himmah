@@ -25,10 +25,6 @@ const Timer = ({ supabase, user }: TimerProps) => {
     const minutes = Math.floor(initialTime / 60)
     const seconds = initialTime % 60
 
-    const audio = useStore((state) => state.audio)
-    const backgrounds = useStore((state) => state.selectedBackgrounds)
-    const affirmations = useStore((state) => state.affirmations)
-
     const handleSessionStart = async () => {
         setFullScreen(true)
 
@@ -137,10 +133,7 @@ const Timer = ({ supabase, user }: TimerProps) => {
                 mode='timer'
                 time={{ minutes, seconds }}
                 setTime={setTime}
-                audio={audio}
-                backgrounds={backgrounds}
                 handleSessionEnd={handleSessionEnd}
-                affirmations={affirmations}
             />
         </>
     )

@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Affirmation } from "@/lib/types";
 import { Blockquote, BlockquoteAuthor } from "./quote";
+import { useStore } from "@/hooks/useStore";
 
 interface FocusDialogProps {
     isOpen: boolean
@@ -14,16 +15,17 @@ interface FocusDialogProps {
     isRunning?: boolean
     setIsRunning?: Dispatch<SetStateAction<boolean>>
     setTime: Dispatch<SetStateAction<number>>
-    audio: string
-    backgrounds: string[]
     handleSessionEnd: (completed: boolean) => Promise<void>
-    affirmations: Affirmation[]
 }
 
-const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, audio, backgrounds, handleSessionEnd, affirmations }: FocusDialogProps) => {
+const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, handleSessionEnd }: FocusDialogProps) => {
     const [timerCompleted, setTimerCompleted] = useState(false)
     const [seconds, setSeconds] = useState<number>(Number(time.seconds))
     const [minutes, setMinutes] = useState<number>(Number(time.minutes))
+
+    const audio = useStore((state) => state.audio)
+    const backgrounds = useStore((state) => state.selectedBackgrounds)
+    const affirmations = useStore((state) => state.affirmations)
 
     const [backgroundIndex, setBackgroundIndex] = useState(0)
     const [currentBackground, setCurrentBackground] = useState<string>(backgrounds[0])

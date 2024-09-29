@@ -30,7 +30,7 @@ const FocusCard = ({ user }: FocusCardProps) => {
     const searchParams = useSearchParams();
     const supabase = useSupabase();
 
-    const { mode, toggleMode, selectedBackgrounds, setSelectedBackgrounds, affirmationCategory, backgroundDialog, setBackgroundDialog } = useStore()
+    const { mode, toggleMode, selectedBackgrounds, setSelectedBackgrounds, affirmationCategory, setAffirmations, backgroundDialog, setBackgroundDialog } = useStore()
 
     const { data: allBackgrounds = [], isLoading: isLoadingBackgrounds, error: errorBackgrounds } = useQuery<Tables<'backgrounds'>[]>({
         queryKey: ['backgrounds'],
@@ -42,6 +42,12 @@ const FocusCard = ({ user }: FocusCardProps) => {
         queryFn: () => fetchAffirmations(supabase, affirmationCategory),
         enabled: !!affirmationCategory,
     })
+
+    useEffect(() => {
+        if (!isLoadingAffirmations && !errorAffirmations && affirmations.length > 0) {
+            setAffirmations(affirmations)
+        }
+    }, [affirmations, isLoadingAffirmations, errorAffirmations]);
 
     const currentMode = searchParams.get('mode') || 'timer';
 

@@ -21,12 +21,8 @@ const Stopwatch = ({ supabase, user }: StopwatchProps) => {
     const [sessionId, setSessionId] = useState<number>()
     const [start_time, setStartTime] = useState<string | null>(null)
 
-    const minutes = Math.floor((time % 360000) / 6000);
-    const seconds = Math.floor((time % 6000) / 100);
-
-    const audio = useStore((state) => state.audio)
-    const backgrounds = useStore((state) => state.selectedBackgrounds)
-    const affirmations = useStore((state) => state.affirmations)
+    const minutes = Math.floor((time % 360000) / 6000)
+    const seconds = Math.floor((time % 6000) / 100)
 
     const handleStart = async () => {
         setFullScreen(true)
@@ -103,10 +99,7 @@ const Stopwatch = ({ supabase, user }: StopwatchProps) => {
                 isRunning={isRunning}
                 setIsRunning={setIsRunning}
                 setTime={setTime}
-                audio={audio}
-                backgrounds={backgrounds}
                 handleSessionEnd={handleSessionEnd}
-                affirmations={affirmations}
             />
         </>
     )
