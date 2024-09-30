@@ -9,6 +9,7 @@ import { SupabaseClient, User } from "@supabase/supabase-js";
 import { Database } from "@/database.types";
 import toast from "react-hot-toast";
 import { useStore } from "@/hooks/useStore";
+import { useFocusSession } from "@/hooks/useFocusSession";
 
 interface TimerProps {
     supabase: SupabaseClient<Database>
@@ -17,62 +18,49 @@ interface TimerProps {
 
 const Timer = ({ supabase, user }: TimerProps) => {
     const [fullScreen, setFullScreen] = useState(false)
-    const [sessionId, setSessionId] = useState<number>()
-    const [start_time, setStartTime] = useState<string | null>(null)
     const [initialTime, setInitialTime] = useState(1800)
     const [time, setTime] = useState(initialTime)
 
     const minutes = Math.floor(initialTime / 60)
     const seconds = initialTime % 60
 
+    const { startSession, endSession, sessionId, startTime } = useFocusSession({
+        supabase,
+        userId: user.id,
+        type: 'timer'
+    })
+
     const handleSessionStart = async () => {
         setFullScreen(true)
 
-        const { data, error } = await supabase
-            .from('focus_sessions')
-            .insert({
-                user_id: user.id,
-                type: 'timer'
-            })
-            .select()
-            .single()
-
-        if (error) {
-            toast.error(error.message)
-            console.error("Error starting focus session: ", error)
-        } else {
-            setSessionId(data.id)
-            setStartTime(data.start_time)
+        try {
+            await startSession();
+        } catch (error: any) {
+            console.error(error);
+            toast.error("Can't start session. Try again later.");
         }
     }
 
     const handleSessionEnd = async (completed: boolean) => {
         // Should not be possible
-        if (!start_time) {
+        if (!startTime) {
             toast.error('Start time is null')
             return
         }
 
         const end_time = new Date();
-        const startTimeDate = new Date(start_time)
+        const startTimeDate = new Date(startTime)
         const duration = Math.floor((end_time.getTime() - startTimeDate.getTime()) / 1000)
 
-        const { error } = await supabase
-            .from('focus_sessions')
-            .update({
-                end_time: end_time.toISOString(),
-                completed,
-                duration
-            })
-            .eq('id', sessionId!)
+        try {
+            await endSession(completed, duration)
 
-        if (error) {
-            toast.error(error.message)
-            console.error("Error updating focus session: ", error);
+            setFullScreen(false)
+            setTime(initialTime) // Reset time
+        } catch (error: any) {
+            toast.error("Can't end the session, try again later.")
+            console.error(error)
         }
-
-        setFullScreen(false)
-        setTime(initialTime) // Reset time
     }
 
     const handlePlusClick = () => {
