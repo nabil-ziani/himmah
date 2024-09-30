@@ -24,7 +24,7 @@ const Timer = ({ supabase, user }: TimerProps) => {
     const minutes = Math.floor(initialTime / 60)
     const seconds = initialTime % 60
 
-    const { startSession, endSession, sessionId, startTime } = useFocusSession({
+    const { startSession, endSession, startTime } = useFocusSession({
         supabase,
         userId: user.id,
         type: 'timer'

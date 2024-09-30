@@ -23,7 +23,7 @@ const Stopwatch = ({ supabase, user }: StopwatchProps) => {
     const minutes = Math.floor((time % 360000) / 6000)
     const seconds = Math.floor((time % 6000) / 100)
 
-    const { startSession, endSession, sessionId, startTime } = useFocusSession({
+    const { startSession, endSession, startTime } = useFocusSession({
         supabase,
         userId: user.id,
         type: 'stopwatch'

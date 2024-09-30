@@ -13,7 +13,6 @@ import AudioDropdown from "./audio-dropdown";
 import { TbBackground } from "react-icons/tb";
 import { Clock, TimerIcon } from "lucide-react";
 import AffirmationDropdown from "./affirmation-dropdown";
-import { AffirmationOption } from "@/lib/types";
 import { useSupabase } from "@/contexts/supabaseClient";
 import { fetchAffirmations, fetchAllBackgrounds } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
