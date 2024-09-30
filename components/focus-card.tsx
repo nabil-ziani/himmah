@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react"
+import { useSearchParams } from "next/navigation";
 import { Card } from "./ui/card"
 import { Button } from "./ui/button"
 
@@ -11,7 +11,7 @@ import SetBackgroundDialog from "./set-background-dialog";
 import { User } from "@supabase/supabase-js";
 import AudioDropdown from "./audio-dropdown";
 import { TbBackground } from "react-icons/tb";
-import { Clock, TimerIcon } from "lucide-react";
+import { Clock, Settings, TimerIcon } from "lucide-react";
 import AffirmationDropdown from "./affirmation-dropdown";
 import { useSupabase } from "@/contexts/supabaseClient";
 import { fetchAffirmations, fetchAllBackgrounds } from "@/lib/utils";
@@ -19,6 +19,11 @@ import { useQuery } from "@tanstack/react-query";
 import { Tables } from "@/database.types";
 import toast from "react-hot-toast";
 import { useStore } from "@/hooks/useStore";
+import FocusSettingsModal from "./focus-settings-modal";
+import { RiSettings4Fill } from "react-icons/ri";
+import { TbClockHour4Filled } from "react-icons/tb";
+import { IoTimer } from "react-icons/io5";
+import { RiTimer2Fill } from "react-icons/ri";
 
 interface FocusCardProps {
     user: User
@@ -29,7 +34,7 @@ const FocusCard = ({ user }: FocusCardProps) => {
     const searchParams = useSearchParams();
     const supabase = useSupabase();
 
-    const { mode, toggleMode, selectedBackgrounds, setSelectedBackgrounds, affirmationCategory, setAffirmations, backgroundDialog, setBackgroundDialog } = useStore()
+    const { mode, toggleMode, affirmationCategory, setAffirmations, setBackgroundModalOpen, setFocusSettingsModalOpen } = useStore()
 
     const { data: allBackgrounds = [], isLoading: isLoadingBackgrounds, error: errorBackgrounds } = useQuery<Tables<'backgrounds'>[]>({
         queryKey: ['backgrounds'],
@@ -46,15 +51,15 @@ const FocusCard = ({ user }: FocusCardProps) => {
         if (!isLoadingAffirmations && !errorAffirmations && affirmations.length > 0) {
             setAffirmations(affirmations)
         }
-    }, [affirmations, isLoadingAffirmations, errorAffirmations]);
+    }, [affirmations, isLoadingAffirmations, errorAffirmations])
 
-    const currentMode = searchParams.get('mode') || 'timer';
+    const currentMode = searchParams.get('mode') || 'timer'
 
     useEffect(() => {
         if (currentMode !== mode) {
-            toggleMode();
+            toggleMode()
         }
-    }, [currentMode]);
+    }, [currentMode])
 
     useEffect(() => {
         if (errorBackgrounds) toast.error(errorBackgrounds.message)
@@ -65,17 +70,21 @@ const FocusCard = ({ user }: FocusCardProps) => {
         <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
             <div className="flex h-[calc(100vh-250px)]">
                 <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[calc(100vw-300px)]">
-                    <div className="flex justify-end items-center">
+                    <div className="flex justify-between items-center">
+                        <div className="text-white bg-gray-500/80  hover:bg-gray-500/90 text-xl hover:cursor-pointer rounded-full" onClick={() => setFocusSettingsModalOpen(true)}>
+                            {/* <Settings className="m-3" /> */}
+                            <RiSettings4Fill className="m-2 h-7 w-7" />
+                        </div>
                         <div className="flex gap-3">
                             <AffirmationDropdown />
                             <AudioDropdown />
 
-                            <Button size={"lg"} className="bg-blue-600/80  hover:bg-blue-600/90 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundDialog(true)}>
+                            <Button size={"lg"} className="bg-blue-600/80  hover:bg-blue-600/90 text-white text-xl hover:cursor-pointer" onClick={() => setBackgroundModalOpen(true)}>
                                 <TbBackground className="mr-3" />
                                 Background
                             </Button>
                             <Button size={"lg"} className="bg-gray-600/80  hover:bg-gray-600/90 text-white text-xl hover:cursor-pointer" onClick={toggleMode}>
-                                {mode === 'timer' ? <Clock className="mr-3" /> : <TimerIcon className="mr-3" />}
+                                {mode === 'timer' ? <TbClockHour4Filled className="mr-3" /> : <RiTimer2Fill className="mr-3" />}
                                 Mode
                             </Button>
                         </div>
@@ -84,18 +93,12 @@ const FocusCard = ({ user }: FocusCardProps) => {
                     {mode === 'timer' && <Timer supabase={supabase} user={user} />}
                     {mode === 'stopwatch' && <Stopwatch supabase={supabase} user={user} />}
 
-                    <SetBackgroundDialog
-                        isOpen={backgroundDialog}
-                        setIsOpen={setBackgroundDialog}
-                        allBackgrounds={allBackgrounds}
-                        selectedBackgrounds={selectedBackgrounds}
-                        setSelectedBackgrounds={setSelectedBackgrounds}
-                        isLoading={isLoadingBackgrounds}
-                        error={errorBackgrounds}
-                    />
+                    <SetBackgroundDialog allBackgrounds={allBackgrounds} isLoading={isLoadingBackgrounds} error={errorBackgrounds} />
+
+                    <FocusSettingsModal />
                 </section>
-            </div>
-        </Card>
+            </div >
+        </Card >
     )
 }
 

@@ -23,14 +23,13 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
     const [seconds, setSeconds] = useState<number>(Number(time.seconds))
     const [minutes, setMinutes] = useState<number>(Number(time.minutes))
 
-    const audio = useStore((state) => state.audio)
-    const backgrounds = useStore((state) => state.selectedBackgrounds)
-    const affirmations = useStore((state) => state.affirmations)
+    const { affirmationsInterval, backgroundsInterval, audio, affirmations, selectedBackgrounds: backgrounds } = useStore()
 
     const [backgroundIndex, setBackgroundIndex] = useState(0)
     const [currentBackground, setCurrentBackground] = useState<string>(backgrounds[0])
 
     const [currentAffirmation, setCurrentAffirmation] = useState<Affirmation>(affirmations[0])
+
     const [hasPlayedAudio, setHasPlayedAudio] = useState(false)
     const audioRef = useRef<HTMLAudioElement>(null)
 
@@ -75,7 +74,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
     useEffect(() => {
         const interval = setInterval(() => {
             setBackgroundIndex((prevIndex) => (prevIndex + 1) % backgrounds.length)
-        }, 60000)
+        }, backgroundsInterval * 60000)
 
         return () => clearInterval(interval)
     }, [backgrounds.length])
@@ -109,7 +108,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
         const interval = setInterval(() => {
             const randomAffirmation = getRandomAffirmation(affirmations)
             setCurrentAffirmation(randomAffirmation)
-        }, 60000)
+        }, affirmationsInterval * 60000)
 
         return () => clearInterval(interval)
     }, [affirmations])

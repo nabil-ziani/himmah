@@ -8,11 +8,7 @@ import Image from "next/image"
 import { CircleChevronRight, CircleX, Loader2 } from "lucide-react"
 
 interface SetBackgroundDialogProps {
-    isOpen: boolean,
-    setIsOpen: (isOpen: boolean) => void
     allBackgrounds: Tables<'backgrounds'>[]
-    selectedBackgrounds: string[]
-    setSelectedBackgrounds: (bg: string[]) => void
     isLoading: boolean
     error: Error | null
 }
@@ -27,10 +23,12 @@ interface Category {
     subcategories: Subcategory[];
 }
 
-const SetBackgroundDialog = ({ isOpen, setIsOpen, allBackgrounds, selectedBackgrounds, setSelectedBackgrounds, isLoading, error }: SetBackgroundDialogProps) => {
+const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackgroundDialogProps) => {
     const [categories, setCategories] = useState<Category[]>([])
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSubcategory, setActiveSubcategory] = useState<Subcategory | undefined>(undefined)
+
+    const { backgroundModalOpen, setBackgroundModalOpen, selectedBackgrounds, setSelectedBackgrounds, } = useStore()
 
     // Fetch backgrounds
     useEffect(() => {
@@ -92,22 +90,15 @@ const SetBackgroundDialog = ({ isOpen, setIsOpen, allBackgrounds, selectedBackgr
     }
 
     const handleSelectBackground = (img: { name: string, url: string }) => {
-        console.log(selectedBackgrounds)
-        const isSelected = selectedBackgrounds.includes(img.url)
-
-        if (isSelected) {
-            setSelectedBackgrounds(selectedBackgrounds.filter(url => url !== img.url))
-        } else {
-            setSelectedBackgrounds([...selectedBackgrounds, img.url])
-        }
+        setSelectedBackgrounds(img.url)
     }
 
     return (
         <>
-            {isOpen && (
+            {backgroundModalOpen && (
                 <div className="inset-0 z-50 grid place-items-center absolute">
                     <div className="flex z-100 w-[100%] h-[100%] bg-white shadow-xl rounded-2xl relative">
-                        <CircleX className="absolute top-5 right-5 text-[#303030]/50 cursor-pointer" onClick={() => setIsOpen(false)} />
+                        <CircleX className="absolute top-5 right-5 text-[#303030]/50 cursor-pointer" onClick={() => setBackgroundModalOpen(false)} />
 
                         <section id="categories" className=" flex h-full w-fit flex-col justify-between bg-[#303030] text-white max-sm:hidden lg:w-[300px] rounded-bl-2xl rounded-l-2xl">
                             <div className='flex flex-col gap-4'>

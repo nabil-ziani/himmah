@@ -58,3 +58,12 @@ export const UpdateTaskSchema = z.object({
 export const AddFriendSchema = z.object({
     email: z.string().email({ message: "Enter a valid email" })
 })
+
+export const UpdateFocusSettingsSchema = z.object({
+    affirmations_interval: z.number({ message: 'Affirmations interval must be a number' })
+        .positive({ message: 'Affirmations interval must be a positive number' })
+        .max(9999, { message: 'Affirmations interval too high!' }),
+    backgrounds_interval: z.number({ message: 'Backgrounds interval must be a number' })
+        .positive({ message: 'Backgrounds interval must be a positive number' })
+        .max(9999, { message: 'Backgrounds interval too high!' })
+})
