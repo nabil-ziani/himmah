@@ -1,13 +1,12 @@
 'use client'
 
 import { useInterval } from "@mantine/hooks";
-import { motion } from "framer-motion";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Affirmation } from "@/lib/types";
 import { Blockquote, BlockquoteAuthor } from "./quote";
 import { useStore } from "@/hooks/useStore";
-import { formatTime } from "@/lib/utils";
+import { useTransform, motion, useScroll } from "framer-motion";
 
 interface FocusDialogProps {
     isOpen: boolean
@@ -34,8 +33,8 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
     const [hasPlayedAudio, setHasPlayedAudio] = useState(false)
     const audioRef = useRef<HTMLAudioElement>(null)
 
-    const elapsedBackgroundTime = useRef(0);
-    const elapsedAffirmationTime = useRef(0);
+    const elapsedBackgroundTime = useRef(0)
+    const elapsedAffirmationTime = useRef(0)
 
     // --- Interval for 1 second ---
     const interval = useInterval(() => {
@@ -66,7 +65,6 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
             setCurrentAffirmation(randomAffirmation);
             elapsedAffirmationTime.current = 0
         }
-
     }, 1000)
 
     // --- Update values when props change ---
@@ -78,6 +76,9 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
     // --- Start and stop the interval depending on the mode ---
     useEffect(() => {
         if (isOpen) {
+            elapsedBackgroundTime.current = 0
+            elapsedAffirmationTime.current = 0
+
             interval.start()
         } else {
             interval.stop()
@@ -127,16 +128,16 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
 
     return (
         isOpen && (
-            <div className="fixed inset-0 z-50 overflow-y-scroll">
-                <motion.div
-                    className="w-full h-full bg-white relative grid place-items-center"
-                    style={{ backgroundImage: `url(${currentBackground})`, backgroundSize: 'cover' }}
-                    key={backgroundIndex}
-                    initial={{ opacity: 0.5 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0.5 }}
-                    transition={{ duration: 1 }}
-                >
+            <div className="fixed inset-0 z-50 overflow-y-scroll w-full h-[100vh]">
+                <motion.img
+                    alt="focus-background"
+                    src={currentBackground}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    initial={{ opacity: 0 }} // Start invisible
+                    animate={{ opacity: 1 }} // Fade in
+                    transition={{ duration: 1 }} // Duration of the fade effect
+                />
+                <div className={`w-full h-full relative grid place-items-center `}>
                     {currentAffirmation && (
                         <Blockquote className="absolute top-20 max-w-[60vw]">
                             {currentAffirmation.verse}
@@ -178,7 +179,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
 
                     {/* Notification Sound */}
                     <audio ref={audioRef} src="/audio/kitchen_timer.mp3" crossOrigin="anonymous" onEnded={() => audioRef.current?.pause()} />
-                </motion.div>
+                </div>
             </div >
         )
     )
