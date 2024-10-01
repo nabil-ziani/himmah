@@ -1,12 +1,12 @@
 'use client'
 
-import { useInterval } from "@mantine/hooks";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { Button } from "./ui/button";
-import { Affirmation } from "@/lib/types";
-import { Blockquote, BlockquoteAuthor } from "./quote";
-import { useStore } from "@/hooks/useStore";
-import { useTransform, motion, useScroll } from "framer-motion";
+import { useInterval } from "@mantine/hooks"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import { Button } from "./ui/button"
+import { Affirmation } from "@/lib/types"
+import { Blockquote, BlockquoteAuthor } from "./quote"
+import { useStore } from "@/hooks/useStore"
+import { motion } from "framer-motion"
 
 interface FocusDialogProps {
     isOpen: boolean
