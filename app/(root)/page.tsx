@@ -1,14 +1,8 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+import { createClient } from "@/utils/supabase/server"
+import { redirect } from "next/navigation"
 
-import Navbar from "@/components/navbar";
-import Hero from "@/components/sections/hero";
-import About from "@/components/sections/about";
-import Features from "@/components/sections/features";
-import Benefits from "@/components/sections/benefits";
-import Goals from "@/components/sections/goals";
-import SmoothScrolling from "@/components/smooth-scroll";
-import Footer from "@/components/footer";
+import Navbar from "@/components/navbar"
+import LandingPage from "@/components/landing-page"
 
 export default async function Index() {
   const supabase = createClient();
@@ -20,16 +14,9 @@ export default async function Index() {
   }
 
   return (
-    <div>
+    <>
       <Navbar />
-      <SmoothScrolling>
-        <Hero />
-        <About />
-        <Features />
-        <Benefits />
-        <Goals />
-        <Footer />
-      </SmoothScrolling>
-    </div>
+      <LandingPage />
+    </>
   );
 }

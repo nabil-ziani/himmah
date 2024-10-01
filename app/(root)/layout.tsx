@@ -8,7 +8,7 @@ export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Himmah",
   description: "Productivity App"
-};
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
