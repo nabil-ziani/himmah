@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import { Affirmation } from "@/lib/types";
 import { Blockquote, BlockquoteAuthor } from "./quote";
 import { useStore } from "@/hooks/useStore";
+import { formatTime } from "@/lib/utils";
 
 interface FocusDialogProps {
     isOpen: boolean
@@ -33,7 +34,10 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
     const [hasPlayedAudio, setHasPlayedAudio] = useState(false)
     const audioRef = useRef<HTMLAudioElement>(null)
 
-    // Interval for 1 second
+    const elapsedBackgroundTime = useRef(0);
+    const elapsedAffirmationTime = useRef(0);
+
+    // --- Interval for 1 second ---
     const interval = useInterval(() => {
         if (mode === 'timer') {
             if (seconds > 0) {
@@ -48,44 +52,62 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
         } else if (mode === 'stopwatch' && isRunning) {
             setTime?.((prevTime) => prevTime + 100)
         }
+
+        elapsedBackgroundTime.current += 1
+        elapsedAffirmationTime.current += 1
+
+        if (elapsedBackgroundTime.current >= backgroundsInterval * 60) {
+            setBackgroundIndex((prevIndex) => (prevIndex + 1) % backgrounds.length);
+            elapsedBackgroundTime.current = 0
+        }
+
+        if (elapsedAffirmationTime.current >= affirmationsInterval * 60) {
+            const randomAffirmation = getRandomAffirmation(affirmations);
+            setCurrentAffirmation(randomAffirmation);
+            elapsedAffirmationTime.current = 0
+        }
+
     }, 1000)
 
-    // Update values when props change
+    // --- Update values when props change ---
     useEffect(() => {
         setMinutes(Number(time.minutes))
         setSeconds(Number(time.seconds))
     }, [time])
 
-    // Start and stop the interval depending on the mode
+    // --- Start and stop the interval depending on the mode ---
     useEffect(() => {
-        if (isOpen && (mode === 'timer' || isRunning)) {
+        if (isOpen) {
             interval.start()
         } else {
             interval.stop()
         }
-    }, [isOpen, isRunning, mode, interval])
+    }, [isOpen])
 
-    // Cleanup interval on unmount
+    // --- Cleanup interval on unmount ---
     useEffect(() => {
         return interval.stop
     }, [])
 
-    // Change background & affirmation every minute
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setBackgroundIndex((prevIndex) => (prevIndex + 1) % backgrounds.length)
-        }, backgroundsInterval * 60000)
-
-        return () => clearInterval(interval)
-    }, [backgrounds.length])
-
+    // --- Set background ---
     useEffect(() => {
         setCurrentBackground(backgrounds[backgroundIndex])
     }, [backgroundIndex, backgrounds])
 
-    const handleTimerMode = async () => {
-        interval.stop()
+    // --- Initial affirmation on component mount ---
+    useEffect(() => {
+        const randomAffirmation = getRandomAffirmation(affirmations)
+        setCurrentAffirmation(randomAffirmation)
+    }, [affirmations])
 
+    // --- Reset audio state wanneer de timer wordt gereset of herstart ---
+    useEffect(() => {
+        if (!timerCompleted) {
+            setHasPlayedAudio(false)
+        }
+    }, [timerCompleted])
+
+    const handleTimerMode = async () => {
         if (timerCompleted && !hasPlayedAudio) {
             if (audioRef.current) {
                 await audioRef.current.play()
@@ -102,29 +124,6 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
     const getRandomAffirmation = (affirmations: Affirmation[]) => {
         return affirmations[Math.floor(Math.random() * affirmations.length)];
     }
-
-    // Set a random affirmation every minute
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const randomAffirmation = getRandomAffirmation(affirmations)
-            setCurrentAffirmation(randomAffirmation)
-        }, affirmationsInterval * 60000)
-
-        return () => clearInterval(interval)
-    }, [affirmations])
-
-    // Initial affirmation on component mount
-    useEffect(() => {
-        const randomAffirmation = getRandomAffirmation(affirmations)
-        setCurrentAffirmation(randomAffirmation)
-    }, [affirmations])
-
-    // Reset audio state wanneer de timer wordt gereset of herstart
-    useEffect(() => {
-        if (!timerCompleted) {
-            setHasPlayedAudio(false)
-        }
-    }, [timerCompleted])
 
     return (
         isOpen && (
