@@ -67,3 +67,7 @@ export const UpdateFocusSettingsSchema = z.object({
         .positive({ message: 'Backgrounds interval must be a positive number' })
         .max(9999, { message: 'Backgrounds interval too high!' })
 })
+
+export const FeedbackSchema = z.object({
+    feedback: z.string().min(1, { message: 'Feedback is required' })
+})

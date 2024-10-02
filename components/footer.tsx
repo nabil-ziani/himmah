@@ -76,9 +76,9 @@ const navigation = {
 
 const Footer = () => {
     return (
-        <footer id='contact' className="bg-[#303030]">
-            <div className="mx-auto max-w-7xl overflow-hidden px-6 py-5 sm:py-10 lg:px-8">
-                <nav aria-label="Footer" className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12">
+        <footer className="bg-[#303030]">
+            <div className="mx-auto max-w-7xl overflow-hidden px-6 py-5 sm:py-10 lg:px-8 h-36">
+                {/* <nav aria-label="Footer" className="-mb-6 columns-2 sm:flex sm:justify-center sm:space-x-12">
                     {navigation.main.map((item) => (
                         <div key={item.name} className="pb-6">
                             <a href={item.href} className="text-md leading-6 text-[#b3b3b3] hover:text-white/80">
@@ -86,8 +86,8 @@ const Footer = () => {
                             </a>
                         </div>
                     ))}
-                </nav>
-                <div className="mt-10 flex justify-center space-x-10">
+                </nav> */}
+                <div className="flex justify-center space-x-10">
                     {navigation.social.map((item) => (
                         <a key={item.name} href={item.href} className="text-[#b3b3b3] hover:text-white/80">
                             <span className="sr-only">{item.name}</span>
