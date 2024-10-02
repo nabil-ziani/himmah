@@ -11,6 +11,7 @@ import { poppins, nunito } from "../../ui/fonts"
 import { SupabaseProvider } from '@/contexts/supabaseClient'
 import { createClient } from '@/utils/supabase/server'
 import QueryProvider from '@/components/query-provider'
+import DonationButton from '@/components/donation-button'
 
 
 const defaultUrl = process.env.VERCEL_URL

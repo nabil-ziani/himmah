@@ -1,6 +1,5 @@
 import Logo from './logo'
 import AuthButton from './auth-button'
-import { ModeToggle } from './theme-toggle'
 import { Button } from './ui/button'
 import Link from 'next/link'
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"

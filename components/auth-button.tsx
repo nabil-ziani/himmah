@@ -1,7 +1,5 @@
 import Link from "next/link";
-
 import { createClient } from "@/utils/supabase/server";
-import { Button } from "./ui/button";
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -22,10 +20,8 @@ export default async function AuthButton() {
       </span>
     </div>
   ) : (
-    <Button variant={'gradient'} size={'lg'}>
-      <Link className="text-lg" href="/auth/login">
-        Sign In
-      </Link>
-    </Button>
+    <Link className="text-lg text-destructive-foreground transition-all flex items-center duration-100 bg-gradient-to-br to-[#f6ce69] from-[#f86d6d] hover:drop-shadow-md h-12 rounded-lg px-8" href="/auth/login">
+      Sign In
+    </Link>
   );
 }
