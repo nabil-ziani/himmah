@@ -15,7 +15,7 @@ const AffirmationDropdown = () => {
                     Affirmations
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
+            <DropdownMenuContent className="w-56 bg-white">
                 <DropdownMenuLabel>Category</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuRadioGroup value={category} onValueChange={setCategory}>

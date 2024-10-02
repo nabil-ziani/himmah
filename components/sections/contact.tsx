@@ -9,6 +9,7 @@ const Contact = () => {
                 <h2 className="text-6xl font-bold text-center mb-20 text-[#303030]">
                     Send us a message 💬
                 </h2>
+                {/* <p className="text-md text-gray-600">Let us know if you have any issues or suggestions.</p> */}
                 <FeedbackForm />
             </section>
         </>

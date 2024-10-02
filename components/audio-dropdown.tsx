@@ -16,7 +16,7 @@ const AudioDropdown = () => {
                     White Noise
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
+            <DropdownMenuContent className="w-56 bg-white">
                 <DropdownMenuLabel>
                     White Noise
                 </DropdownMenuLabel>

@@ -5,13 +5,9 @@ import { useSearchParams } from "next/navigation";
 import { Card } from "./ui/card"
 import { Button } from "./ui/button"
 
-import Stopwatch from "./stopwatch"
-import Timer from "./timer"
-import SetBackgroundDialog from "./set-background-dialog";
 import { User } from "@supabase/supabase-js";
 import AudioDropdown from "./audio-dropdown";
 import { TbBackground } from "react-icons/tb";
-import { Clock, Settings, TimerIcon } from "lucide-react";
 import AffirmationDropdown from "./affirmation-dropdown";
 import { useSupabase } from "@/contexts/supabaseClient";
 import { fetchAffirmations, fetchAllBackgrounds } from "@/lib/utils";
@@ -22,8 +18,9 @@ import { useStore } from "@/hooks/useStore";
 import FocusSettingsModal from "./focus-settings-modal";
 import { RiSettings4Fill } from "react-icons/ri";
 import { TbClockHour4Filled } from "react-icons/tb";
-import { IoTimer } from "react-icons/io5";
 import { RiTimer2Fill } from "react-icons/ri";
+import dynamic from "next/dynamic";
+import { Loader, Loader2 } from "lucide-react";
 
 interface FocusCardProps {
     user: User
@@ -33,6 +30,10 @@ const FocusCard = ({ user }: FocusCardProps) => {
 
     const searchParams = useSearchParams();
     const supabase = useSupabase();
+
+    const Timer = dynamic(() => import('./timer'));
+    const Stopwatch = dynamic(() => import('./stopwatch'));
+    const SetBackgroundDialog = dynamic(() => import('./set-background-dialog'));
 
     const { mode, toggleMode, affirmationCategory, setAffirmations, setBackgroundModalOpen, setFocusSettingsModalOpen } = useStore()
 

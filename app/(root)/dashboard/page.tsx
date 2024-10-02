@@ -39,7 +39,6 @@ export default async function DashboardPage() {
   return (
     <div className="flex flex-col max-h-[calc(100vh-80px)] gap-10 justify-center items-center">
       <h1 className='font-bold leading-none text-[#303030] text-4xl'>Dashboard</h1>
-      {/* <p className="text-md text-gray-600">Keep up with your progress</p> */}
 
       <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
         <div className="flex h-[calc(100vh-250px)]">

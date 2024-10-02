@@ -5,7 +5,7 @@ import { Tables } from "@/database.types"
 import toast from "react-hot-toast"
 import { useStore } from "@/hooks/useStore"
 import Image from "next/image"
-import { CircleChevronRight, CircleX, Loader2 } from "lucide-react"
+import { CircleChevronRight, CircleX, Loader, Loader2 } from "lucide-react"
 
 interface SetBackgroundDialogProps {
     allBackgrounds: Tables<'backgrounds'>[]
@@ -71,7 +71,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackground
     if (isLoading) {
         return (
             <div className="flex justify-center items-center">
-                <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+                <Loader className="mr-2 h-6 w-6 animate-spin" />
             </div>
         )
     }
@@ -117,7 +117,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackground
                                     })
                                     :
                                     <div className="flex justify-center items-center">
-                                        <Loader2 className="mr-2 h-6 w-6 animate-spin" />
+                                        <Loader className="mr-2 h-6 w-6 animate-spin" />
                                     </div>
                                 }
                             </div>
@@ -155,7 +155,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackground
                                                         width={400}
                                                         height={200}
                                                         quality={75}
-                                                        priority={true}
+                                                        loading="lazy"
                                                         onClick={() => handleSelectBackground(img)}
                                                     />
                                                     <div className={`${selectedBackgrounds.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-5 left-5 rounded-md`}></div>
