@@ -19,7 +19,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<ThemeProvider attribute="class" forcedTheme="light" enableSystem={false}>
 					<Toaster position='top-right' containerStyle={{ top: 100, right: 20 }} />
 					{children}
-					<DonationButton />
 				</ThemeProvider>
 			</body>
 		</html >

@@ -10,6 +10,7 @@ import Benefits from "@/components/sections/benefits";
 import Goals from "@/components/sections/goals";
 import Footer from "@/components/footer";
 import Contact from "@/components/sections/contact";
+import DonationButton from "@/components/donation-button";
 
 export default async function Index() {
   const supabase = createClient();
@@ -31,6 +32,7 @@ export default async function Index() {
         <Goals />
         <Contact />
         <Footer />
+        <DonationButton position="fixed bottom-4 right-4 z-10" className="h-14" />
       </SmoothScrolling>
     </>
   );

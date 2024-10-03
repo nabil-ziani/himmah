@@ -6,11 +6,16 @@ const handleDonationClick = () => {
     window.open('https://buymeacoffee.com/himmah', '_blank');
 }
 
-const DonationButton = () => {
+interface DonationButtonProps {
+    position?: string
+    className?: string
+}
+
+const DonationButton = ({ position, className }: DonationButtonProps) => {
     return (
-        <div className="fixed bottom-4 right-4 z-10">
-            <Button size={"lg"} variant="shine" className=" rounded-xl font-medium p-4 text-lg h-14" onClick={handleDonationClick}>
-                Make Donation 🪙
+        <div className={position}>
+            <Button size={"lg"} variant="shine" className={`rounded-xl font-medium p-4 text-lg ${className}`} onClick={handleDonationClick}>
+                Support Us 🪙
             </Button>
         </div>
 
