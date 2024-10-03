@@ -8,8 +8,8 @@ import FocusDialog from "./focus-dialog";
 import { SupabaseClient, User } from "@supabase/supabase-js";
 import { Database } from "@/database.types";
 import toast from "react-hot-toast";
-import { useStore } from "@/hooks/useStore";
 import { useFocusSession } from "@/hooks/useFocusSession";
+import ButtonTooltip from "./button-with-tooltip";
 
 interface TimerProps {
     supabase: SupabaseClient<Database>
@@ -76,54 +76,22 @@ const Timer = ({ supabase, user }: TimerProps) => {
     }
 
     return (
-        <>
-            <div className="h-full justify-center flex flex-col items-center">
-                <div className=" flex items-center justify-center text-[200px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
-                    <div>{minutes.toString().padStart(2, '0')}</div>
-                    <div>:</div>
-                    <div>{seconds.toString().padStart(2, '0')}</div>
-                </div>
-                <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <div className="flex justify-center items-center bg-gray-600/80 font-semibold text-white h-16 rounded-lg px-3" onClick={handleMinusClick}>
-                                <Minus className="h-10 w-10" />
-                            </div>
-                        </TooltipTrigger>
-                        <TooltipContent side='bottom'>
-                            <div className='bg-white'>
-                                <p className='font-medium'>Decrease 5 minutes</p>
-                            </div>
-                        </TooltipContent>
-                    </Tooltip>
+        <div className="flex flex-col flex-1 justify-center items-center">
+            <span className="text-[200px] text-[#323238] font-nunito font-semibold">
+                {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+            </span>
+            <div className="flex items-center justify-around text-[#323238] gap-x-5">
+                <ButtonTooltip icon={<Minus className="h-10 w-10" />} onClick={handleMinusClick} content='Decrease 5 minutes' />
 
-                    <Button className="bg-green-600/80 hover:shadow-md font-semibold text-4xl text-white h-16 rounded-lg px-16" onClick={handleSessionStart}>
-                        Start
-                    </Button>
+                <Button className="bg-green-600/80 hover:shadow-md font-semibold text-4xl text-white h-16 rounded-lg px-16" onClick={handleSessionStart}>
+                    Start
+                </Button>
 
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <div className="flex justify-center items-center bg-gray-600/80 font-semibold text-white h-16 rounded-lg px-3" onClick={handlePlusClick}>
-                                <Plus className="h-10 w-10" />
-                            </div>
-                        </TooltipTrigger>
-                        <TooltipContent side='bottom'>
-                            <div className='bg-white'>
-                                <p className='font-medium'>Increase 5 minutes</p>
-                            </div>
-                        </TooltipContent>
-                    </Tooltip>
-                </div>
+                <ButtonTooltip icon={<Plus className="h-10 w-10" />} onClick={handlePlusClick} content='Increase 5 minutes' />
             </div>
 
-            <FocusDialog
-                isOpen={fullScreen}
-                mode='timer'
-                time={{ minutes, seconds }}
-                setTime={setTime}
-                handleSessionEnd={handleSessionEnd}
-            />
-        </>
+            <FocusDialog isOpen={fullScreen} mode='timer' time={{ minutes, seconds }} setTime={setTime} handleSessionEnd={handleSessionEnd} />
+        </div>
     )
 }
 

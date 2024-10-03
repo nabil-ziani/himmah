@@ -2,9 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useStore } from "@/hooks/useStore";
 import FocusSettingsForm from "./forms/focus-settings-form";
 
-
 const FocusSettingsModal = () => {
-
     const { focusSettingsModalOpen, setFocusSettingsModalOpen } = useStore()
 
     return (

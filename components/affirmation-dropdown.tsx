@@ -11,8 +11,8 @@ const AffirmationDropdown = () => {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button size={"lg"} className="bg-orange-600/80  hover:bg-orange-600/90 text-white text-xl hover:cursor-pointer">
-                    <BiSolidFlame className="mr-3" />
-                    Affirmations
+                    <BiSolidFlame />
+                    <span className="hidden lg:block ml-3">Affirmations</span>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 bg-white">

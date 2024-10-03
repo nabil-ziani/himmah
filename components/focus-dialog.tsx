@@ -128,14 +128,14 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
 
     return (
         isOpen && (
-            <div className="fixed inset-0 z-50 overflow-y-scroll w-full h-[100vh]">
+            <div className="fixed inset-0 z-50 overflow-y-scroll w-full h-[100vh] bg-white">
                 <motion.img
                     alt="focus-background"
                     src={currentBackground}
                     className="absolute inset-0 h-full w-full object-cover"
-                    initial={{ opacity: 0 }} // Start invisible
-                    animate={{ opacity: 1 }} // Fade in
-                    transition={{ duration: 1 }} // Duration of the fade effect
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1 }}
                 />
                 <div className={`w-full h-full relative grid place-items-center `}>
                     {currentAffirmation && (

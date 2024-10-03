@@ -5,7 +5,9 @@ import { Tables } from "@/database.types"
 import toast from "react-hot-toast"
 import { useStore } from "@/hooks/useStore"
 import Image from "next/image"
-import { CircleChevronRight, CircleX, Loader, Loader2 } from "lucide-react"
+import { CircleChevronRight, CircleX, Loader } from "lucide-react"
+import { TbSquareRoundedChevronsRightFilled } from "react-icons/tb";
+import { AnimatePresence, motion } from "framer-motion"
 
 interface SetBackgroundDialogProps {
     allBackgrounds: Tables<'backgrounds'>[]
@@ -81,8 +83,8 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackground
     }
 
     const handleCategoryChange = (categoryLabel: string) => {
-        setActiveCategory(categoryLabel);
-        setActiveSubcategory(undefined);
+        setActiveCategory(categoryLabel)
+        setActiveSubcategory(undefined)
     }
 
     const handleSubcategoryChange = (subcategory: Subcategory) => {
@@ -96,78 +98,121 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackground
     return (
         <>
             {backgroundModalOpen && (
-                <div className="inset-0 z-50 grid place-items-center absolute">
-                    <div className="flex z-100 w-[100%] h-[100%] bg-white shadow-xl rounded-2xl relative">
-                        <CircleX className="absolute top-5 right-5 text-[#303030]/50 cursor-pointer" onClick={() => setBackgroundModalOpen(false)} />
+                <AnimatePresence>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setBackgroundModalOpen(false)}
+                        className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center cursor-pointer overflow-hidden"
+                    >
+                        <motion.div
+                            initial={{ scale: 0, rotate: "12.5deg" }}
+                            animate={{ scale: 1, rotate: "0deg" }}
+                            exit={{ scale: 0, rotate: "0deg" }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-white w-[80vw] h-[60%] rounded-2xl shadow-xl cursor-default relative no-scrollbar overflow-y-auto"
+                        >
+                            <div className="flex bg-white">
+                                <CircleX className="absolute top-5 right-5 text-[#303030]/50 cursor-pointer" onClick={() => setBackgroundModalOpen(false)} />
 
-                        <section id="categories" className=" flex h-full w-fit flex-col justify-between bg-[#303030] text-white max-sm:hidden lg:w-[300px] rounded-bl-2xl rounded-l-2xl">
-                            <div className='flex flex-col gap-4'>
-                                <h3 className="text-3xl font-bold p-8">
-                                    Backgrounds
-                                </h3>
-                                {categories.length > 0 ?
-                                    categories.map((category) => {
-                                        const isActive = category.name === activeCategory
-
-                                        return (
-                                            <p key={category.name} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleCategoryChange(category.name)}>
-                                                {category.name}
-                                            </p>
-                                        )
-                                    })
-                                    :
-                                    <div className="flex justify-center items-center">
-                                        <Loader className="mr-2 h-6 w-6 animate-spin" />
-                                    </div>
-                                }
-                            </div>
-                        </section>
-
-                        {/* Check if subcategories is not empty (as is the case for "Objects")  */}
-                        {activeCategory && categories.find(c => c.name === activeCategory)!.subcategories.length > 0 && (
-                            <>
-                                <section id="subcategories" className=" flex h-full w-fit flex-col justify-start pt-28 bg-[#303030]/90 text-white max-sm:hidden lg:w-[350px] relative">
-                                    <CircleChevronRight className="absolute top-10 -left-2" />
+                                <section id="categories" className="flex flex-col z-20 w-fit justify-between bg-[#303030] text-white rounded-bl-2xl rounded-l-2xl">
                                     <div className='flex flex-col gap-4'>
-                                        {categories.find(c => c.name === activeCategory)!.subcategories.map((subcategory) => {
-                                            const isActive = subcategory.name === activeSubcategory?.name
+                                        <h3 className="text-3xl font-bold p-8">
+                                            Backgrounds
+                                        </h3>
+                                        {categories.length > 0 ?
+                                            categories.map((category) => {
+                                                const isActive = category.name === activeCategory
 
-                                            return (
-                                                <p key={subcategory.name} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleSubcategoryChange(subcategory)}>
-                                                    {subcategory.name}
-                                                </p>
-                                            )
-                                        })}
+                                                return (
+                                                    <p key={category.name} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleCategoryChange(category.name)}>
+                                                        {category.name}
+                                                    </p>
+                                                )
+                                            })
+                                            :
+                                            <div className="flex justify-center items-center">
+                                                <Loader className="mr-2 h-6 w-6 animate-spin" />
+                                            </div>
+                                        }
                                     </div>
                                 </section>
-                                {activeSubcategory && (
-                                    <section id="image-grid" className=" flex h-full w-full flex-col text-[#303030] max-sm:hidden rounded-r-2xl scroll-pb-10">
-                                        <h3 className="text-3xl font-bold p-8 text-center">
-                                            {activeSubcategory.name}
-                                        </h3>
-                                        <div className="grid grid-cols-3 px-5 overflow-y-auto max-h-[70vh]">
-                                            {activeSubcategory.images.map(img => (
-                                                <div className={`relative cursor-pointer`} key={img.name} >
-                                                    <Image
-                                                        className={`m-2 object-cover h-64 w-120 rounded-2xl ${selectedBackgrounds.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
-                                                        src={img.url}
-                                                        alt={img.name}
-                                                        width={400}
-                                                        height={200}
-                                                        quality={75}
-                                                        loading="lazy"
-                                                        onClick={() => handleSelectBackground(img)}
-                                                    />
-                                                    <div className={`${selectedBackgrounds.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-5 left-5 rounded-md`}></div>
+
+                                {activeCategory && categories.find(c => c.name === activeCategory)!.subcategories.length > 0 && (
+                                    <div className="relative">
+                                        <motion.div
+                                            className="absolute top-9 -left-3 z-[100]"
+                                            initial={{ x: -100, opacity: 0 }}
+                                            animate={{ x: 0, opacity: 1 }}
+                                            transition={{
+                                                type: 'spring',
+                                                stiffness: 300,
+                                                damping: 20,
+                                            }}
+                                        >
+                                            <TbSquareRoundedChevronsRightFilled size={30} />
+                                        </motion.div>
+
+                                        <motion.section
+                                            id="subcategories"
+                                            className="flex w-fit h-full z-10 justify-start pt-28 bg-[#303030]/90 text-white sm:w-[300px] overflow-y-auto"
+                                            initial={{ x: '-100vw' }}
+                                            animate={{ x: 0 }}
+                                            exit={{ x: '100vw' }}
+                                            transition={{ type: 'tween', duration: 0.5 }}
+                                        >
+                                            <div className='flex flex-col gap-4'>
+                                                {categories.find(c => c.name === activeCategory)!.subcategories.map((subcategory) => {
+                                                    const isActive = subcategory.name === activeSubcategory?.name
+
+                                                    return (
+                                                        <p key={subcategory.name} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleSubcategoryChange(subcategory)}>
+                                                            {subcategory.name}
+                                                        </p>
+                                                    )
+                                                })}
+                                            </div>
+                                        </motion.section>
+
+                                        {activeSubcategory && (
+                                            <motion.section
+                                                id="image-grid"
+                                                className=" flex flex-col bg-white text-[#303030] rounded-r-2xl"
+                                                key={activeSubcategory.name}
+                                                initial={{ x: '100vw' }}
+                                                animate={{ x: 0 }}
+                                                exit={{ x: '-100vw' }}
+                                                transition={{ type: 'tween', duration: 0.5 }}
+                                            >
+                                                <h3 className="text-3xl font-bold p-8 text-center">
+                                                    {activeSubcategory.name}
+                                                </h3>
+                                                <div className="grid grid-cols-3 px-5 overflow-y-auto max-h-[70vh]">
+                                                    {activeSubcategory.images.map(img => (
+                                                        <div className={`relative cursor-pointer`} key={img.name} >
+                                                            <Image
+                                                                className={`m-2 object-cover h-64 w-120 rounded-2xl ${selectedBackgrounds.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
+                                                                src={img.url}
+                                                                alt={img.name}
+                                                                width={400}
+                                                                height={200}
+                                                                quality={75}
+                                                                loading="lazy"
+                                                                onClick={() => handleSelectBackground(img)}
+                                                            />
+                                                            <div className={`${selectedBackgrounds.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-5 left-5 rounded-md`}></div>
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </section>
+                                            </motion.section>
+                                        )}
+                                    </div>
                                 )}
-                            </>
-                        )}
-                    </div>
-                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                </AnimatePresence>
             )}
         </>
     )

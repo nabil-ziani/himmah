@@ -64,15 +64,10 @@ const Stopwatch = ({ supabase, user }: StopwatchProps) => {
 
     return (
         <>
-            <div className="h-full justify-center flex flex-col items-center">
-                <div className="flex items-center justify-center text-[200px] text-[#323238] font-semibold dark:text-white font-nunito">
-                    <div>
-                        {minutes.toString().padStart(2, "0")}:
-                    </div>
-                    <div>
-                        {seconds.toString().padStart(2, "0")}
-                    </div>
-                </div>
+            <div className="flex flex-col flex-1 justify-center items-center">
+                <span className="text-[200px] text-[#323238] font-nunito font-semibold">
+                    {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+                </span>
 
                 <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
                     <Button className="bg-green-600/80 hover:shadow-md font-semibold text-4xl text-white h-16 rounded-lg px-16" onClick={handleStart}>

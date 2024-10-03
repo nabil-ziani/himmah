@@ -12,8 +12,8 @@ const AudioDropdown = () => {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button size={"lg"} className="bg-green-600/80  hover:bg-green-600/90 text-white text-xl hover:cursor-pointer">
-                    <RiLeafFill className="mr-3" />
-                    White Noise
+                    <RiLeafFill />
+                    <span className="hidden lg:block ml-3">White Noise</span>
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 bg-white">
