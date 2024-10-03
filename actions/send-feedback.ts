@@ -34,7 +34,7 @@ export const sendFeedback = async (values: z.infer<typeof FeedbackSchema>) => {
     try {
         await transporter.sendMail(mailOptions)
 
-        return { success: 'Feedback received!' }
+        return { success: 'Message sent, thank you!' }
     } catch (error) {
         console.error('Error sending feedback:', error)
 

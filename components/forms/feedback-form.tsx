@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 import { sendFeedback } from "@/actions/send-feedback";
 import { Textarea } from "../ui/textarea";
+import { Loader } from "lucide-react";
 
 const FeedbackForm = () => {
     const [error, setError] = useState<string | undefined>('')
@@ -30,7 +31,6 @@ const FeedbackForm = () => {
     const onSubmit = (values: z.infer<typeof FeedbackSchema>) => {
         setError('')
         setSuccess('')
-        console.log('submitted')
 
         startTransition(() => {
             sendFeedback(values).then((data) => {
@@ -38,7 +38,9 @@ const FeedbackForm = () => {
                     toast.error(data.error)
                 }
 
-                toast.success('Feedback has been sent!')
+                if (data.success) {
+                    toast.success(data.success)
+                }
             })
         })
     }
@@ -68,7 +70,7 @@ const FeedbackForm = () => {
                 <FormSuccess message={success} />
                 <div className="flex justify-center">
                     <Button type="submit" size={"lg"} className="mt-8 text-md w-full text-white">
-                        Send Feedback
+                        {isPending ? <Loader className="mr-2 h-6 w-6 animate-spin" /> : 'Send Feedback'}
                     </Button>
                 </div>
             </form>
