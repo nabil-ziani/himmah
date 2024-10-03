@@ -9,6 +9,7 @@ import { ClipboardList, LayoutDashboard, LucideFocus, Settings2Icon, UsersRoundI
 import LogoutButton from './logout-button';
 import { Badge } from './ui/badge';
 import { useFriendContext } from '@/contexts/friendshipContext';
+import DonationButton from './donation-button';
 
 interface SidebarProps { }
 
@@ -57,7 +58,10 @@ const Sidebar = ({ }: SidebarProps) => {
                     })}
                 </div>
 
-                <LogoutButton />
+                <div className='flex flex-col gap-5'>
+                    <DonationButton className='h-12 w-full' />
+                    <LogoutButton />
+                </div>
             </div>
         </section>
     )

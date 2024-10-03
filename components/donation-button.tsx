@@ -14,7 +14,7 @@ interface DonationButtonProps {
 const DonationButton = ({ position, className }: DonationButtonProps) => {
     return (
         <div className={position}>
-            <Button size={"lg"} variant="shine" className={`rounded-xl font-medium p-4 text-lg ${className}`} onClick={handleDonationClick}>
+            <Button size={"lg"} variant="shine" className={`rounded-md font-medium p-4 text-lg ${className}`} onClick={handleDonationClick}>
                 Support Us 🪙
             </Button>
         </div>
