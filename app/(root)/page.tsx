@@ -9,7 +9,6 @@ import Features from "@/components/sections/features";
 import Benefits from "@/components/sections/benefits";
 import Goals from "@/components/sections/goals";
 import Footer from "@/components/footer";
-import DonationButton from "@/components/donation-button";
 import Contact from "@/components/sections/contact";
 
 export default async function Index() {
@@ -33,7 +32,6 @@ export default async function Index() {
         <Contact />
         <Footer />
       </SmoothScrolling>
-      <DonationButton />
     </>
   );
 }

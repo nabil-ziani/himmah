@@ -9,6 +9,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        shine:
+          "text-white animate-shine bg-gradient-to-r from-[#22c55e] via-[#22c55e]/80 to-[#22c55e] bg-[length:400%_100%]",
         default: "bg-[#FF5C5C] text-primary-foreground hover:bg-primary/90",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
