@@ -69,5 +69,5 @@ export const UpdateFocusSettingsSchema = z.object({
 })
 
 export const FeedbackSchema = z.object({
-    feedback: z.string().min(1, { message: 'Feedback is required' })
+    feedback: z.string().min(1, { message: 'Feedback can not be empty.' })
 })

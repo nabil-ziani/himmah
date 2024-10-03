@@ -1,28 +1,53 @@
-'use client';
+'use client'
 
-import { cn } from '@/lib/utils';
-import { ChartNoAxesColumn } from "lucide-react";
+import { formatFocusTime } from "@/lib/utils"
+import AnalyticsCard from "./analytics-card"
+import { Card } from "./ui/card"
+import { useState } from "react"
+import { TbMessageReport } from "react-icons/tb"
+import { TbMessage } from "react-icons/tb";
+import { BiSolidMessageSquareError } from "react-icons/bi";
+import FeedbackModal from "./feedback-modal"
 
-interface HomeCardProps {
-    className?: string;
-    title: string;
-    description: string;
+interface DashboardCardProps {
+    daily: number
+    weekly: number
+    monthly: number
 }
 
-const DashboardCard = ({ className, title, description }: HomeCardProps) => {
+const DashboardCard = ({ daily, weekly, monthly }: DashboardCardProps) => {
+    const [feedbackModalOpen, setFeedbackModalOpen] = useState(false)
+
     return (
-        <section
-            className={cn('bg-orange-1 px-4 py-6 flex flex-col justify-between w-full xl:max-w-[270px] min-h-[200px] rounded-[14px] cursor-pointer', className)}>
-            <div className="flex-center glassmorphism size-12 rounded-[10px]">
-                <ChartNoAxesColumn height={40} width={40} color="white" strokeWidth={3} />
+        <Card className='flex flex-col flex-grow w-full max-w-[1800px] bg-white shadow-xl rounded-2xl p-8 relative'>
+            <div className="flex flex-row justify-evenly pt-8 gap-10 text-center text-white flex-wrap">
+                <AnalyticsCard
+                    title="Today"
+                    description={formatFocusTime(daily)}
+                    className="bg-orange-600/80"
+                />
+                <AnalyticsCard
+                    title="This Week"
+                    description={formatFocusTime(weekly)}
+                    className="bg-blue-600/80"
+                />
+                <AnalyticsCard
+                    title="This Month"
+                    description={formatFocusTime(monthly)}
+                    className="bg-purple-600/80"
+                />
+                <AnalyticsCard
+                    title="Total Focus Time"
+                    description={formatFocusTime(daily)}
+                    className="bg-green-600/80"
+                />
             </div>
-
-            <div className="flex flex-col gap-2">
-                <h1 className="text-2xl font-bold">{title}</h1>
-                <p className="text-lg font-normal">{description}</p>
+            <div className="text-white bg-[#303030]/80  hover:bg-[#303030]/90 text-xl hover:cursor-pointer shadow-md rounded-full absolute bottom-5 right-5" onClick={() => setFeedbackModalOpen(true)}>
+                <TbMessage className="m-4 h-7 w-7" color="white" />
             </div>
-        </section>
-    );
-};
+            <FeedbackModal isOpen={feedbackModalOpen} setIsOpen={setFeedbackModalOpen} />
+        </Card>
+    )
+}
 
-export default DashboardCard;
+export default DashboardCard

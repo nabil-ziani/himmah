@@ -10,7 +10,7 @@ const Contact = () => {
                     Get in touch 💬
                 </h2>
                 <p className="text-sm sm:text-lg text-gray-500 text-center w-[80vw] mb-10 sm:mb-20">Let us know if you find issues or have suggestions.</p>
-                <FeedbackForm />
+                <FeedbackForm textAreaClassName="h-64 p-3 focus-visible:ring-[#FF5C5C] focus-visible:ring-offset-0" formClassName="md:w-[40vw] w-[80vw]" />
             </section>
         </>
     )

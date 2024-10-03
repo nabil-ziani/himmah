@@ -1,7 +1,6 @@
 import dayjs from "dayjs"
-import { Card } from "@/components/ui/card"
 import { createClient } from "@/utils/supabase/server"
-import { durationToSeconds, formatFocusTime } from "@/lib/utils"
+import { durationToSeconds } from "@/lib/utils"
 import DashboardCard from "@/components/dashboard-card"
 
 export default async function DashboardPage() {
@@ -32,31 +31,7 @@ export default async function DashboardPage() {
 	return (
 		<div className="flex flex-col items-center gap-10 h-[calc(100vh-150px)]">
 			<h1 className='font-bold leading-none text-[#303030] text-4xl'>Dashboard</h1>
-
-			<Card className='flex flex-col flex-grow w-full max-w-[1800px] bg-white shadow-xl rounded-2xl'>
-				<div className="flex flex-row justify-center p-8 gap-10 text-center text-white flex-wrap">
-					<DashboardCard
-						title="Today"
-						description={formatFocusTime(dailyMinutes)}
-						className="bg-orange-600/80"
-					/>
-					<DashboardCard
-						title="This Week"
-						description={formatFocusTime(weeklyMinutes)}
-						className="bg-blue-600/80"
-					/>
-					<DashboardCard
-						title="This Month"
-						description={formatFocusTime(monthlyMinutes)}
-						className="bg-purple-600/80"
-					/>
-					<DashboardCard
-						title="Total Focus Time"
-						description={formatFocusTime(dailyMinutes)}
-						className="bg-green-600/80"
-					/>
-				</div>
-			</Card>
+			<DashboardCard daily={dailyMinutes} weekly={weeklyMinutes} monthly={monthlyMinutes} />
 		</div>
 	);
 }

@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useTransition } from "react";
+import { Dispatch, SetStateAction, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FeedbackSchema } from "@/schemas";
 
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Button } from "../ui/button";
@@ -15,7 +15,14 @@ import { sendFeedback } from "@/actions/send-feedback";
 import { Textarea } from "../ui/textarea";
 import { Loader } from "lucide-react";
 
-const FeedbackForm = () => {
+interface FeedbackFormProps {
+    textAreaClassName: string
+    formClassName?: string
+    label?: string
+    setIsOpen?: Dispatch<SetStateAction<boolean>>
+}
+
+const FeedbackForm = ({ textAreaClassName, formClassName, label, setIsOpen }: FeedbackFormProps) => {
     const [error, setError] = useState<string | undefined>('')
     const [success, setSuccess] = useState<string | undefined>('')
 
@@ -41,24 +48,29 @@ const FeedbackForm = () => {
                 if (data.success) {
                     toast.success(data.success)
                 }
+
+                if (setIsOpen) {
+                    setIsOpen(false)
+                }
             })
         })
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="md:w-[40vw] w-[80vw]">
+            <form onSubmit={form.handleSubmit(onSubmit)} className={formClassName}>
                 {/* --- Feedback ---*/}
                 <FormField
                     control={form.control}
                     name='feedback'
                     render={({ field }) => (
                         <FormItem className="flex-1">
+                            {label && <FormLabel className="shad-input-label">{label}</FormLabel>}
                             <FormControl>
                                 <Textarea
                                     {...field}
                                     placeholder='Send us a message'
-                                    className="h-64 p-3 focus-visible:ring-[#FF5C5C] focus-visible:ring-offset-0"
+                                    className={textAreaClassName}
                                 />
                             </FormControl>
                             <FormMessage className="shad-error" />
