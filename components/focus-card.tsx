@@ -68,9 +68,9 @@ const FocusCard = ({ user }: FocusCardProps) => {
     }, [errorBackgrounds, errorAffirmations])
 
     return (
-        <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
-            <div className="flex h-[calc(100vh-250px)]">
-                <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[calc(100vw-400px)]">
+        <Card className='flex flex-col flex-grow w-full max-w-[1800px] bg-white shadow-xl rounded-2xl'>
+            <div className="flex flex-1">
+                <section className="flex h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[calc(100vw-400px)]">
                     <div className="flex justify-between items-center">
                         <div className="text-white bg-gray-500/80  hover:bg-gray-500/90 text-xl hover:cursor-pointer rounded-full" onClick={() => setFocusSettingsModalOpen(true)}>
                             <RiSettings4Fill className="m-2 h-7 w-7" />

@@ -11,8 +11,6 @@ import { poppins, nunito } from "../../ui/fonts"
 import { SupabaseProvider } from '@/contexts/supabaseClient'
 import { createClient } from '@/utils/supabase/server'
 import QueryProvider from '@/components/query-provider'
-import DonationButton from '@/components/donation-button'
-
 
 const defaultUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
@@ -28,10 +26,10 @@ export const metadata: Metadata = {
 const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
     const supabase = createClient()
 
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
-        return redirect("/auth/login");
+        return redirect("/auth/login")
     }
 
     return (
@@ -55,7 +53,7 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
                 </main>
             </QueryProvider>
         </SupabaseProvider>
-    );
+    )
 }
 
 export default RootLayout

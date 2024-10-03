@@ -115,6 +115,13 @@
     }
     
     /* ===== UTILITIES */
+    
+    .glassmorphism {
+        background: rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+
     .bg-custom-gradient {
         background: linear-gradient(120deg, #f86d6d, #f6ce69);
     }
