@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
 import { Tables } from "@/database.types"
 import toast from "react-hot-toast"
 import { useStore } from "@/hooks/useStore"
 import Image from "next/image"
-import { CircleChevronRight, CircleX, Loader } from "lucide-react"
+import { CircleX, Loader } from "lucide-react"
 import { TbSquareRoundedChevronsRightFilled } from "react-icons/tb";
 import { AnimatePresence, motion } from "framer-motion"
 
@@ -13,6 +13,8 @@ interface SetBackgroundDialogProps {
     allBackgrounds: Tables<'backgrounds'>[]
     isLoading: boolean
     error: Error | null
+    isOpen: boolean
+    setIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
 interface Subcategory {
@@ -25,12 +27,13 @@ interface Category {
     subcategories: Subcategory[];
 }
 
-const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackgroundDialogProps) => {
+const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOpen }: SetBackgroundDialogProps) => {
     const [categories, setCategories] = useState<Category[]>([])
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSubcategory, setActiveSubcategory] = useState<Subcategory | undefined>(undefined)
 
-    const { backgroundModalOpen, setBackgroundModalOpen, selectedBackgrounds, setSelectedBackgrounds, } = useStore()
+    const { selectedBackgrounds, setSelectedBackgrounds, } = useStore()
+    const [localSelected, setLocalSelected] = useState(selectedBackgrounds)
 
     // Fetch backgrounds
     useEffect(() => {
@@ -92,31 +95,41 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackground
     }
 
     const handleSelectBackground = (img: { name: string, url: string }) => {
-        setSelectedBackgrounds(img.url)
+        const isSelected = localSelected.includes(img.url);
+
+        if (isSelected) {
+            setLocalSelected(localSelected.filter(url => url !== img.url))
+        } else {
+            setLocalSelected(prev => [...prev, img.url])
+        }
+    }
+
+    const handleCloseModal = () => {
+        setSelectedBackgrounds(localSelected)
+        setIsOpen(false)
     }
 
     return (
         <>
-            {backgroundModalOpen && (
+            {isOpen && (
                 <AnimatePresence>
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        onClick={() => setBackgroundModalOpen(false)}
-                        className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center cursor-pointer overflow-hidden"
+                        onClick={handleCloseModal}
+                        className="bg-slate-900/20 backdrop-blur fixed inset-0 z-50 grid place-items-center cursor-pointer"
                     >
                         <motion.div
                             initial={{ scale: 0, rotate: "12.5deg" }}
                             animate={{ scale: 1, rotate: "0deg" }}
                             exit={{ scale: 0, rotate: "0deg" }}
                             onClick={(e) => e.stopPropagation()}
-                            className="text-white w-[80vw] h-[60%] rounded-2xl shadow-xl cursor-default relative no-scrollbar overflow-y-auto"
                         >
-                            <div className="flex bg-white">
-                                <CircleX className="absolute top-5 right-5 text-[#303030]/50 cursor-pointer" onClick={() => setBackgroundModalOpen(false)} />
+                            <div className="flex w-[85vw] bg-white rounded-2xl shadow-xl cursor-default relative">
+                                <CircleX className="absolute top-5 right-5 z-100 text-[#303030]/50 cursor-pointer" onClick={handleCloseModal} />
 
-                                <section id="categories" className="flex flex-col z-20 w-fit justify-between bg-[#303030] text-white rounded-bl-2xl rounded-l-2xl">
+                                <section id="categories" className="flex flex-col z-20 w-fit justify-between bg-[#303030] text-white rounded-bl-2xl rounded-l-2xl h-[70vh] overflow-y-scroll">
                                     <div className='flex flex-col gap-4'>
                                         <h3 className="text-3xl font-bold p-8">
                                             Backgrounds
@@ -140,7 +153,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackground
                                 </section>
 
                                 {activeCategory && categories.find(c => c.name === activeCategory)!.subcategories.length > 0 && (
-                                    <div className="relative">
+                                    <div className="flex flex-grow relative h-[70vh]">
                                         <motion.div
                                             className="absolute top-9 -left-3 z-[100]"
                                             initial={{ x: -100, opacity: 0 }}
@@ -151,12 +164,12 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackground
                                                 damping: 20,
                                             }}
                                         >
-                                            <TbSquareRoundedChevronsRightFilled size={30} />
+                                            <TbSquareRoundedChevronsRightFilled size={30} color="white" />
                                         </motion.div>
 
                                         <motion.section
                                             id="subcategories"
-                                            className="flex w-fit h-full z-10 justify-start pt-28 bg-[#303030]/90 text-white sm:w-[300px] overflow-y-auto"
+                                            className="flex w-fit z-10 justify-start pt-28 bg-[#303030]/90 text-white sm:w-[300px] no-scrollbar overflow-y-scroll"
                                             initial={{ x: '-100vw' }}
                                             animate={{ x: 0 }}
                                             exit={{ x: '100vw' }}
@@ -178,7 +191,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackground
                                         {activeSubcategory && (
                                             <motion.section
                                                 id="image-grid"
-                                                className=" flex flex-col bg-white text-[#303030] rounded-r-2xl"
+                                                className=" flex flex-col flex-grow bg-white text-[#303030] rounded-r-2xl px-3"
                                                 key={activeSubcategory.name}
                                                 initial={{ x: '100vw' }}
                                                 animate={{ x: 0 }}
@@ -188,20 +201,20 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error }: SetBackground
                                                 <h3 className="text-3xl font-bold p-8 text-center">
                                                     {activeSubcategory.name}
                                                 </h3>
-                                                <div className="grid grid-cols-3 px-5 overflow-y-auto max-h-[70vh]">
+                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 overflow-y-auto">
                                                     {activeSubcategory.images.map(img => (
-                                                        <div className={`relative cursor-pointer`} key={img.name} >
+                                                        <div className={`relative cursor-pointer w-full h-56`} key={img.name}>
                                                             <Image
-                                                                className={`m-2 object-cover h-64 w-120 rounded-2xl ${selectedBackgrounds.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
+                                                                className={`object-cover h-full w-full rounded-2xl ${localSelected.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
                                                                 src={img.url}
                                                                 alt={img.name}
-                                                                width={400}
-                                                                height={200}
+                                                                layout="fill"
+                                                                objectFit="cover"
                                                                 quality={75}
                                                                 loading="lazy"
                                                                 onClick={() => handleSelectBackground(img)}
                                                             />
-                                                            <div className={`${selectedBackgrounds.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-5 left-5 rounded-md`}></div>
+                                                            <div className={`${localSelected.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-3 left-3 rounded-md`}></div>
                                                         </div>
                                                     ))}
                                                 </div>

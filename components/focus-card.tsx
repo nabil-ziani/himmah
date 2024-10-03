@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation";
 import { Card } from "./ui/card"
 import { Button } from "./ui/button"
@@ -28,13 +28,14 @@ interface FocusCardProps {
 }
 
 const FocusCard = ({ user }: FocusCardProps) => {
+    const [backgroundModalOpen, setBackgroundModalOpen] = useState(false)
 
     const searchParams = useSearchParams()
     const supabase = useSupabase()
 
     const SetBackgroundDialog = dynamic(() => import('./set-background-dialog'))
 
-    const { mode, toggleMode, affirmationCategory, setAffirmations, setBackgroundModalOpen, setFocusSettingsModalOpen } = useStore()
+    const { mode, toggleMode, affirmationCategory, setAffirmations, setFocusSettingsModalOpen } = useStore()
 
     const { data: allBackgrounds = [], isLoading: isLoadingBackgrounds, error: errorBackgrounds } = useQuery<Tables<'backgrounds'>[]>({
         queryKey: ['backgrounds'],
@@ -93,7 +94,7 @@ const FocusCard = ({ user }: FocusCardProps) => {
                     {mode === 'stopwatch' && <Stopwatch supabase={supabase} user={user} />}
                 </div>
 
-                <SetBackgroundDialog allBackgrounds={allBackgrounds} isLoading={isLoadingBackgrounds} error={errorBackgrounds} />
+                <SetBackgroundDialog allBackgrounds={allBackgrounds} isLoading={isLoadingBackgrounds} error={errorBackgrounds} isOpen={backgroundModalOpen} setIsOpen={setBackgroundModalOpen} />
                 <FocusSettingsModal />
             </section>
         </Card >
