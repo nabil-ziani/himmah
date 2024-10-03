@@ -189,7 +189,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOp
                                         {activeSubcategory && (
                                             <motion.section
                                                 id="image-grid"
-                                                className=" flex flex-col flex-grow bg-white text-[#303030] rounded-r-2xl px-3 bottom-px"
+                                                className=" flex flex-col flex-grow bg-white text-[#303030] rounded-r-2xl px-3"
                                                 key={activeSubcategory.name}
                                                 initial={{ x: '100vw' }}
                                                 animate={{ x: 0 }}
@@ -199,7 +199,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOp
                                                 <h3 className="text-3xl font-bold p-8 text-center">
                                                     {activeSubcategory.name}
                                                 </h3>
-                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 overflow-y-auto">
+                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 no-scrollbar overflow-y-auto pb-5">
                                                     {activeSubcategory.images.map(img => (
                                                         <div className={`relative cursor-pointer w-full h-56`} key={img.name}>
                                                             <Image
