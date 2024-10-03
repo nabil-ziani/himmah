@@ -20,8 +20,8 @@ interface KanbanBoardProps {
 
 export const KanbanBoard = ({ tasks, setTasks, supabase, openModal, setMode, setSelectedTask }: KanbanBoardProps) => {
     return (
-        <div className="h-screen w-full">
-            <div className="flex h-full w-full gap-10 p-12 pr-0 justify-between flex-shrink">
+        <div className="flex-1 w-full h-full">
+            <div className="flex h-full w-full gap-10 p-12 pr-0 justify-between flex-grow">
                 <Column
                     title="TODO"
                     status="new"
@@ -71,7 +71,7 @@ export const KanbanBoard = ({ tasks, setTasks, supabase, openModal, setMode, set
                 />
                 <BurnBarrel setCards={setTasks} supabase={supabase} />
             </div>
-        </div>
+        </div >
     );
 };
 
@@ -209,14 +209,14 @@ const Column = ({ title, headingColor, cards, status, setCards, supabase, openMo
 
     return (
         <div className="w-56 shrink-0">
-            <div className="mb-3 flex items-center justify-between">
+            <div className="pb-3 flex items-center justify-between">
                 <h3 className={`font-medium text-xl text-[#303030] py-2 px-6 rounded-lg ${headingColor}`}>{title}</h3>
             </div>
             <div
                 onDrop={handleDragEnd}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                className={`no-scrollbar overflow-y-auto h-full w-full transition-colors  rounded-lg ${active ? "bg-neutral-500/10" : "bg-neutral-500/0"
+                className={`no-scrollbar overflow-y-auto h-[89%] w-full transition-colors rounded-lg ${active ? "bg-neutral-500/10" : "bg-neutral-500/0"
                     }`}
             >
                 {filteredCards.map((c) => {
@@ -339,7 +339,7 @@ const BurnBarrel = ({ setCards, supabase }: any) => {
             onDrop={handleDragEnd}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
-            className={`grid h-50 sm:h-full w-64 place-content-center rounded-lg text-3xl ${active
+            className={`grid w-64 place-content-center rounded-lg text-3xl ${active
                 ? "bg-[#FF5C5C]/20 text-[#FF5C5C]"
                 : "bg-neutral-500/20 text-neutral-500"
                 }`}

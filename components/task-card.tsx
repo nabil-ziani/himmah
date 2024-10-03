@@ -43,19 +43,17 @@ const TaskCard = ({ user }: TaskCardProps) => {
     }, [])
 
     return (
-        <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
-            <div className="flex h-[calc(100vh-250px)]">
-                <section className="flex relative h-full flex-1 flex-col p-8 max-md:pb-14 sm:px-14 overflow-hidden lg:w-[calc(100vw-400px)]">
-                    <KanbanBoard
-                        supabase={supabase}
-                        tasks={tasks}
-                        setTasks={setTasks}
-                        openModal={setIsOpen}
-                        setMode={setMode}
-                        setSelectedTask={setSelectedTask}
-                    />
-                </section>
-            </div>
+        <Card className='flex flex-col w-full max-w-[1800px] bg-white shadow-xl rounded-2xl max-h-[calc(100vh-250px)]'>
+            <section className="flex-1 sm:px-14 overflow-y-auto no-scrollbar">
+                <KanbanBoard
+                    supabase={supabase}
+                    tasks={tasks}
+                    setTasks={setTasks}
+                    openModal={setIsOpen}
+                    setMode={setMode}
+                    setSelectedTask={setSelectedTask}
+                />
+            </section>
 
             <TaskModal
                 isOpen={isOpen}
