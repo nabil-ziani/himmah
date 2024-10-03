@@ -57,13 +57,13 @@ const FriendsList = ({ user }: FriendsListProps) => {
     }
 
     return (
-        <div className="flex flex-col gap-y-10">
+        <div className="flex-1 flex-col gap-y-10 justify-between">
             {pendingRequests.length > 0 && (
                 <>
-                    <h2 className='font-bold leading-none text-[#303030] text-3xl mb-2 text-center'>
+                    <h2 className='font-bold leading-none text-[#303030] text-3xl text-center'>
                         Pending Requests
                     </h2>
-                    <ul>
+                    <ul className="flex flex-1 flex-col items-center no-scrollbar overflow-y-scroll mb-5">
                         {pendingRequests.map((f) => {
                             const friendId = f?.friend?.id === user.id ? f.user.id : f.friend.id
                             const isFriendOnline = onlineUsers.includes(friendId)
@@ -75,10 +75,10 @@ const FriendsList = ({ user }: FriendsListProps) => {
                     </ul>
                 </>
             )}
-            <h2 className='font-bold leading-none text-[#303030] text-3xl mb-2 text-center'>
+            <h2 className='font-bold leading-none text-[#303030] text-3xl text-center'>
                 Your Friends
             </h2>
-            <ul>
+            <ul className="flex flex-1 flex-col items-center no-scrollbar overflow-y-scroll">
                 {friendships.map((f) => {
                     const friendId = f?.friend?.id === user.id ? f.user.id : f.friend.id
                     const isFriendOnline = onlineUsers.includes(friendId)
