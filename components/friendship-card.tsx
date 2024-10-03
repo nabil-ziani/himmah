@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { GoClockFill } from "react-icons/go";
 import { useSupabase } from "@/contexts/supabaseClient"
 import toast from "react-hot-toast"
+import dayjs from "dayjs"
 
 interface FriendshipCardProps {
     friendship: Friendship
@@ -34,17 +35,15 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
         const fetchTodayFocusTime = async () => {
             const userId = friendship?.friend?.id === currentUser.id ? friendship.user.id : friendship.friend.id
 
-            const today = new Date()
-            const todayStart = new Date(today.setHours(0, 0, 0, 0)).toISOString()
-            const todayEnd = new Date(today.setHours(23, 59, 59, 999)).toISOString()
+            const startOfDay = dayjs().startOf('day')
+            const endOfDay = dayjs().endOf('day')
 
             const { data, error } = await supabase
                 .from('focus_sessions')
                 .select('duration')
                 .eq('user_id', userId)
-                .eq('completed', true)
-                .gte('start_time', todayStart)
-                .lte('end_time', todayEnd)
+                .gte('start_time', startOfDay)
+                .lte('end_time', endOfDay)
 
             if (error) {
                 toast.error(error.message)
