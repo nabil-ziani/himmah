@@ -17,7 +17,7 @@ const FriendsCard = ({ user }: FriendsCardProps) => {
 
     return (
         <Card className='flex-1 flex-col w-full max-w-[50vw] bg-white shadow-xl rounded-2xl'>
-            <div className="flex flex-1 flex-col items-center p-12">
+            <div className="flex flex-1 flex-col h-full justify-center items-center p-12">
                 <FriendsList user={user} />
                 <Button size={"lg"} className="bg-green-500/80  hover:bg-green-500/90 text-white text-xl hover:cursor-pointer w-fit mt-5" onClick={() => setIsOpen(true)}>
                     <Plus className="mr-3" />
