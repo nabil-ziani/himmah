@@ -11,7 +11,7 @@ const Blockquote = ({ children, className }: BlockquoteProps) => {
     return (
         <motion.div
             className={cn(
-                "relative rounded-lg bg-white/60 py-5 pl-16 pr-10 font-sans text-2xl italic backdrop-blur-lg backdrop-filter leading-relaxed text-[#303030] before:absolute before:left-3 before:top-3 before:font-serif before:text-6xl before:text-gray-700 before:content-['“']",
+                "relative rounded-lg bg-white/60 py-5 pl-14 pr-5 font-sans text-xl italic backdrop-blur-lg backdrop-filter leading-relaxed text-[#303030] before:absolute before:left-3 before:top-3 before:font-serif before:text-6xl before:text-gray-700 before:content-['“']",
                 className
             )}
             initial={{ opacity: 0 }}
@@ -26,7 +26,7 @@ const Blockquote = ({ children, className }: BlockquoteProps) => {
 
 const BlockquoteAuthor = ({ children, className }: BlockquoteProps) => {
     return (
-        <p className={cn('mt-5 pr-4 text-right font-bold not-italic text-gray-700', className)}>
+        <p className={cn('pr-4 text-right font-bold not-italic text-gray-700', className)}>
             {children}
         </p>
     )

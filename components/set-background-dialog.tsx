@@ -126,10 +126,8 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOp
                             exit={{ scale: 0, rotate: "0deg" }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <div className="flex w-[85vw] bg-white rounded-2xl shadow-xl cursor-default relative">
-                                <CircleX className="absolute top-5 right-5 z-100 text-[#303030]/50 cursor-pointer" onClick={handleCloseModal} />
-
-                                <section id="categories" className="flex flex-col z-20 w-fit justify-between bg-[#303030] text-white rounded-bl-2xl rounded-l-2xl h-[70vh] overflow-y-scroll">
+                            <div className="flex w-[85vw] bg-white rounded-2xl shadow-xl cursor-default">
+                                <section id="categories" className="flex flex-col  w-fit justify-between bg-[#303030] text-white rounded-bl-2xl rounded-l-2xl h-[70vh] overflow-y-scroll">
                                     <div className='flex flex-col gap-4'>
                                         <h3 className="text-3xl font-bold p-8">
                                             Backgrounds
@@ -155,7 +153,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOp
                                 {activeCategory && categories.find(c => c.name === activeCategory)!.subcategories.length > 0 && (
                                     <div className="flex flex-grow relative h-[70vh]">
                                         <motion.div
-                                            className="absolute top-9 -left-3 z-[100]"
+                                            className="absolute top-9 -left-3"
                                             initial={{ x: -100, opacity: 0 }}
                                             animate={{ x: 0, opacity: 1 }}
                                             transition={{
@@ -169,7 +167,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOp
 
                                         <motion.section
                                             id="subcategories"
-                                            className="flex w-fit z-10 justify-start pt-28 bg-[#303030]/90 text-white sm:w-[300px] no-scrollbar overflow-y-scroll"
+                                            className="flex w-fit justify-start pt-28 bg-[#303030]/90 text-white sm:w-[300px] no-scrollbar overflow-y-scroll"
                                             initial={{ x: '-100vw' }}
                                             animate={{ x: 0 }}
                                             exit={{ x: '100vw' }}
@@ -191,7 +189,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOp
                                         {activeSubcategory && (
                                             <motion.section
                                                 id="image-grid"
-                                                className=" flex flex-col flex-grow bg-white text-[#303030] rounded-r-2xl px-3"
+                                                className=" flex flex-col flex-grow bg-white text-[#303030] rounded-r-2xl px-3 bottom-px"
                                                 key={activeSubcategory.name}
                                                 initial={{ x: '100vw' }}
                                                 animate={{ x: 0 }}

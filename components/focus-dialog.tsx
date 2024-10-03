@@ -128,59 +128,54 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
 
     return (
         isOpen && (
-            <div className="fixed inset-0 z-50 overflow-y-scroll w-full h-[100vh] bg-white">
-                <motion.img
-                    alt="focus-background"
-                    src={currentBackground}
-                    className="absolute inset-0 h-full w-full object-cover"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1 }}
-                />
-                <div className={`w-full h-full relative grid place-items-center `}>
-                    {currentAffirmation && (
-                        <Blockquote className="absolute top-20 max-w-[60vw]">
-                            {currentAffirmation.verse}
-                            <BlockquoteAuthor>{currentAffirmation?.surah} {currentAffirmation?.ayah}</BlockquoteAuthor>
-                        </Blockquote>
-                    )}
-                    <div className="flex justify-center flex-col items-center">
-                        <div className="flex items-center justify-center text-[200px] text-[#323238] font-nunito font-semibold max-w-[321px] dark:text-white">
-                            <div className="flex bg-white/60 backdrop-blur-lg backdrop-filter px-20 mb-10 rounded-3xl">
-                                <div>
-                                    {minutes.toString().padStart(2, '0')}
-                                </div>
-                                <div>{" "}:{" "}</div>
-                                <div>
-                                    {seconds.toString().padStart(2, '0')}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-around mx-[4px] text-[#323238] gap-x-5">
-                            {timerCompleted ?
-                                (
-                                    <Button className="bg-green-400 font-semibold text-4xl text-white h-16 rounded-xl px-8" onClick={() => {
-                                        setTimerCompleted(false)
-                                        handleSessionEnd(true)
-                                    }}>
-                                        Claim Victory 🏆
-                                    </Button>
-                                ) : (
-                                    <Button className="bg-red-500 font-semibold text-4xl text-white h-16 rounded-xl px-8" onClick={mode === 'timer' ? () => handleSessionEnd(false) : handleStopwatchMode}>
-                                        {mode === 'timer' ? 'Give up' : 'Stop'}
-                                    </Button>
-                                )
-                            }
-                        </div>
+            <div className="flex flex-col justify-around items-center z-50 fixed inset-0 w-full h-[100vh] overflow-y-scroll bg-white">
+                {currentBackground && (
+                    <motion.img
+                        alt="focus-background"
+                        src={currentBackground}
+                        className="absolute inset-0 h-full w-full object-cover z-20"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1 }}
+                    />
+                )}
+
+                {currentAffirmation && (
+                    <Blockquote className="flex-none max-w-[60vw] z-50">
+                        {currentAffirmation.verse}
+                        <BlockquoteAuthor>{currentAffirmation?.surah} {currentAffirmation?.ayah}</BlockquoteAuthor>
+                    </Blockquote>
+                )}
+
+                <div className="flex flex-col items-center gap-y-20 z-50">
+                    <span className="block text-[200px] text-[#323238] font-nunito font-semibold bg-white/60 backdrop-blur-lg backdrop-filter px-20 rounded-3xl">
+                        {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+                    </span>
+
+                    <div>
+                        {timerCompleted ?
+                            (
+                                <Button className="bg-green-400 font-semibold text-4xl text-white h-16 rounded-xl px-8" onClick={() => {
+                                    setTimerCompleted(false)
+                                    handleSessionEnd(true)
+                                }}>
+                                    Claim Victory 🏆
+                                </Button>
+                            ) : (
+                                <Button className="bg-red-500 font-semibold text-4xl text-white h-16 rounded-xl px-8" onClick={mode === 'timer' ? () => handleSessionEnd(false) : handleStopwatchMode}>
+                                    {mode === 'timer' ? 'Give up' : 'Stop'}
+                                </Button>
+                            )
+                        }
                     </div>
-
-                    {/* White Noise */}
-                    <audio className="hidden" src={audio} loop={true} autoPlay={true} />
-
-                    {/* Notification Sound */}
-                    <audio ref={audioRef} src="/audio/kitchen_timer.mp3" crossOrigin="anonymous" onEnded={() => audioRef.current?.pause()} />
                 </div>
-            </div >
+
+                {/* White Noise */}
+                <audio className="hidden" src={audio} loop={true} autoPlay={true} />
+
+                {/* Notification Sound */}
+                <audio ref={audioRef} src="/audio/kitchen_timer.mp3" crossOrigin="anonymous" onEnded={() => audioRef.current?.pause()} />
+            </div>
         )
     )
 }
