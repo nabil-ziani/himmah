@@ -1,9 +1,10 @@
-import { redirect } from "next/navigation";
+import { redirect } from "next/navigation"
 
-import UpdateProfileForm from "@/components/forms/update-profile-form";
-import ConfigurationForm from "@/components/forms/configuration-form";
-import { Card } from "@/components/ui/card";
-import { createClient } from "@/utils/supabase/server";
+import UpdateProfileForm from "@/components/forms/update-profile-form"
+import ConfigurationForm from "@/components/forms/configuration-form"
+import { Card } from "@/components/ui/card"
+import { createClient } from "@/utils/supabase/server"
+import DeleteAccount from "@/components/delete-account"
 
 export default async function SettingsPage() {
     const supabase = createClient();
@@ -20,7 +21,10 @@ export default async function SettingsPage() {
             <Card className='flex flex-col xl:max-w-[1800px] bg-white shadow-xl rounded-2xl'>
                 <div className="flex h-[calc(100vh-250px)]">
                     <section className="flex relative h-full flex-1 flex-col p-8 sm:px-14 w-[50vw] no-scrollbar overflow-y-scroll scroll-pb-5">
-                        <UpdateProfileForm user={user} />
+                        <div className="flex justify-between">
+                            <UpdateProfileForm user={user} />
+                            <DeleteAccount />
+                        </div>
                         <ConfigurationForm />
                     </section>
                 </div>

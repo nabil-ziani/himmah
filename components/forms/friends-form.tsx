@@ -13,6 +13,7 @@ import { FormSuccess } from "@/components/form-success";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
 import { addFriend } from "@/actions/add-friend";
+import { Loader } from "lucide-react";
 
 interface CreateTaskFormProps {
     setIsOpen: Dispatch<SetStateAction<boolean>>
@@ -67,7 +68,7 @@ const FriendsForm = ({ setIsOpen }: CreateTaskFormProps) => {
                 <FormSuccess message={success} />
                 <div className="flex justify-center">
                     <Button size={"lg"} className="mt-8 text-md w-full">
-                        Add Friend
+                        {isPending ? <Loader className="mr-2 h-6 w-6 animate-spin" /> : 'Add Friend'}
                     </Button>
                 </div>
             </form>

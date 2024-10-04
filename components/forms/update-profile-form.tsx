@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 import { User } from "@supabase/supabase-js";
 import { adjustForTimezone } from "@/lib/utils";
 import toast from "react-hot-toast";
+import { Loader } from "lucide-react";
 
 interface UpdateProfileFormProps {
     user: User
@@ -157,7 +158,7 @@ const UpdateProfileForm = ({ user }: UpdateProfileFormProps) => {
                 <FormSuccess message={success} />
                 <div className="sm:col-span-3">
                     <Button className="mt-6 text-white">
-                        Update profile
+                        {isPending ? <Loader className="mr-2 h-6 w-6 animate-spin" /> : 'Update profile'}
                     </Button>
                 </div>
             </form>

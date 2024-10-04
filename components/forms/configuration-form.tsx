@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { LanguageOptions } from "@/constants";
 import { SelectItem } from "../ui/select";
 import { Button } from "../ui/button";
+import { Loader } from "lucide-react";
 
 const ConfigurationForm = () => {
     const [error, setError] = useState<string | undefined>('')
@@ -84,7 +85,7 @@ const ConfigurationForm = () => {
                 <FormSuccess message={success} />
                 <div className="sm:col-span-2">
                     <Button className="mt-6 text-white" disabled>
-                        Save Settings
+                        {isPending ? <Loader className="mr-2 h-6 w-6 animate-spin" /> : 'Save Settings'}
                     </Button>
                 </div>
             </form>

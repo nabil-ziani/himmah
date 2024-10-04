@@ -2,7 +2,7 @@
 
 import { type ComponentProps } from "react";
 import { Button } from "./ui/button";
-import { Loader2 } from "lucide-react"
+import { Loader } from "lucide-react"
 
 type Props = ComponentProps<"button"> & {
     pendingText?: string
@@ -13,7 +13,7 @@ export function SubmitButton({ children, pendingText, isPending = false }: Props
     return (
         isPending ? (
             <Button type='submit' className='mt-3 w-full bg-[#FF4545]' disabled >
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader className="mr-2 h-4 w-4 animate-spin" />
                 {pendingText}
             </Button>
         ) :

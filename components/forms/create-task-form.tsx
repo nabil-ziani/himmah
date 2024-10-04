@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import { createTask } from "@/actions/create-task";
 import { Task, TaskType } from "@/lib/types";
 import { updateTask } from "@/actions/update-task";
+import { Loader } from "lucide-react";
 
 interface CreateTaskFormProps {
     setIsOpen: Dispatch<SetStateAction<boolean>>
@@ -119,7 +120,7 @@ const TaskForm = ({ setIsOpen, setTasks, mode, task }: CreateTaskFormProps) => {
                 <FormSuccess message={success} />
                 <div className="flex justify-center">
                     <Button size={"lg"} className="mt-8 text-md w-full">
-                        {mode.type === 'create' ? 'Create ' : 'Update '} Task
+                        {isPending ? <Loader className="mr-2 h-6 w-6 animate-spin" /> : mode.type === 'create' ? 'Create Task' : 'Update Task'}
                     </Button>
                 </div>
             </form>
