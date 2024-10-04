@@ -46,8 +46,14 @@ const DeleteAccount = () => {
                 <FormSuccess message={success} />
                 <div className="sm:col-span-3">
                     <Button variant="destructive">
-                        <UserRoundX className="mr-3 h-5 w-5" />
-                        {isPending ? <Loader className="mr-2 h-6 w-6 animate-spin" /> : 'Delete Account'}
+                        {isPending ? <Loader className="mr-2 h-6 w-6 animate-spin" />
+                            : (
+                                <>
+                                    <UserRoundX className="mr-3 h-5 w-5" />
+                                    <span>Delete Account</span>
+                                </>
+                            )
+                        }
                     </Button>
                 </div>
             </form>
