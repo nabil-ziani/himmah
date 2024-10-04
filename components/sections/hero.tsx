@@ -46,17 +46,16 @@ export default function Hero() {
 				</h1>
 
 				<div className="flex gap-7 md:gap-14 md:mt-20 mt-10">
-					<Button variant={"outline"} className="border-white border-2 md:border-4 font-semibold text-md md:text-4xl text-white h-16 rounded-2xl p-4 md:p-8">
-						<Link href="#about">
+					<Link href="#about">
+						<Button variant={"outline"} className="border-white border-2 md:border-4 font-semibold text-md md:text-4xl text-white h-16 rounded-2xl p-4 md:p-8">
 							Learn More
-						</Link>
-					</Button>
-
-					<Button variant={"outline"} className="border-white border-2 md:border-4 bg-white font-semibold text-md md:text-4xl text-[#303030] h-16 rounded-2xl p-4 md:p-8">
-						<Link href="/auth/register">
+						</Button>
+					</Link>
+					<Link href="/auth/register">
+						<Button variant={"outline"} className="border-white border-2 md:border-4 bg-white font-semibold text-md md:text-4xl text-[#303030] h-16 rounded-2xl p-4 md:p-8">
 							Get Started
-						</Link>
-					</Button>
+						</Button>
+					</Link>
 				</div>
 			</div>
 		</section>
