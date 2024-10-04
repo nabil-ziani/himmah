@@ -36,8 +36,8 @@ const UpdateProfileForm = ({ user }: UpdateProfileFormProps) => {
         defaultValues: {
             name: user.user_metadata.name,
             email: user.email,
-            birthdate: adjustForTimezone(new Date(user.user_metadata.birthdate)),
-            sex: user.user_metadata.sex
+            birthdate: user.user_metadata.birthdate && adjustForTimezone(new Date(user.user_metadata.birthdate)) || undefined,
+            sex: user.user_metadata.sex || undefined
         }
     })
 
@@ -132,6 +132,7 @@ const UpdateProfileForm = ({ user }: UpdateProfileFormProps) => {
                             label="Sex"
                             placeholder="Select your sex"
                         >
+                            
                             {SexOptions.map((option, i) => (
                                 <SelectItem key={option + i} value={option}>
                                     <div className="flex cursor-pointer items-center gap-2">
