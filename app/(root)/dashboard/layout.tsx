@@ -7,7 +7,6 @@ import { redirect } from 'next/navigation'
 import { ReactNode } from 'react'
 import { Toaster } from "react-hot-toast"
 
-import { poppins, nunito } from "../../ui/fonts"
 import { SupabaseProvider } from '@/contexts/supabaseClient'
 import { createClient } from '@/utils/supabase/server'
 import QueryProvider from '@/components/query-provider'
@@ -22,7 +21,6 @@ export const metadata: Metadata = {
     description: "Productivity App"
 }
 
-
 const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
     const supabase = createClient()
 
@@ -35,7 +33,7 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
     return (
         <SupabaseProvider>
             <QueryProvider>
-                <main className={`relative text-foreground bg-slate-50 ${poppins.variable} ${nunito.variable}`}>
+                <main className={`relative text-foreground bg-slate-50`}>
                     <FriendProvider userId={user.id}>
                         <DashboardNavbar />
                         <div className='flex'>

@@ -2,13 +2,18 @@ import dayjs from "dayjs"
 import { createClient } from "@/utils/supabase/server"
 import { durationToSeconds } from "@/lib/utils"
 import DashboardCard from "@/components/dashboard-card"
+import { redirect } from "next/navigation"
 
 export default async function DashboardPage() {
 	const supabase = createClient()
 
 	const { data: { user } } = await supabase.auth.getUser()
 
-	const { data: sessions, error } = await supabase.from('focus_sessions').select('*').eq('user_id', user!.id)
+	if (!user) {
+		return redirect("/auth/login");
+	}
+
+	const { data: sessions, error } = await supabase.from('focus_sessions').select('*').eq('user_id', user.id)
 
 	if (error) {
 		console.error('Error fetching sessions:', error)
