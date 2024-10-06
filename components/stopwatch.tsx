@@ -46,9 +46,6 @@ const Stopwatch = ({ supabase, user }: StopwatchProps) => {
             return
         }
 
-        const end_time = new Date();
-        const startTimeDate = new Date(startTime)
-
         try {
             await endSession(true)
 

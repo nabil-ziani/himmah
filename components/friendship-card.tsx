@@ -8,7 +8,6 @@ import { useEffect, useState } from "react"
 import { GoClockFill } from "react-icons/go";
 import { useSupabase } from "@/contexts/supabaseClient"
 import toast from "react-hot-toast"
-import dayjs from "dayjs"
 
 interface FriendshipCardProps {
     friendship: Friendship
