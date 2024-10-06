@@ -132,7 +132,6 @@ const UpdateProfileForm = ({ user }: UpdateProfileFormProps) => {
                             label="Sex"
                             placeholder="Select your sex"
                         >
-                            
                             {SexOptions.map((option, i) => (
                                 <SelectItem key={option + i} value={option}>
                                     <div className="flex cursor-pointer items-center gap-2">

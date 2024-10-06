@@ -64,7 +64,7 @@ const ConfigurationForm = () => {
                             name="language"
                             label="Language"
                             placeholder=""
-                            disabled
+                            disabled={true}
                             defaultValue={LanguageOptions[0]}
                         >
                             {LanguageOptions.map((option, i) => (
