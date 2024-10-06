@@ -30,7 +30,7 @@ export const useFocusSession = ({ supabase, userId, type }: UseFocusSessionProps
         setStartTime(data.start_time)
     }
 
-    const endSession = async (completed: boolean, duration: number) => {
+    const endSession = async (completed: boolean) => {
         if (!startTime || !sessionId) {
             throw new Error('Start time or session ID undefined')
         }
