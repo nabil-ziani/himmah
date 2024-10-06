@@ -125,7 +125,6 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
         }
     }, [handleSessionEnd])
 
-
     const handleTimerMode = async () => {
         if (timerCompleted && !hasPlayedAudio) {
             if (audioRef.current) {

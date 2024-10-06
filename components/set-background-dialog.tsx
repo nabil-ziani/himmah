@@ -1,11 +1,11 @@
 'use client'
 
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Tables } from "@/database.types"
 import toast from "react-hot-toast"
 import { useStore } from "@/hooks/useStore"
 import Image from "next/image"
-import { CircleX, Loader } from "lucide-react"
+import { Loader } from "lucide-react"
 import { TbSquareRoundedChevronsRightFilled } from "react-icons/tb";
 import { AnimatePresence, motion } from "framer-motion"
 
