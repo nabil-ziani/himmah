@@ -1,0 +1,17 @@
+name: Reset Total Focus Time Daily
+
+# Run this job daily at midnight (UTC)
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+
+jobs:
+  reset-focus-time:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Call Supabase Edge Function
+      run: |
+        curl -X POST https://hlsqynuporoplqsmbmwv.supabase.co/functions/v1/reset_total_focus_time \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+          -H "Content-Type: application/json"

@@ -48,10 +48,9 @@ const Stopwatch = ({ supabase, user }: StopwatchProps) => {
 
         const end_time = new Date();
         const startTimeDate = new Date(startTime)
-        const duration = Math.floor((end_time.getTime() - startTimeDate.getTime()) / 1000)
 
         try {
-            await endSession(true, duration)
+            await endSession(true)
 
             setFullScreen(false)
             setTime(initialTime) // Reset time

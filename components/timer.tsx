@@ -49,10 +49,9 @@ const Timer = ({ supabase, user }: TimerProps) => {
 
         const end_time = new Date();
         const startTimeDate = new Date(startTime)
-        const duration = Math.floor((end_time.getTime() - startTimeDate.getTime()) / 1000)
 
         try {
-            await endSession(completed, duration)
+            await endSession(completed)
 
             setFullScreen(false)
             setTime(initialTime) // Reset time

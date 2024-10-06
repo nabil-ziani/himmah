@@ -69,7 +69,7 @@ export type Database = {
           created_at: string
           duration: unknown | null
           end_time: string | null
-          id: number
+          id: string
           start_time: string
           type: Database["public"]["Enums"]["focus_type"]
           user_id: string
@@ -79,7 +79,7 @@ export type Database = {
           created_at?: string
           duration?: unknown | null
           end_time?: string | null
-          id?: number
+          id?: string
           start_time?: string
           type?: Database["public"]["Enums"]["focus_type"]
           user_id?: string
@@ -89,7 +89,7 @@ export type Database = {
           created_at?: string
           duration?: unknown | null
           end_time?: string | null
-          id?: number
+          id?: string
           start_time?: string
           type?: Database["public"]["Enums"]["focus_type"]
           user_id?: string
@@ -108,21 +108,21 @@ export type Database = {
         Row: {
           created_at: string
           friend_id: string
-          id: number
+          id: string
           status: Database["public"]["Enums"]["friendship_status"]
           user_id: string
         }
         Insert: {
           created_at?: string
           friend_id: string
-          id?: number
+          id?: string
           status?: Database["public"]["Enums"]["friendship_status"]
           user_id?: string
         }
         Update: {
           created_at?: string
           friend_id?: string
-          id?: number
+          id?: string
           status?: Database["public"]["Enums"]["friendship_status"]
           user_id?: string
         }
@@ -148,27 +148,27 @@ export type Database = {
           birthdate: string | null
           email: string
           id: string
-          is_online: boolean
           name: string | null
           sex: string | null
+          total_focus_time: number | null
           updated_at: string | null
         }
         Insert: {
           birthdate?: string | null
           email?: string
           id: string
-          is_online?: boolean
           name?: string | null
           sex?: string | null
+          total_focus_time?: number | null
           updated_at?: string | null
         }
         Update: {
           birthdate?: string | null
           email?: string
           id?: string
-          is_online?: boolean
           name?: string | null
           sex?: string | null
+          total_focus_time?: number | null
           updated_at?: string | null
         }
         Relationships: [
@@ -216,14 +216,25 @@ export type Database = {
           status?: Database["public"]["Enums"]["task_status"]
           title?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tasks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_user: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
     }
     Enums: {
       affirmation_category:

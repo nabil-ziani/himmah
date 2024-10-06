@@ -108,7 +108,7 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
                     </Button>
                 </div>
             )}
-        </li >
+        </li>
     )
 }
 

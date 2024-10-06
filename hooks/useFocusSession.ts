@@ -41,8 +41,7 @@ export const useFocusSession = ({ supabase, userId, type }: UseFocusSessionProps
             .from('focus_sessions')
             .update({
                 end_time: end_time.toISOString(),
-                completed,
-                duration
+                completed
             })
             .eq('id', sessionId)
 
