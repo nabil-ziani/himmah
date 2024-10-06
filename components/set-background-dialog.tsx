@@ -2,7 +2,6 @@
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Tables } from "@/database.types"
-import toast from "react-hot-toast"
 import { useStore } from "@/hooks/useStore"
 import Image from "next/image"
 import { Loader } from "lucide-react"
@@ -11,8 +10,6 @@ import { AnimatePresence, motion } from "framer-motion"
 
 interface SetBackgroundDialogProps {
     allBackgrounds: Tables<'backgrounds'>[]
-    isLoading: boolean
-    error: Error | null
     isOpen: boolean
     setIsOpen: Dispatch<SetStateAction<boolean>>
 }
@@ -27,7 +24,7 @@ interface Category {
     subcategories: Subcategory[];
 }
 
-const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOpen }: SetBackgroundDialogProps) => {
+const SetBackgroundDialog = ({ allBackgrounds, isOpen, setIsOpen }: SetBackgroundDialogProps) => {
     const [categories, setCategories] = useState<Category[]>([])
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSubcategory, setActiveSubcategory] = useState<Subcategory | undefined>(undefined)
@@ -73,18 +70,6 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOp
         }
     }, [allBackgrounds])
 
-    if (isLoading) {
-        return (
-            <div className="flex justify-center items-center">
-                <Loader className="mr-2 h-6 w-6 animate-spin" />
-            </div>
-        )
-    }
-
-    if (error) {
-        toast.error(error.message)
-    }
-
     const handleCategoryChange = (categoryLabel: string) => {
         setActiveCategory(categoryLabel)
         setActiveSubcategory(undefined)
@@ -108,6 +93,15 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOp
         setSelectedBackgrounds(localSelected)
         setIsOpen(false)
     }
+
+    useEffect(() => {
+        if (allBackgrounds.length > 0) {
+            // Log om te zien wat er wordt opgehaald
+            console.log(allBackgrounds);
+
+            // ... rest van je logica
+        }
+    }, [allBackgrounds]);
 
     return (
         <>
@@ -178,7 +172,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOp
                                                     const isActive = subcategory.name === activeSubcategory?.name
 
                                                     return (
-                                                        <p key={subcategory.name} className={`mx-4 p-4 text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleSubcategoryChange(subcategory)}>
+                                                        <p key={subcategory.name} className={`mx-4 p-4 w-full text-lg font-semibold max-lg:hidden rounded-lg cursor-pointer hover:bg-white/15 ${isActive ? 'bg-white/15' : ''}`} onClick={() => handleSubcategoryChange(subcategory)}>
                                                             {subcategory.name}
                                                         </p>
                                                     )
@@ -203,13 +197,13 @@ const SetBackgroundDialog = ({ allBackgrounds, isLoading, error, isOpen, setIsOp
                                                     {activeSubcategory.images.map(img => (
                                                         <div className={`relative cursor-pointer w-full h-56`} key={img.name}>
                                                             <Image
-                                                                className={`object-cover h-full w-full rounded-2xl ${localSelected.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
+                                                                className={`object-cover bg-gray-300 animate-pulse h-full w-full rounded-2xl transition-opacity opacity-0 duration-[2s] ${localSelected.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
                                                                 src={img.url}
                                                                 alt={img.name}
-                                                                layout="fill"
-                                                                objectFit="cover"
+                                                                width={400}
+                                                                height={200}
                                                                 quality={75}
-                                                                loading="lazy"
+                                                                onLoadingComplete={(img) => img.classList.remove('opacity-0', 'animate-pulse')}
                                                                 onClick={() => handleSelectBackground(img)}
                                                             />
                                                             <div className={`${localSelected.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-3 left-3 rounded-md`}></div>

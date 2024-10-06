@@ -25,9 +25,11 @@ import Stopwatch from "./stopwatch";
 
 interface FocusCardProps {
     user: User
+    backgrounds: Tables<'backgrounds'>[]
+    affirmations: Tables<'affirmations'>[]
 }
 
-const FocusCard = ({ user }: FocusCardProps) => {
+const FocusCard = ({ user, backgrounds, affirmations }: FocusCardProps) => {
     const [backgroundModalOpen, setBackgroundModalOpen] = useState(false)
 
     const searchParams = useSearchParams()
@@ -37,22 +39,11 @@ const FocusCard = ({ user }: FocusCardProps) => {
 
     const { mode, toggleMode, affirmationCategory, setAffirmations, setFocusSettingsModalOpen } = useStore()
 
-    const { data: allBackgrounds = [], isLoading: isLoadingBackgrounds, error: errorBackgrounds } = useQuery<Tables<'backgrounds'>[]>({
-        queryKey: ['backgrounds'],
-        queryFn: () => fetchAllBackgrounds(supabase),
-    })
-
-    const { data: affirmations = [], isLoading: isLoadingAffirmations, error: errorAffirmations } = useQuery({
-        queryKey: ['affirmations', affirmationCategory],
-        queryFn: () => fetchAffirmations(supabase, affirmationCategory),
-        enabled: !!affirmationCategory,
-    })
-
     useEffect(() => {
-        if (!isLoadingAffirmations && !errorAffirmations && affirmations.length > 0) {
-            setAffirmations(affirmations)
+        if (affirmations.length > 0) {
+            setAffirmations(affirmations.filter(af => af.category === affirmationCategory))
         }
-    }, [affirmations, isLoadingAffirmations, errorAffirmations])
+    }, [affirmations])
 
     const currentMode = searchParams.get('mode') || 'timer'
 
@@ -63,9 +54,10 @@ const FocusCard = ({ user }: FocusCardProps) => {
     }, [currentMode])
 
     useEffect(() => {
-        if (errorBackgrounds) toast.error(errorBackgrounds.message)
-        if (errorAffirmations) toast.error(errorAffirmations.message)
-    }, [errorBackgrounds, errorAffirmations])
+        if (backgrounds.length === 0 || affirmations.length === 0) {
+            toast.error("Could not load backgrounds and affirmations.");
+        }
+    }, [backgrounds, affirmations]);
 
     return (
         <Card className='flex flex-grow w-full max-w-[1800px] bg-white shadow-xl rounded-2xl overflow-hidden'>
@@ -94,7 +86,7 @@ const FocusCard = ({ user }: FocusCardProps) => {
                     {mode === 'stopwatch' && <Stopwatch supabase={supabase} user={user} />}
                 </div>
 
-                <SetBackgroundDialog allBackgrounds={allBackgrounds} isLoading={isLoadingBackgrounds} error={errorBackgrounds} isOpen={backgroundModalOpen} setIsOpen={setBackgroundModalOpen} />
+                <SetBackgroundDialog allBackgrounds={backgrounds} isOpen={backgroundModalOpen} setIsOpen={setBackgroundModalOpen} />
                 <FocusSettingsModal />
             </section>
         </Card >
