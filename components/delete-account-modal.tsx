@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Dispatch, SetStateAction, useTransition } from "react";
-import DeleteAccount from "./delete-account";
 import { BsExclamationCircleFill } from "react-icons/bs";
 import { Button } from "./ui/button";
 import { deleteAccount } from "@/actions/delete-account";
