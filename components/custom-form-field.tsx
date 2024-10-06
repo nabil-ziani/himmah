@@ -135,7 +135,16 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                                         defaultValue={props.defaultValue}
                                         type="date"
                                         value={field.value ? field.value.toISOString().split('T')[0] : ''}
-                                        onChange={(e) => field.onChange(new Date(e.target.value))}
+                                        onChange={(e) => {
+                                            const inputValue = e.target.value;
+                                            const isValidDate = !isNaN(Date.parse(inputValue))
+
+                                            if (isValidDate) {
+                                                field.onChange(new Date(inputValue));
+                                            } else {
+                                                field.onChange('')
+                                            }
+                                        }}
                                     />
                                 </>
                             </FormControl>
