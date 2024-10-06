@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { Button } from "./ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import FocusDialog from "./focus-dialog";
 import { SupabaseClient, User } from "@supabase/supabase-js";
 import { Database } from "@/database.types";

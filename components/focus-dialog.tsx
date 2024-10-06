@@ -87,7 +87,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
 
     // --- Cleanup interval on unmount ---
     useEffect(() => {
-        return interval.stop
+        interval.stop()
     }, [])
 
     // --- Set background ---
@@ -107,6 +107,24 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
             setHasPlayedAudio(false)
         }
     }, [timerCompleted])
+
+    // Handle before_unlooad event
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            if (mode === 'timer') {
+                handleSessionEnd(false)
+            } else {
+                handleStopwatchMode()
+            }
+        }
+
+        window.addEventListener('beforeunload', handleBeforeUnload)
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload)
+        }
+    }, [handleSessionEnd])
+
 
     const handleTimerMode = async () => {
         if (timerCompleted && !hasPlayedAudio) {

@@ -6,7 +6,6 @@ import FocusDialog from './focus-dialog';
 import { SupabaseClient, User } from '@supabase/supabase-js';
 import { Database } from '@/database.types';
 import toast from 'react-hot-toast';
-import { useStore } from '@/hooks/useStore';
 import { useFocusSession } from '@/hooks/useFocusSession';
 
 interface StopwatchProps {
