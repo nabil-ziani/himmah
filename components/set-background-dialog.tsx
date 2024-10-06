@@ -197,7 +197,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isOpen, setIsOpen }: SetBackgroun
                                                     {activeSubcategory.images.map(img => (
                                                         <div className={`relative cursor-pointer w-full h-56`} key={img.name}>
                                                             <Image
-                                                                className={`object-cover bg-gray-300 animate-pulse h-full w-full rounded-2xl transition-opacity opacity-0 duration-[2s] ${localSelected.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
+                                                                className={`object-cover bg-gray-300 animate-pulse h-full w-full rounded-2xl transition-opacity opacity-0 duration-2000 ${localSelected.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
                                                                 src={img.url}
                                                                 alt={img.name}
                                                                 width={400}
