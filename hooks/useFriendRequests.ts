@@ -33,11 +33,10 @@ const useFriendRequests = (userId: string) => {
             } else {
                 const acceptedFriends = friendsData.filter(f => f.status === 'accepted');
 
-                // Sort the friends based on today_focus_time in descending order
                 const sortedFriends = acceptedFriends.sort((a, b) => {
-                    const friendAFocusTime = a.friend.today_focus_time || 0
-                    const friendBFocusTime = b.friend.today_focus_time || 0
-                    return friendBFocusTime - friendAFocusTime; // Sorteren in aflopende volgorde
+                    const friendAFocusTime = a.friend.day_focus_time || 0
+                    const friendBFocusTime = b.friend.day_focus_time || 0
+                    return friendBFocusTime - friendAFocusTime
                 })
 
                 setFriendships(sortedFriends)

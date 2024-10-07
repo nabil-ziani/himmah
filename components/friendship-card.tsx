@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import { GoClockFill } from "react-icons/go";
 import { useSupabase } from "@/contexts/supabaseClient"
 import toast from "react-hot-toast"
+import { formatFocusTime } from "@/lib/utils"
 
 interface FriendshipCardProps {
     friendship: Friendship
@@ -31,7 +32,7 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
 
             const { data, error } = await supabase
                 .from('profiles')
-                .select('today_focus_time')
+                .select('day_focus_time')
                 .eq('id', userId)
                 .single()
 
@@ -41,21 +42,11 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
                 return;
             }
 
-            setTodayFocusTime(data?.today_focus_time ?? 0)
+            setTodayFocusTime(data?.day_focus_time ?? 0)
         }
 
         fetchTodayFocusTime()
     }, [supabase, friendship, currentUser])
-
-    const formatFocusTime = (seconds: number) => {
-        const hours = Math.floor(seconds / 3600)
-        const minutes = Math.floor((seconds % 3600) / 60)
-
-        const formattedHours = String(hours).padStart(2, '0')
-        const formattedMinutes = String(minutes).padStart(2, '0')
-
-        return `${formattedHours}:${formattedMinutes}`
-    }
 
     return (
         <li key={friendship.id} className="flex m-5 gap-4">

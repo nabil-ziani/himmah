@@ -1,7 +1,7 @@
 // Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 
-import { createClient, SupabaseClient } from 'jsr:@supabase/supabase-js@2'
+import { createClient } from 'jsr:@supabase/supabase-js@2'
 import 'https://deno.land/x/dotenv@v3.2.2/load.ts'
 
 Deno.serve(async (req) => {
@@ -14,12 +14,11 @@ Deno.serve(async (req) => {
     if (req.method === "POST") {
         const { error } = await supabase
             .from('profiles')
-            .update({ today_focus_time: 0 })
-            .neq('today_focus_time', 0)
+            .update({ week_focus_time: 0 })
+            .neq('week_focus_time', 0)
 
         // Controleer of er een fout is opgetreden
         if (error) {
-            console.log('Error resetting today_focus_time:', error);
             return new Response(
                 JSON.stringify(error),
                 { status: 500, headers: { "Content-Type": "application/json" } }
