@@ -12,16 +12,8 @@ export type TaskType = {
 export type Friendship = {
     id: string,
     status: string,
-    friend: {
-        id: string,
-        name: string,
-        email: string,
-    },
-    user: {
-        id: string,
-        name: string,
-        email: string,
-    }
+    friend: Tables<'profiles'>,
+    user: Tables<'profiles'>
 }
 
 export type Affirmation = Tables<'affirmations'>

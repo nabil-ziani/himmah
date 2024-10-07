@@ -75,7 +75,7 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
             </div>
             {friendship.status === 'accepted' && (
                 <div className="flex items-center justify-center bg-[#FF5C5C] cursor-pointer rounded-md">
-                    <span onClick={() => handleDelete!(friendship.id, friendName)} className="p-3">
+                    <span onClick={() => handleDelete!(friendship.id, friendName!)} className="p-3">
                         <UserRoundX className="h-5 w-5" color="white" />
                     </span>
                 </div>

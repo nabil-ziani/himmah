@@ -17,7 +17,7 @@ export function adjustForTimezone(date: Date): Date {
 export const fetchProfileData = async (supabase: SupabaseClient, id: string) => {
   const { data, error } = await supabase
     .from("profiles")
-    .select('id, name, email')
+    .select('*')
     .eq('id', id)
     .single()
 

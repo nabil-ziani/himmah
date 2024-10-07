@@ -47,9 +47,6 @@ const Timer = ({ supabase, user }: TimerProps) => {
             return
         }
 
-        const end_time = new Date();
-        const startTimeDate = new Date(startTime)
-
         try {
             await endSession(completed)
 

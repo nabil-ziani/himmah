@@ -22,16 +22,8 @@ const useFriendRequests = (userId: string) => {
                 .select(`
                     id,
                     status,
-                    friend:friend_id(
-                        id,
-                        name,
-                        email
-                    ),
-                    user:user_id(
-                        id,
-                        name,
-                        email
-                    )
+                    friend:friend_id(*),
+                    user:user_id(*)
                 `)
                 .or(`user_id.eq.${userId}, friend_id.eq.${userId}`)
                 .returns<Friendship[]>()
@@ -39,7 +31,16 @@ const useFriendRequests = (userId: string) => {
                 toast.error(error.message)
                 console.error("Error fetching friendships:", error)
             } else {
-                setFriendships(friendsData.filter(f => f.status === 'accepted'))
+                const acceptedFriends = friendsData.filter(f => f.status === 'accepted');
+
+                // Sort the friends based on today_focus_time in descending order
+                const sortedFriends = acceptedFriends.sort((a, b) => {
+                    const friendAFocusTime = a.friend.today_focus_time || 0
+                    const friendBFocusTime = b.friend.today_focus_time || 0
+                    return friendBFocusTime - friendAFocusTime; // Sorteren in aflopende volgorde
+                })
+
+                setFriendships(sortedFriends)
                 setPendingRequests(friendsData.filter(f => f.status === 'pending' && f.friend.id === userId))
             }
         }
