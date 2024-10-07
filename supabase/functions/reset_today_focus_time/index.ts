@@ -14,13 +14,13 @@ Deno.serve(async (req) => {
     // Check of de request een POST-verzoek is
     if (req.method === "POST") {
         const { error } = await supabase
-            .from('profiles')
+            .from('public.profiles')
             .update({ today_focus_time: 0 })
             .neq('today_focus_time', 0)
 
         // Controleer of er een fout is opgetreden
         if (error) {
-            console.error('Error resetting today_focus_time:', error);
+            console.log('Error resetting today_focus_time:', error);
             return new Response(
                 JSON.stringify(error),
                 { status: 500, headers: { "Content-Type": "application/json" } }
