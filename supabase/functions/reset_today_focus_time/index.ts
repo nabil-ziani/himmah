@@ -15,13 +15,13 @@ Deno.serve(async (req) => {
     if (req.method === "POST") {
         const { error } = await supabase
             .from('profiles')
-            .update({ total_focus_time: 0 });
+            .update({ today_focus_time: 0 });
 
         // Controleer of er een fout is opgetreden
         if (error) {
-            console.error('Error resetting total_focus_time:', error);
+            console.error('Error resetting today_focus_time:', error);
             return new Response(
-                JSON.stringify({ message: 'Failed to reset focus times' }),
+                JSON.stringify(error),
                 { status: 500, headers: { "Content-Type": "application/json" } }
             );
         }

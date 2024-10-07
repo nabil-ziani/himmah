@@ -12,6 +12,6 @@ jobs:
     steps:
     - name: Call Supabase Edge Function
       run: |
-        curl -X POST https://hlsqynuporoplqsmbmwv.supabase.co/functions/v1/reset_total_focus_time \
+        curl -X POST https://hlsqynuporoplqsmbmwv.supabase.co/functions/v1/reset_today_focus_time \
           -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
           -H "Content-Type: application/json"

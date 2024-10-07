@@ -150,7 +150,7 @@ export type Database = {
           id: string
           name: string | null
           sex: string | null
-          total_focus_time: number | null
+          today_focus_time: number | null
           updated_at: string | null
         }
         Insert: {
@@ -159,7 +159,7 @@ export type Database = {
           id: string
           name?: string | null
           sex?: string | null
-          total_focus_time?: number | null
+          today_focus_time?: number | null
           updated_at?: string | null
         }
         Update: {
@@ -168,7 +168,7 @@ export type Database = {
           id?: string
           name?: string | null
           sex?: string | null
-          total_focus_time?: number | null
+          today_focus_time?: number | null
           updated_at?: string | null
         }
         Relationships: [
