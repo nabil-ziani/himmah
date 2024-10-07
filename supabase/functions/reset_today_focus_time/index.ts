@@ -15,7 +15,8 @@ Deno.serve(async (req) => {
     if (req.method === "POST") {
         const { error } = await supabase
             .from('profiles')
-            .update({ today_focus_time: 0 });
+            .update({ today_focus_time: 0 })
+            .neq('today_focus_time', 0)
 
         // Controleer of er een fout is opgetreden
         if (error) {
