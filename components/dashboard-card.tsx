@@ -4,9 +4,7 @@ import { formatFocusTime } from "@/lib/utils"
 import AnalyticsCard from "./analytics-card"
 import { Card } from "./ui/card"
 import { useState } from "react"
-import { TbMessageReport } from "react-icons/tb"
 import { TbMessage } from "react-icons/tb";
-import { BiSolidMessageSquareError } from "react-icons/bi";
 import FeedbackModal from "./feedback-modal"
 
 interface DashboardCardProps {

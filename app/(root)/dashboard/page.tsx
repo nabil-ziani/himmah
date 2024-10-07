@@ -1,7 +1,6 @@
-import dayjs from "dayjs"
 import { createClient } from "@/utils/supabase/server"
-import DashboardCard from "@/components/dashboard-card"
 import { redirect } from "next/navigation"
+import DashboardCard from "@/components/dashboard-card"
 
 export default async function DashboardPage() {
 	const supabase = createClient()
@@ -17,20 +16,6 @@ export default async function DashboardPage() {
 		.select('*')
 		.eq('id', user.id)
 		.single()
-
-
-	console.log(profile)
-
-	if (error) {
-		console.error('Error fetching sessions:', error)
-		return
-	}
-
-	const { data: sessions } = await supabase.from('focus_sessions').select('*').eq('user_id', user.id)
-
-
-	// const startOfWeek = dayjs().startOf('week')
-	// const startOfMonth = dayjs().startOf('month')
 
 	return (
 		<div className="flex flex-col items-center gap-10 h-[calc(100vh-150px)]">
