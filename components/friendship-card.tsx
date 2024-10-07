@@ -31,7 +31,7 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
 
             const { data, error } = await supabase
                 .from('profiles')
-                .select('total_focus_time')
+                .select('today_focus_time')
                 .eq('id', userId)
                 .single()
 
@@ -41,7 +41,7 @@ const FriendshipCard = ({ friendship, currentUser, handleAccept, handleReject, h
                 return;
             }
 
-            setTodayFocusTime(data?.total_focus_time ?? 0)
+            setTodayFocusTime(data?.today_focus_time ?? 0)
         }
 
         fetchTodayFocusTime()
