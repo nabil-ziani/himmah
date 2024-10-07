@@ -1,4 +1,4 @@
-name: Reset Total Focus Time Daily
+name: Reset Today Focus Time Daily
 
 # Run this job daily at midnight (UTC)
 on:
