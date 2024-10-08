@@ -78,13 +78,19 @@ const FriendsList = ({ user }: FriendsListProps) => {
                 Your Friends
             </h2>
             <ul className="flex flex-1 flex-col items-center no-scrollbar overflow-y-scroll">
-                {friendships.length > 0 && friendships.map((f) => {
-                    const isFriendOnline = onlineUsers.includes(f?.profile?.id)
+                {friendships.length > 0 && friendships
+                    .sort((a, b) => {
+                        const friendAFocusTime = a.profile.day_focus_time || 0
+                        const friendBFocusTime = b.profile.day_focus_time || 0
+                        return friendBFocusTime - friendAFocusTime
+                    })
+                    .map((f) => {
+                        const isFriendOnline = onlineUsers.includes(f?.profile?.id)
 
-                    return (
-                        <FriendshipCard key={f.friendship_id} friend={f} handleDelete={handleDelete} isOnline={isFriendOnline} status="accepted" />
-                    )
-                })}
+                        return (
+                            <FriendshipCard key={f.friendship_id} friend={f} handleDelete={handleDelete} isOnline={isFriendOnline} status="accepted" />
+                        )
+                    })}
             </ul>
         </div>
     )

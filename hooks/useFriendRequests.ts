@@ -49,18 +49,12 @@ const useFriendRequests = (userId: string) => {
                     acceptedFriends.unshift({ friendship_id: '', profile })
                 }
 
-                const sortedFriends = acceptedFriends.sort((a, b) => {
-                    const friendAFocusTime = a.profile.day_focus_time || 0
-                    const friendBFocusTime = b.profile.day_focus_time || 0
-                    return friendBFocusTime - friendAFocusTime
-                })
-
                 // should only be visible for the receiver
                 const pendingFriends = friendships
                     .filter(f => f.status === 'pending' && f.friend.id === userId)
                     .map(f => ({ friendship_id: f.id, profile: f.user }))
 
-                setFriendships(sortedFriends)
+                setFriendships(acceptedFriends)
                 setPendingRequests(pendingFriends)
             }
         }
