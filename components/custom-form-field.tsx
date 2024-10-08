@@ -153,9 +153,10 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                 </>
             );
         case FormFieldType.SELECT:
+            console.log(props)
             return (
                 <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={String(props.defaultValue)} disabled={props.disabled} >
+                    <Select onValueChange={field.onChange} defaultValue={props.defaultValue ? String(props.defaultValue) : undefined} disabled={props.disabled} >
                         <FormControl>
                             <SelectTrigger className="shad-select-trigger">
                                 <SelectValue placeholder={props.placeholder} />

@@ -31,6 +31,7 @@ const UpdateProfileForm = ({ user }: UpdateProfileFormProps) => {
     const [isPending, startTransition] = useTransition()
 
     const router = useRouter()
+    console.log(user.user_metadata)
     const form = useForm<z.infer<typeof UpdateProfileSchema>>({
         resolver: zodResolver(UpdateProfileSchema),
         defaultValues: {
@@ -131,6 +132,7 @@ const UpdateProfileForm = ({ user }: UpdateProfileFormProps) => {
                             name="sex"
                             label="Sex"
                             placeholder="Select your sex"
+                            defaultValue={user.user_metadata.sex}
                         >
                             {SexOptions.map((option, i) => (
                                 <SelectItem key={option + i} value={option}>

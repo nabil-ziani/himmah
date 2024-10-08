@@ -11,7 +11,7 @@ export default async function DashboardPage() {
 		return redirect("/auth/login");
 	}
 
-	const { data: profile, error } = await supabase
+	const { data: profile } = await supabase
 		.from('profiles')
 		.select('*')
 		.eq('id', user.id)
