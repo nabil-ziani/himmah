@@ -94,15 +94,6 @@ const SetBackgroundDialog = ({ allBackgrounds, isOpen, setIsOpen }: SetBackgroun
         setIsOpen(false)
     }
 
-    useEffect(() => {
-        if (allBackgrounds.length > 0) {
-            // Log om te zien wat er wordt opgehaald
-            console.log(allBackgrounds);
-
-            // ... rest van je logica
-        }
-    }, [allBackgrounds]);
-
     return (
         <>
             {isOpen && (

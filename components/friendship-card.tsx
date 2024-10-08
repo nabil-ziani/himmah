@@ -18,7 +18,7 @@ interface FriendshipCardProps {
 const FriendshipCard = ({ friend, handleAccept, handleReject, handleDelete, isOnline, status }: FriendshipCardProps) => {
     // Own user profile does not have friendship_id (use that for custom styling
     return (
-        <li key={friend.profile.id} className="flex mt-5 m-2 gap-4">
+        <li key={friend.friendship_id} className="flex mt-5 m-2 gap-4">
             <div className={`flex justify-between items-center w-[450px] bg-gray-200 rounded-md relative px-2`}>
                 <div className="whitespace-nowrap px-4 py-4 text-sm text-gray-500 flex gap-2 items-center">
                     <span className={`inline-block h-3 w-3 rounded-full mr-4 ${isOnline ? 'bg-green-300' : 'bg-gray-400'}`} />
