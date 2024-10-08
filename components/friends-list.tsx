@@ -68,7 +68,7 @@ const FriendsList = ({ user }: FriendsListProps) => {
                             const isFriendOnline = onlineUsers.includes(f?.profile?.id)
 
                             return (
-                                <FriendshipCard key={f.profile.id} friend={f} handleAccept={handleAccept} handleReject={handleReject} isOnline={isFriendOnline} status="pending" />
+                                <FriendshipCard key={f.friendship_id} friend={f} handleAccept={handleAccept} handleReject={handleReject} isOnline={isFriendOnline} status="pending" />
                             )
                         })}
                     </ul>
@@ -82,7 +82,7 @@ const FriendsList = ({ user }: FriendsListProps) => {
                     const isFriendOnline = onlineUsers.includes(f?.profile?.id)
 
                     return (
-                        <FriendshipCard key={f.profile.id} friend={f} handleDelete={handleDelete} isOnline={isFriendOnline} status="accepted" />
+                        <FriendshipCard key={f.friendship_id} friend={f} handleDelete={handleDelete} isOnline={isFriendOnline} status="accepted" />
                     )
                 })}
             </ul>
