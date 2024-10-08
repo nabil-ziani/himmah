@@ -78,7 +78,7 @@ const FriendsList = ({ user }: FriendsListProps) => {
                 Your Friends
             </h2>
             <ul className="flex flex-1 flex-col items-center no-scrollbar overflow-y-scroll">
-                {friendships.map((f) => {
+                {friendships.length > 0 && friendships.map((f) => {
                     const isFriendOnline = onlineUsers.includes(f?.profile?.id)
 
                     return (
