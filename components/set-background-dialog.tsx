@@ -28,6 +28,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isOpen, setIsOpen }: SetBackgroun
     const [categories, setCategories] = useState<Category[]>([])
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSubcategory, setActiveSubcategory] = useState<Subcategory | undefined>(undefined)
+    const [loadedImages, setLoadedImages] = useState<string[]>([])
 
     const { selectedBackgrounds, setSelectedBackgrounds, } = useStore()
     const [localSelected, setLocalSelected] = useState(selectedBackgrounds)
@@ -92,6 +93,10 @@ const SetBackgroundDialog = ({ allBackgrounds, isOpen, setIsOpen }: SetBackgroun
     const handleCloseModal = () => {
         setSelectedBackgrounds(localSelected)
         setIsOpen(false)
+    }
+
+    const handleImageLoad = (url: string) => {
+        setLoadedImages(prev => [...prev, url])
     }
 
     return (
@@ -188,13 +193,13 @@ const SetBackgroundDialog = ({ allBackgrounds, isOpen, setIsOpen }: SetBackgroun
                                                     {activeSubcategory.images.map(img => (
                                                         <div className={`relative cursor-pointer w-full h-56`} key={img.name}>
                                                             <Image
-                                                                className={`object-cover bg-gray-300 animate-pulse h-full w-full rounded-2xl transition-opacity opacity-0 duration-2000 ${localSelected.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
+                                                                className={`object-cover bg-gray-300 h-full w-full rounded-2xl ${!loadedImages.includes(img.url) ? 'animate-pulse opacity-0' : ''} transition-opacity duration-2000 ${localSelected.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
                                                                 src={img.url}
                                                                 alt={img.name}
                                                                 width={400}
                                                                 height={200}
                                                                 quality={75}
-                                                                onLoadingComplete={(img) => img.classList.remove('opacity-0', 'animate-pulse')}
+                                                                onLoad={() => handleImageLoad(img.url)}
                                                                 onClick={() => handleSelectBackground(img)}
                                                             />
                                                             <div className={`${localSelected.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-3 left-3 rounded-md`}></div>
