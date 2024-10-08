@@ -1,13 +1,13 @@
 'use client'
 
-import { Friendship } from '@/lib/types';
+import { Friend, Friendship } from '@/lib/types';
 import { createContext, useContext } from 'react';
 import { ReactNode } from 'react';
 import useFriendRequests from '@/hooks/useFriendRequests'
 
 interface FriendContextType {
-    friendships: Friendship[]
-    pendingRequests: Friendship[]
+    friendships: Friend[]
+    pendingRequests: Friend[]
     onlineUsers: string[]
 }
 

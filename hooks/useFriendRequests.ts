@@ -1,14 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Friendship } from "@/lib/types";
+import { Friend, Friendship } from "@/lib/types";
 import { fetchProfileData } from '@/lib/utils';
 import { useSupabase } from '@/contexts/supabaseClient';
 import toast from 'react-hot-toast';
+import { Tables } from '@/database.types';
 
 const useFriendRequests = (userId: string) => {
-    const [friendships, setFriendships] = useState<Friendship[]>([])
-    const [pendingRequests, setPendingRequests] = useState<Friendship[]>([])
+    const [friendships, setFriendships] = useState<Friend[]>([])
+    const [pendingRequests, setPendingRequests] = useState<Friend[]>([])
     const [onlineUsers, setOnlineUsers] = useState<string[]>([])
 
     const supabase = useSupabase()
@@ -17,7 +18,13 @@ const useFriendRequests = (userId: string) => {
         if (!userId) return;
 
         const fetchFriendships = async () => {
-            const { data: friendsData, error } = await supabase
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', userId)
+                .single()
+
+            const { data: friendships, error } = await supabase
                 .from("friends")
                 .select(`
                     id,
@@ -27,20 +34,33 @@ const useFriendRequests = (userId: string) => {
                 `)
                 .or(`user_id.eq.${userId}, friend_id.eq.${userId}`)
                 .returns<Friendship[]>()
+
             if (error) {
                 toast.error(error.message)
                 console.error("Error fetching friendships:", error)
             } else {
-                const acceptedFriends = friendsData.filter(f => f.status === 'accepted');
+                const acceptedFriends = friendships
+                    .filter(f => f.status === 'accepted')
+                    .map(f => f.friend.id === userId ? f.user : f.friend)
+
+                // --- add own profile to the list 
+                if (profile && !acceptedFriends.some(friend => friend.id === userId)) {
+                    acceptedFriends.unshift(profile)
+                }
 
                 const sortedFriends = acceptedFriends.sort((a, b) => {
-                    const friendAFocusTime = a.friend.day_focus_time || 0
-                    const friendBFocusTime = b.friend.day_focus_time || 0
+                    const friendAFocusTime = a.day_focus_time || 0
+                    const friendBFocusTime = b.day_focus_time || 0
                     return friendBFocusTime - friendAFocusTime
                 })
 
+                // should only be visible for the receiver
+                const pendingFriends = friendships
+                    .filter(f => f.status === 'pending' && f.friend.id === userId)
+                    .map(f => f.user)
+
                 setFriendships(sortedFriends)
-                setPendingRequests(friendsData.filter(f => f.status === 'pending' && f.friend.id === userId))
+                setPendingRequests(pendingFriends)
             }
         }
 
@@ -51,18 +71,11 @@ const useFriendRequests = (userId: string) => {
         const handleInsert = async (payload: any) => {
             if (payload.new.friend_id === userId) {
 
-                const friendProfile = await fetchProfileData(supabase, payload.new.user_id)
+                // const friendProfile = await fetchProfileData(supabase, payload.new.user_id)
                 const userProfile = await fetchProfileData(supabase, payload.new.friend_id)
 
-                if (friendProfile && userProfile) {
-                    const newRequest: Friendship = {
-                        id: payload.new.id,
-                        status: payload.new.status,
-                        friend: friendProfile,
-                        user: userProfile
-                    }
-
-                    setPendingRequests(prev => [...prev, newRequest]);
+                if (userProfile) {
+                    setPendingRequests(prev => [...prev, userProfile]);
                 }
             }
         }
@@ -74,12 +87,7 @@ const useFriendRequests = (userId: string) => {
                 const userProfile = await fetchProfileData(supabase, payload.new.friend_id)
 
                 if (friendProfile && userProfile) {
-                    const newFriendship: Friendship = {
-                        id: payload.new.id,
-                        status: payload.new.status,
-                        friend: friendProfile,
-                        user: userProfile
-                    }
+                    const newFriendship: Friend = payload.new.friend_id === userId ? friendProfile : userProfile
 
                     setPendingRequests(prev => prev.filter(req => req.id !== payload.new.id))
                     setFriendships(prev => [...prev, newFriendship])

@@ -1,4 +1,4 @@
-import { Database, Tables } from "@/database.types"
+import { Database, Enums, Tables } from "@/database.types"
 
 export type Task = Database["public"]["Tables"]["tasks"]["Row"]
 
@@ -11,10 +11,12 @@ export type TaskType = {
 
 export type Friendship = {
     id: string,
-    status: string,
-    friend: Tables<'profiles'>,
+    status: Enums<'friendship_status'>
+    friend: Tables<'profiles'>
     user: Tables<'profiles'>
 }
+
+export type Friend = Tables<'profiles'>
 
 export type Affirmation = Tables<'affirmations'>
 
