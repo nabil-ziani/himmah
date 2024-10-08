@@ -64,7 +64,7 @@ const FriendsList = ({ user }: FriendsListProps) => {
                     <ul className="flex flex-1 flex-col items-center no-scrollbar overflow-y-scroll mb-5">
                         {pendingRequests.map((f) => {
                             // als degene die het verzoek heeft ontvangen gelijk is aan de ingelogde gebruiker, gebruik dan user_id anders friend_id
-                            const isFriendOnline = onlineUsers.includes(f.profile.id)
+                            const isFriendOnline = onlineUsers.includes(f?.profile?.id)
 
                             return (
                                 <FriendshipCard key={f.profile.id} friend={f} handleAccept={handleAccept} handleReject={handleReject} isOnline={isFriendOnline} status="pending" />
@@ -78,7 +78,7 @@ const FriendsList = ({ user }: FriendsListProps) => {
             </h2>
             <ul className="flex flex-1 flex-col items-center no-scrollbar overflow-y-scroll">
                 {friendships.map((f) => {
-                    const isFriendOnline = onlineUsers.includes(f.profile.id)
+                    const isFriendOnline = onlineUsers.includes(f?.profile?.id)
 
                     return (
                         <FriendshipCard key={f.profile.id} friend={f} handleDelete={handleDelete} isOnline={isFriendOnline} status="accepted" />
