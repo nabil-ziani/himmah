@@ -5,6 +5,7 @@ import FriendshipCard from "./friendship-card";
 import { User } from "@supabase/supabase-js";
 import { useFriendContext } from "@/contexts/friendshipContext";
 import { useSupabase } from "@/contexts/supabaseClient";
+import { Friend } from "@/lib/types";
 
 interface FriendsListProps {
     user: User
@@ -41,14 +42,14 @@ const FriendsList = ({ user }: FriendsListProps) => {
         }
     }
 
-    const handleDelete = async (friendshipId: string, friendName: string) => {
+    const handleDelete = async (friend: Friend) => {
         const { error } = await supabase
             .from('friends')
             .delete()
-            .eq('id', friendshipId)
+            .eq('id', friend.friendship_id!)
 
         if (!error) {
-            toast.success(`${friendName} has been removed!`);
+            toast.success(`${friend.profile.name} has been removed!`);
         } else {
             toast.error(error.message);
         }

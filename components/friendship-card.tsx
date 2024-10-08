@@ -10,7 +10,7 @@ interface FriendshipCardProps {
     friend: Friend
     handleAccept?: (friendshipId: string) => Promise<void>
     handleReject?: (friendshipId: string) => Promise<void>
-    handleDelete?: (friendshipId: string, name: string) => Promise<void>
+    handleDelete?: (friend: Friend) => Promise<void>
     isOnline: boolean
     status: 'pending' | 'accepted'
 }
@@ -33,7 +33,7 @@ const FriendshipCard = ({ friend, handleAccept, handleReject, handleDelete, isOn
             </div>
             {(status === 'accepted') && (
                 <div className={`flex items-center justify-center bg-[#FF5C5C] cursor-pointer rounded-md ${!friend.friendship_id && 'invisible'}`}>
-                    <span onClick={() => handleDelete!(friend.profile.id, friend.profile.name!)} className="p-3">
+                    <span onClick={() => handleDelete!(friend)} className="p-3">
                         <UserRoundX className="h-5 w-5" color="white" />
                     </span>
                 </div>
