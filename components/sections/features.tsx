@@ -20,7 +20,7 @@ const Features = () => {
                     transition={{ ease: 'easeInOut', duration: 0.75 }}
                     className='mx-auto max-w-7xl text-center px-8'>
                     <p className='text-md sm:text-xl leading-relaxed'>
-                        We intend to be a complete platform with tools for focus, planning, relaxing, communicating and much more.
+                        We intend to be a complete platform with tools for focusing, planning, learning, relaxation, communicating and much more.
                         Everything necessary to be productive will be gathered on one platform in the most optimal way for you.
                         For the time being, due to our platform being new, we only provide tools for focus. The main tools are:
                     </p>

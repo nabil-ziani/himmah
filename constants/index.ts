@@ -48,7 +48,7 @@ export const goals = [
     },
     {
         title: 'World',
-        description: 'We want to create a better world for us, our beloved ones and those to come after us.',
+        description: 'We want to leave behind a better world for us and those to come after us.',
         image: '/images/goals/world.png'
     },
 ]
