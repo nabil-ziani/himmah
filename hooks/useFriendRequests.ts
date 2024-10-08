@@ -5,7 +5,6 @@ import { Friend, Friendship } from "@/lib/types";
 import { fetchProfileData } from '@/lib/utils';
 import { useSupabase } from '@/contexts/supabaseClient';
 import toast from 'react-hot-toast';
-import { Tables } from '@/database.types';
 
 const useFriendRequests = (userId: string) => {
     const [friendships, setFriendships] = useState<Friend[]>([])
@@ -41,23 +40,23 @@ const useFriendRequests = (userId: string) => {
             } else {
                 const acceptedFriends = friendships
                     .filter(f => f.status === 'accepted')
-                    .map(f => f.friend.id === userId ? f.user : f.friend)
+                    .map(f => f.friend.id === userId ? { friendship_id: f.id, profile: f.user } : { friendship_id: f.id, profile: f.friend })
 
                 // --- add own profile to the list 
-                if (profile && !acceptedFriends.some(friend => friend.id === userId)) {
-                    acceptedFriends.unshift(profile)
+                if (profile && !acceptedFriends.some(friend => friend.profile.id === userId)) {
+                    acceptedFriends.unshift({ friendship_id: '', profile })
                 }
 
                 const sortedFriends = acceptedFriends.sort((a, b) => {
-                    const friendAFocusTime = a.day_focus_time || 0
-                    const friendBFocusTime = b.day_focus_time || 0
+                    const friendAFocusTime = a.profile.day_focus_time || 0
+                    const friendBFocusTime = b.profile.day_focus_time || 0
                     return friendBFocusTime - friendAFocusTime
                 })
 
                 // should only be visible for the receiver
                 const pendingFriends = friendships
                     .filter(f => f.status === 'pending' && f.friend.id === userId)
-                    .map(f => f.user)
+                    .map(f => ({ friendship_id: f.id, profile: f.user }))
 
                 setFriendships(sortedFriends)
                 setPendingRequests(pendingFriends)
@@ -89,15 +88,15 @@ const useFriendRequests = (userId: string) => {
                 if (friendProfile && userProfile) {
                     const newFriendship: Friend = payload.new.friend_id === userId ? friendProfile : userProfile
 
-                    setPendingRequests(prev => prev.filter(req => req.id !== payload.new.id))
+                    setPendingRequests(prev => prev.filter(req => req.friendship_id !== payload.new.id))
                     setFriendships(prev => [...prev, newFriendship])
                 }
             }
         }
 
         const handleDelete = async (payload: any) => {
-            setFriendships(prev => prev.filter(req => req.id !== payload.old.id))
-            setPendingRequests(prev => prev.filter(req => req.id !== payload.old.id))
+            setFriendships(prev => prev.filter(req => req.friendship_id !== payload.old.id))
+            setPendingRequests(prev => prev.filter(req => req.friendship_id !== payload.old.id))
         }
 
         // Subscribe to friends updates

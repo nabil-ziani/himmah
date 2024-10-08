@@ -16,7 +16,10 @@ export type Friendship = {
     user: Tables<'profiles'>
 }
 
-export type Friend = Tables<'profiles'>
+export type Friend = {
+    friendship_id: string | null
+    profile: Tables<'profiles'>
+}
 
 export type Affirmation = Tables<'affirmations'>
 
