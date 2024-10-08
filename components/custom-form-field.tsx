@@ -153,7 +153,6 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
                 </>
             );
         case FormFieldType.SELECT:
-            console.log(props)
             return (
                 <FormControl>
                     <Select onValueChange={field.onChange} defaultValue={props.defaultValue ? String(props.defaultValue) : undefined} disabled={props.disabled} >
