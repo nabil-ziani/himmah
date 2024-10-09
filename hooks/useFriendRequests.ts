@@ -21,7 +21,7 @@ const useFriendRequests = (userId: string) => {
         const fetchFriendships = async () => {
             const { data: profile } = await supabase
                 .from('profiles')
-                .select('*')
+                .select()
                 .eq('id', userId)
                 .single()
 
@@ -42,11 +42,13 @@ const useFriendRequests = (userId: string) => {
             } else {
                 const acceptedFriends = friendships
                     .filter(f => f.status === 'accepted')
-                    .map(f => f.friend.id === userId ? { friendship_id: f.id, profile: f.user } : { friendship_id: f.id, profile: f.friend })
+                    .map(f => ({ friendship_id: f.id, profile: (f.friend.id === userId ? f.user : f.friend) }))
 
                 // --- add own profile to the list 
-                if (profile && !acceptedFriends.some(friend => friend.profile.id === userId)) {
-                    acceptedFriends.unshift({ friendship_id: '', profile })
+                if (profile) {
+                    if (!acceptedFriends.some(friend => friend.profile.id === userId)) {
+                        acceptedFriends.unshift({ friendship_id: '', profile: profile })
+                    }
                 }
 
                 // should only be visible for the receiver

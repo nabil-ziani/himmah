@@ -4,8 +4,7 @@ import { useStore } from "@/hooks/useStore";
 import { BiSolidFlame } from "react-icons/bi";
 
 const AffirmationDropdown = () => {
-    const category = useStore((state) => state.affirmationCategory);
-    const setCategory = useStore((state) => state.setAffirmationCategory);
+    const { affirmationCategory, setAffirmationCategory } = useStore()
 
     return (
         <DropdownMenu>
@@ -18,7 +17,7 @@ const AffirmationDropdown = () => {
             <DropdownMenuContent className="w-56 bg-white">
                 <DropdownMenuLabel>Category</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup value={category} onValueChange={setCategory}>
+                <DropdownMenuRadioGroup value={affirmationCategory} onValueChange={setAffirmationCategory}>
                     <DropdownMenuRadioItem value="Allah">Allah</DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="Certainty">Certainty</DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="Struggle">Struggle</DropdownMenuRadioItem>

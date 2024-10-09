@@ -39,7 +39,7 @@ export const addFriend = async (values: z.infer<typeof AddFriendSchema>) => {
     }
 
     // Check if users already have a friendship request
-    const { data: existingRequest, error: friendError } = await supabase
+    const { data: existingRequest } = await supabase
         .from('friends')
         .select('id')
         .or(`user_id.eq.${currentUser.id}, friend_id.eq.${currentUser.id}`)

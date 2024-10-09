@@ -10,8 +10,6 @@ import AudioDropdown from "./audio-dropdown";
 import { TbBackground } from "react-icons/tb";
 import AffirmationDropdown from "./affirmation-dropdown";
 import { useSupabase } from "@/contexts/supabaseClient";
-import { fetchAffirmations, fetchAllBackgrounds } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
 import { Tables } from "@/database.types";
 import toast from "react-hot-toast";
 import { useStore } from "@/hooks/useStore";
@@ -59,6 +57,7 @@ const FocusCard = ({ user, backgrounds, affirmations }: FocusCardProps) => {
         }
     }, [backgrounds, affirmations]);
 
+    console.log(affirmationCategory)
     return (
         <Card className='flex flex-grow w-full max-w-[1800px] bg-white shadow-xl rounded-2xl overflow-hidden'>
             <section className="flex flex-col flex-1 overflow-y-auto w-full">
