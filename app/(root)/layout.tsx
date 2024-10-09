@@ -2,6 +2,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 import "../globals.css"
 import { poppins, nunito } from "../ui/fonts"
 import { Toaster } from "react-hot-toast"
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const defaultUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
 
@@ -19,6 +21,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<Toaster position='top-right' containerStyle={{ top: 100, right: 20 }} />
 					{children}
 				</ThemeProvider>
+				<Analytics />
+				<SpeedInsights />
 			</body>
 		</html >
 	)

@@ -10,6 +10,8 @@ import { Toaster } from "react-hot-toast"
 import { SupabaseProvider } from '@/contexts/supabaseClient'
 import { createClient } from '@/utils/supabase/server'
 import QueryProvider from '@/components/query-provider'
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const defaultUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
@@ -48,6 +50,8 @@ const RootLayout = async ({ children }: Readonly<{ children: ReactNode }>) => {
                             </section>
                         </div>
                     </FriendProvider>
+                    <Analytics />
+                    <SpeedInsights />
                 </main>
             </QueryProvider>
         </SupabaseProvider>

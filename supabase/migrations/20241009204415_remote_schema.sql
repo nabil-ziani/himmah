@@ -327,6 +327,7 @@ ALTER TABLE ONLY "public"."friends"
     ADD CONSTRAINT "friends_pkey" PRIMARY KEY ("id");
 
 
+ALTER TABLE auth.users ADD CONSTRAINT unique_email UNIQUE (email);
 
 ALTER TABLE ONLY "public"."profiles"
     ADD CONSTRAINT "profiles_email_key" UNIQUE ("email");
