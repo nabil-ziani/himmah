@@ -60,13 +60,16 @@ const TaskForm = ({ setIsOpen, setTasks, mode, task }: CreateTaskFormProps) => {
                 if (data.error) {
                     toast.error(data.error);
                 } else {
-                    setTasks((prevTasks) => {
+                    setTasks((prevTasks: any) => {
                         if (mode.type === 'create') {
-                            return [...prevTasks, data.data];
+                            return [...prevTasks, data.task];
                         } else {
-                            return prevTasks.map((task) =>
-                                task.id === data.data.id ? data.data : task
-                            )
+                            return prevTasks.map((t: Task) => {
+                                if (t.id === data.task?.id) {
+                                    return data.task
+                                }
+                                return t
+                            })
                         }
                     })
                     toast.success(mode.type === 'create' ? 'Task created!' : 'Task updated!');

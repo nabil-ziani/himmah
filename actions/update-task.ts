@@ -15,7 +15,7 @@ export const updateTask = async (taskId: number, values: z.infer<typeof UpdateTa
     const { title, description, focus_time } = validatedFields.data
 
     const supabase = createClient()
-    const { data, error } = await supabase
+    const { data: task, error } = await supabase
         .from('tasks')
         .update({ title, description, focus_time })
         .eq('id', taskId)
@@ -26,5 +26,5 @@ export const updateTask = async (taskId: number, values: z.infer<typeof UpdateTa
         return { error: error.message }
     }
 
-    return { success: 'Task Updated!', data }
+    return { success: 'Task Updated!', task }
 }

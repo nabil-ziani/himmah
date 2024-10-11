@@ -16,7 +16,7 @@ export const createTask = async (status: Enums<'task_status'>, values: z.infer<t
     const { title, description, focus_time } = validatedFields.data
 
     const supabase = createClient();
-    const { data, error } = await supabase
+    const { data: task, error } = await supabase
         .from('tasks')
         .insert({
             title,
@@ -31,5 +31,5 @@ export const createTask = async (status: Enums<'task_status'>, values: z.infer<t
         return { error: error.message }
     }
 
-    return { success: 'Task Created!', data }
+    return { success: 'Task Created!', task }
 }
