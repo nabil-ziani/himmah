@@ -29,7 +29,6 @@ interface FocusCardProps {
 
 const FocusCard = ({ user, backgrounds, affirmations }: FocusCardProps) => {
     const [backgroundModalOpen, setBackgroundModalOpen] = useState(false)
-    const [affirmationCategory, setAffirmationCategory] = useState('Allah')
 
     const searchParams = useSearchParams()
     const supabase = useSupabase()
