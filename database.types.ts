@@ -238,6 +238,12 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      get_total_focus_time: {
+        Args: {
+          userid: string
+        }
+        Returns: number
+      }
     }
     Enums: {
       affirmation_category:
