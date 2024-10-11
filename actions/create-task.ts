@@ -4,8 +4,9 @@ import * as z from 'zod'
 
 import { CreateTaskSchema } from '@/schemas';
 import { createClient } from "@/utils/supabase/server";
+import { Enums } from '@/database.types';
 
-export const createTask = async (status: string, values: z.infer<typeof CreateTaskSchema>) => {
+export const createTask = async (status: Enums<'task_status'>, values: z.infer<typeof CreateTaskSchema>) => {
     const validatedFields = CreateTaskSchema.safeParse(values)
 
     if (!validatedFields.success) {
