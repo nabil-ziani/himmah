@@ -38,11 +38,14 @@ const FriendsForm = ({ setIsOpen }: CreateTaskFormProps) => {
 
         startTransition(() => {
             addFriend(values).then((data) => {
+                console.log(data)
+
                 if (data.error) {
                     toast.error(data.error)
+                } else {
+                    toast.success('Friend request has been sent!')
                 }
 
-                toast.success('Friend request has been sent!')
                 setIsOpen(false)
             })
         })
