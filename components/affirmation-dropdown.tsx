@@ -17,7 +17,7 @@ const AffirmationDropdown = () => {
             <DropdownMenuContent className="w-56 bg-white">
                 <DropdownMenuLabel>Category</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup value={affirmationCategory} onValueChange={setAffirmationCategory}>
+                <DropdownMenuRadioGroup value={affirmationCategory} onValueChange={(category) => setAffirmationCategory(category)}>
                     <DropdownMenuRadioItem value="Allah">Allah</DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="Certainty">Certainty</DropdownMenuRadioItem>
                     <DropdownMenuRadioItem value="Struggle">Struggle</DropdownMenuRadioItem>
