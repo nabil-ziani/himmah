@@ -32,6 +32,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     });
 
     if (error) {
+        console.log(error)
         return { error: error.message }
     }
 

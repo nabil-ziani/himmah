@@ -11,9 +11,10 @@ interface DashboardCardProps {
     daily: number
     weekly: number
     monthly: number
+    total: number
 }
 
-const DashboardCard = ({ daily, weekly, monthly }: DashboardCardProps) => {
+const DashboardCard = ({ daily, weekly, monthly, total }: DashboardCardProps) => {
     const [feedbackModalOpen, setFeedbackModalOpen] = useState(false)
 
     return (
@@ -36,7 +37,7 @@ const DashboardCard = ({ daily, weekly, monthly }: DashboardCardProps) => {
                 />
                 <AnalyticsCard
                     title="Total Focus Time"
-                    description={formatFocusTime(daily)}
+                    description={formatFocusTime(total)}
                     className="bg-green-600/80"
                 />
             </div>
