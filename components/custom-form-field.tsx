@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { E164Number } from "libphonenumber-js/core";
-import Image from "next/image";
 import "react-datepicker/dist/react-datepicker.css";
 import { Control } from "react-hook-form";
 import 'react-phone-number-input/style.css'
@@ -53,7 +52,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
             return (
                 <div className="flex rounded-md border border-dark-500 bg-dark-400 relative">
                     {props.iconSrc && (
-                        <Image
+                        <img
                             src={props.iconSrc}
                             height={24}
                             width={24}

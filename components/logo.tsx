@@ -12,7 +12,7 @@ const Logo = ({ hideOnSmallDevice = true, color, navbar = false }: LogoProps) =>
     return (
         <div>
             <Link href='/' className='flex items-center gap-x-4'>
-                <Image
+                <img
                     src={`https://${process.env.NEXT_PUBLIC_PROJECT_ID}.supabase.co/storage/v1/object/public/logo/logo.png`}
                     height={1000}
                     width={1000}

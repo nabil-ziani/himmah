@@ -2,7 +2,6 @@
 
 import { loginWithOAuth } from '@/actions/login';
 import { type Provider } from '@supabase/supabase-js';
-import Image from 'next/image';
 
 type OAuthProviders = {
     name: Provider;
@@ -37,7 +36,7 @@ export default function OauthSignIn() {
                     onClick={() => onClick(provider.name)}
                     className="aspect-square w-10 h-10 rounded-full bg-white flex items-center justify-center transition-colors duration-300 dark:bg-zinc-100 dark:hover:bg-zinc-600"
                 >
-                    <Image width={30} height={30} src={provider.icon} alt="oauth logo" />
+                    <img width={30} height={30} src={provider.icon} alt="oauth logo" />
                 </button>
             ))}
         </div>
