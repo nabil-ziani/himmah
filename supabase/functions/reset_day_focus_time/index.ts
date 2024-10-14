@@ -7,7 +7,7 @@ import 'https://deno.land/x/dotenv@v3.2.2/load.ts'
 Deno.serve(async (req) => {
     const supabase = createClient(
         Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     )
 
     // Check of de request een POST-verzoek is
