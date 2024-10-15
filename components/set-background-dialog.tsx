@@ -192,7 +192,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isOpen, setIsOpen }: SetBackgroun
                                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 no-scrollbar overflow-y-auto pb-5">
                                                     {activeSubcategory.images.map(img => (
                                                         <div className={`relative cursor-pointer w-full h-56`} key={img.name}>
-                                                            <img
+                                                            <Image
                                                                 className={`object-cover bg-gray-300 h-full w-full rounded-2xl ${!loadedImages.includes(img.url) ? 'animate-pulse opacity-0' : ''} transition-opacity duration-2000 ${localSelected.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
                                                                 src={img.url}
                                                                 alt={img.name}
