@@ -21,8 +21,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        poppins: ["var(--font-poppins)", ...fontFamily.sans],
-        nunito: ["var(--font-nunito)", ...fontFamily.sans]
+        poppins: ["var(--font-poppins)"],
+        nunito: ["var(--font-nunito)"]
       },
       backgroundSize: {
         'size-200': '200% 200%',
