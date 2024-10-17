@@ -198,6 +198,7 @@ const SetBackgroundDialog = ({ allBackgrounds, isOpen, setIsOpen }: SetBackgroun
                                                                 alt={img.name}
                                                                 width={400}
                                                                 height={200}
+                                                                loading="lazy"
                                                                 onLoad={() => handleImageLoad(img.url)}
                                                                 onClick={() => handleSelectBackground(img)}
                                                             />
