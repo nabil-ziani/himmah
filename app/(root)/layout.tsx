@@ -3,8 +3,6 @@ import { poppins, nunito } from "../ui/fonts"
 import "../globals.css"
 
 import { Toaster } from "react-hot-toast"
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ThemeProvider } from "@/components/theme-provider"
 
 import Head from "next/head"
@@ -34,8 +32,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<Toaster position='top-right' containerStyle={{ top: 100, right: 20 }} />
 					{children}
 				</ThemeProvider>
-				<Analytics />
-				<SpeedInsights />
 			</body>
 		</html >
 	)
