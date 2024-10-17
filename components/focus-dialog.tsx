@@ -23,13 +23,12 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
     const [seconds, setSeconds] = useState<number>(Number(time.seconds))
     const [minutes, setMinutes] = useState<number>(Number(time.minutes))
 
-    const { affirmationsInterval, backgroundsInterval, audio, affirmations, selectedBackgrounds: backgrounds, affirmationCategory } = useStore()
+    const { affirmationsInterval, backgroundsInterval, audio, affirmations, selectedBackgrounds: backgrounds } = useStore()
 
     const [backgroundIndex, setBackgroundIndex] = useState(0)
     const [currentBackground, setCurrentBackground] = useState<string>(backgrounds[0])
 
-    const filteredAffirmations = affirmations.filter(af => af.category === affirmationCategory)
-    const [currentAffirmation, setCurrentAffirmation] = useState<Affirmation>(filteredAffirmations[0])
+    const [currentAffirmation, setCurrentAffirmation] = useState<Affirmation>(affirmations[0])
 
     const [hasPlayedAudio, setHasPlayedAudio] = useState(false)
     const audioRef = useRef<HTMLAudioElement>(null)
@@ -98,7 +97,7 @@ const FocusDialog = ({ isOpen, mode, time, isRunning, setIsRunning, setTime, han
 
     // --- Initial affirmation on component mount ---
     useEffect(() => {
-        const randomAffirmation = getRandomAffirmation(filteredAffirmations)
+        const randomAffirmation = getRandomAffirmation(affirmations)
         setCurrentAffirmation(randomAffirmation)
     }, [affirmations])
 

@@ -35,7 +35,7 @@ const FocusCard = ({ user, backgrounds, affirmations }: FocusCardProps) => {
 
     const SetBackgroundDialog = dynamic(() => import('./set-background-dialog'))
 
-    const { mode, toggleMode, setFocusSettingsModalOpen } = useStore()
+    const { mode, toggleMode, setFocusSettingsModalOpen, setAffirmations, affirmationCategory } = useStore()
 
     const currentMode = searchParams.get('mode') || 'timer'
 
@@ -50,6 +50,10 @@ const FocusCard = ({ user, backgrounds, affirmations }: FocusCardProps) => {
             toast.error("Could not load backgrounds and affirmations.");
         }
     }, [backgrounds, affirmations]);
+
+    useEffect(() => {
+        setAffirmations(affirmations.filter(af => af.category === affirmationCategory))
+    }, [affirmationCategory])
 
     return (
         <Card className='flex flex-grow w-full max-w-[1800px] bg-white shadow-xl rounded-2xl overflow-hidden'>
