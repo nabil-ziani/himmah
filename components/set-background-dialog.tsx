@@ -177,14 +177,14 @@ const SetBackgroundDialog = ({ allBackgrounds, isOpen, setIsOpen }: SetBackgroun
                                         </motion.section>
 
                                         {activeSubcategory && (
-                                            <motion.section
+                                            <section
                                                 id="image-grid"
                                                 className=" flex flex-col flex-grow bg-white text-[#303030] rounded-r-2xl px-3"
-                                                key={activeSubcategory.name}
-                                                initial={{ x: '100vw' }}
-                                                animate={{ x: 0 }}
-                                                exit={{ x: '-100vw' }}
-                                                transition={{ type: 'tween', duration: 0.5 }}
+                                            // key={activeSubcategory.name}
+                                            // initial={{ x: '100vw' }}
+                                            // animate={{ x: 0 }}
+                                            // exit={{ x: '-100vw' }}
+                                            // transition={{ type: 'tween', duration: 0.5 }}
                                             >
                                                 <h3 className="text-3xl font-bold p-8 text-center">
                                                     {activeSubcategory.name}
@@ -192,21 +192,22 @@ const SetBackgroundDialog = ({ allBackgrounds, isOpen, setIsOpen }: SetBackgroun
                                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 no-scrollbar overflow-y-auto pb-5">
                                                     {activeSubcategory.images.map(img => (
                                                         <div className={`relative cursor-pointer w-full h-56`} key={img.name}>
+                                                            {/* ${!loadedImages.includes(img.url) ? 'animate-pulse opacity-0' : ''} transition-opacity duration-1000 */}
                                                             <Image
-                                                                className={`object-cover bg-gray-300 h-full w-full rounded-2xl ${!loadedImages.includes(img.url) ? 'animate-pulse opacity-0' : ''} transition-opacity duration-2000 ${localSelected.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
+                                                                className={`object-cover bg-gray-300 h-full w-full rounded-2xl ${localSelected.includes(img.url) ? 'border-4 border-[#FF5C5C]' : ''}`}
                                                                 src={img.url}
                                                                 alt={img.name}
                                                                 width={400}
                                                                 height={200}
                                                                 loading="lazy"
-                                                                onLoad={() => handleImageLoad(img.url)}
+                                                                // onLoad={() => handleImageLoad(img.url)}
                                                                 onClick={() => handleSelectBackground(img)}
                                                             />
                                                             <div className={`${localSelected.includes(img.url) ? 'bg-[#FF5C5C]' : 'bg-white '} h-6 w-6 absolute top-3 left-3 rounded-md`}></div>
                                                         </div>
                                                     ))}
                                                 </div>
-                                            </motion.section>
+                                            </section>
                                         )}
                                     </div>
                                 )}
